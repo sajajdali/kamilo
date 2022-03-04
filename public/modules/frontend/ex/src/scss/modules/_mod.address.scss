@@ -1,0 +1,20 @@
+.address {
+    color: color(gray_9b);
+    background: white;
+    box-shadow: 0 2px rem(4) rgba(0, 0, 0, 0.2);
+    padding: rem(10) rem(40);
+    font-size: rem(14);
+    margin-bottom: rem(35);
+    ul li {
+        display: inline-block;
+        &:not(:last-of-type)::after{
+            content: " / ";
+        }
+    }
+    a {
+        color: color(gray_9b);
+        &:hover{
+            color: color(red);
+        }
+    }
+}

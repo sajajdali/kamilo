@@ -1,0 +1,27 @@
+@media only screen and (min-width: 0px) and (max-width: 767px) {
+    #content_wrapper, .sb-l-o #content_wrapper {
+  left: 0;
+  margin-left: 0;
+  width: 83%;
+}
+.sb-l-o #sidebar_left {
+  z-index: 1000;
+}
+body.sb-l-m .sidebar-menu > li > a > .sidebar-title {
+  background-color: #282d33;
+  border-left: 1px solid #222;
+  direction: rtl;
+  font-family: wyekan;
+  font-size: 14px;
+  height: 44px;
+  left: auto;
+  line-height: 44px;
+  padding-left: 10px;
+  padding-right: 15px;
+  position: absolute;
+  right: 45px;
+  text-align: right;
+  top: -4px;
+  width: 180px;
+}
+}

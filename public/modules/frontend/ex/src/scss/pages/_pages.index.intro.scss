@@ -1,0 +1,340 @@
+.intro {
+    display: flex;
+    height: rem(400);
+    &__fastsignup {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        margin-left: rem(15);
+        width: 18%;
+        height: 100%;
+        padding: rem(10);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        box-shadow: 0px 2px rem(4) rgba(0, 0, 0, 0.2);
+        h4 {
+            color: color(gray_6);
+            margin: rem(10);
+            @include mq-max($md){
+                text-align: center;
+            }
+            @include mq-max($sm) {
+                z-index: 100;
+                color: white;
+                font-size: 1rem;
+                margin-left: 20%;
+            }
+        }
+        button {
+            margin: rem(10);
+            color: white;
+            background: color(red);
+            border-radius: rem(20);
+            padding: rem(5) rem(60);
+            box-shadow: 0 2px rem(4) rgba(0, 0, 0, 0.2);
+            @include mq-max($md) {
+                padding: rem(5) rem(50);
+            }
+            @include mq-max($sm) {
+                z-index: 100;
+                margin-left: 20%;
+            }
+        }
+        @include mq-max($md) {
+            height: rem(450);
+            font-size: rem(14);
+        }
+        @include mq-max($sm) {
+            align-items: center;
+            order: 3;
+            width: 100%;
+            height: 40%;
+            margin: 0;
+            background-image: none !important;
+            background: color(green_2);
+        }
+    }
+    &__responsiveimg {
+        display: none;
+        @include mq-max($sm) {
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-position: 60% 50%;
+            background-size: rem(1000) rem(397);
+            background-repeat: no-repeat;
+        }
+        @include mq-max(667px){
+            background-size: rem(1000) rem(357);
+        }
+        @include mq-max($xs) {
+            background-size: rem(700) rem(397);
+        }
+        @include mq-max($xxs){
+            background-position: 50% 50%;
+        }
+    }
+    &__wrap {
+        box-shadow: 0px 2px rem(4) rgba(0, 0, 0, 0.2);
+        position: relative;
+        width: calc(82% - 17.5rem);
+        overflow: hidden;
+        .overlay {
+            position: absolute;
+            width: 96%;
+            height: 25%;
+            bottom: 4%;
+            left: 2%;
+            background: rgba(245, 240, 240, .9);
+            padding: 2rem;
+            &__heading {
+                font-size: rem(20);
+                color: color(red);
+                @include mq-max($xxs){
+                    font-size: rem(14);
+                }
+            }
+            @include mq-max($md) {
+                bottom: 8%;
+            }
+            @include mq-max($xxs){
+                bottom: 15%;
+                background: rgba(245, 240, 240, .8);
+            }
+        }
+        @include mq-max($md) {
+            width: 80%;
+            box-shadow: none;
+        }
+        @include mq-max($sm) {
+            text-align: center;
+            height: 22rem;
+            width: 100%;
+            order: 1;
+        }
+        @include mq-max(568px){
+            height: 19rem;
+        }
+        @include mq-max(414px){
+            height: 14rem;
+        }
+        @include mq-max(320px){
+            height: 12rem;
+        }
+    }
+    &__links {
+        background: white;
+        margin-right: rem(15);
+        margin-top: rem(-15);
+        width: rem(250);
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px rem(4) rgba(0, 0, 0, 0.2);
+
+        @include mq-max($md) {
+            flex-direction: row;
+            width: 100%;
+            margin: 0;
+            height: rem(100);
+        }
+        @include mq-max($sm) {
+            width: 100%;
+            order: 2;
+            align-content: center;
+        }
+        @include mq-max($xs) {
+            flex-wrap: wrap;
+            height: auto;
+        }
+        @include mq-max($xxs){
+            margin-top: rem(-20);
+        }
+    }
+    &__link {
+        padding: 0;
+        border-bottom: rem(4) solid color(gray_e);
+        flex: 1;
+
+        a {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-left: rem(50);
+            width: 100%;
+            height: 100%;
+            color: color(gray_9);
+            @include mq-min($sm) {
+                transition: all .2s;
+                &:hover:not(.intro__social) {
+                    color: color(red);
+                    background: color(gray_e);
+                }
+            }
+            @include mq-max($lmd){
+                padding-left: rem(30);
+            }
+            @include mq-max($md) {
+                justify-content: center;
+                padding: 0;
+                border-left: 1px solid #efeeec;
+            }
+            @include mq-max($sm){
+                flex-direction: column-reverse;
+                justify-content: space-evenly;
+            }
+            @include mq-max($xsm){
+                padding: rem(10);
+                text-align: center;
+            }
+            @include mq-max($xs) {
+                border: none;
+                padding-top: rem(10);
+            }
+        }
+        &:last-of-type {
+            border-bottom: none;
+            flex: 2;
+            background-position: center;
+            background-size: cover;
+            a {
+                font-size: rem(14);
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                padding: 0 0 rem(10) 0;
+                @include mq-min($sm) {
+                    transition: all .20s;
+                    &:hover {
+                        color: color(red);
+                    }
+                }
+                @include mq-max($md) {
+                    font-size: rem(12);
+                    padding: rem(7);
+                    text-align: center;
+                    border-left: none;
+                    flex-direction: row;
+                }
+                @include mq-max($xsm){
+                    padding: rem(10);
+                    text-align: center;
+                }
+                @include mq-max($sm) {
+                    font-size: rem(11);
+                    margin: 0;
+                }
+            }
+            @include mq-max($md) {
+                flex: 1;
+            }
+            @include mq-max($sm) {
+                text-align: center;
+            }
+            @include mq-max($xs){
+                height: rem(100);
+                background-position: 100% 40%;
+            }
+        }
+        &:nth-last-of-type(2) {
+            border-bottom: none;
+        }
+        @include mq-max($md) {
+            font-size: .8rem;
+        }
+        @include mq-max($md) {
+            border-bottom: none;
+        }
+        @include mq-max($sm) {
+            flex-direction: column-reverse;
+            padding: 0;
+            justify-content: space-around;
+            align-items: center;
+        }
+        @include mq-max($xs) {
+            flex-basis: 50%;
+            &:not(.intro__social){
+                height: rem(80);
+            }
+        }
+    }
+    &__icon {
+        width: rem(25);
+        height: auto;
+        margin-right: rem(20);
+        @include mq-max($sm){
+            margin: 0;
+        }
+    }
+    @include mq-max($md) {
+        flex-wrap: wrap;
+        height: auto;
+    }
+}
+
+.slider {
+    direction: ltr;
+    &__slide {  
+        text-align: center;
+        color: color(red);
+        width: 100%;
+        height: rem(450);
+        position: relative;
+        overflow: hidden;
+        img {
+            width: 100% !important;
+            @include mq-max($xs){
+                min-height: auto;
+            }
+        }
+    }
+    &__heading {
+        color: black;
+        font-size: rem(30);
+        opacity: 0;
+        @include mq-max($xs){
+            display: none;
+        }
+    }
+    &__controls {
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        &__dots {
+            display: flex;
+            justify-content: space-between;
+            li {
+                margin: rem(5);
+            }
+            .dot {
+                display: block;
+                width: rem(6);
+                height: rem(6);
+                background-color: color(gray_8);
+                border-radius: 50%;
+                cursor: pointer;
+                transition: all .15s;
+                .string {
+                    display: none;
+                }
+            } 
+            .slick-active .dot {
+                background-color: color(red);
+            } 
+            @include mq-min($sm) {
+                .dot:hover,
+                .custom-dots .slick-active .dot:hover {
+                    background-color: color(red);
+                }
+            }
+        }
+    }
+}

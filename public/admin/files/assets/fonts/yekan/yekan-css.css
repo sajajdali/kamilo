@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'wyekan';
+    src:    url('Yekan.eot?fuctng');
+    src:    url('Yekan.eot?fuctng#iefix') format('embedded-opentype'),
+    url('Yekan.ttf?fuctng') format('truetype'),
+    url('Yekan.woff?fuctng') format('woff'),
+    url('Yekan.svg?fuctng#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

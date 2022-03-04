@@ -1,0 +1,326 @@
+.article {
+    &__nav {
+        min-width: 12.25rem;
+        ul {
+            @include mq-max($md) {
+                display: flex;
+                width: 100%;
+                justify-content: space-around;
+            }
+            @include mq-max($lsm) {
+                justify-content: space-evenly;
+                box-shadow: 0 2px rem(4) rgba(0, 0, 0, 0.2);
+            }
+            @include mq-max($sm) {
+                padding-bottom: rem(10);
+            }
+        }
+        ul li {
+            border-bottom: 2px solid color(gray_f);
+            @include mq-max($md) {
+                display: flex;
+                align-items: center;
+                border-bottom: none;
+            }
+            @include mq-max($sm) {
+                align-items: flex-start;
+            }
+        }
+        ul li a {
+            font-size: rem(14);
+            color: color(gray_6);
+
+            img {
+                width: rem(25);
+                height: auto;
+                margin-left: rem(10);
+                @include mq-max($sm) {
+                    margin: 1.25rem;
+                }
+            }
+            &::after {
+                content: "";
+                border: solid color(gray_6);
+                border-width: 0 2px 2px 0;
+                padding: rem(5);
+                transform: translateY(-50%) rotate(135deg);
+                position: absolute;
+                top: 50%;
+                left: 10%;
+                @include mq-max($md) {
+                    top: 90%;
+                    left: 50%;
+                    transform: translateX(-50%) rotate(45deg);
+                }
+                @include mq-max($lsm) {
+                    top: 70%;
+                }
+                @include mq-max($sm) {
+                    display: none;
+                }
+            }
+            @at-root .article__nav ul li.active a{
+                color: color(red);
+                &::after {
+                    border-color: color(red);
+                }
+            }
+            @include mq-max($md) {
+                display: flex;
+            }
+            @include mq-min($sm) {
+                transition: all .2s;
+                &:hover {
+                    color: color(red);
+                    &::after {
+                        border-color: color(red);
+                    }
+                }
+            }
+            @include mq-max($sm) {
+                padding: 0;
+                flex-direction: column;
+            }
+            @include mq-max($xs) {
+                font-size: rem(13);
+            }
+        }
+        @include mq-max($md) {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        @include mq-max($lsm) {
+            flex-direction: column;
+        }
+    }
+    &__title {
+        @extend %title_2;
+        position: relative;
+        color: color(gray_6);
+        h3 {
+            padding-right: rem(10);
+        }
+        img {
+            width: rem(25);
+            height: auto;
+        }
+        &::after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: rem(25) solid transparent;
+            border-right: rem(25) solid transparent;
+            border-bottom: rem(25) solid white;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            @include mq-max($md) {
+                border-top: rem(25) solid transparent;
+                border-bottom: rem(25) solid transparent;
+                border-left: rem(25) solid white;
+                bottom: 50%;
+                left: 0;
+                transform: translateY(50%);
+            }
+            @include mq-max($lsm) {
+                bottom: 0;
+                left: 50%;
+                transform: rotate(-90deg) translateY(-50%);
+            }
+        }
+        @include mq-max($md) {
+            width: 20%;
+        }
+        @include mq-max($lsm) {
+            width: 100%;
+        }
+    }
+    .card__top {
+        padding: rem(6);
+        padding-bottom: 0;
+    }
+    .tab-pane {
+        @include mq-min($sm) {
+            &:hover .card__wrapper:not(:hover) {
+                filter: grayscale(1);
+                opacity: 0.9;
+            }
+        }
+        &.active {}
+    }
+    &__ad {
+        text-align: center;
+        color: color(gray_6c);
+        display: flex;
+        flex-direction: column;
+        &--fixedHeight {
+            height: rem(660);
+            @include mq-max($md) {
+                height: auto;
+            }
+        }
+        &--flexend {
+            justify-content: flex-end;
+            padding-bottom: rem(5);
+            background-repeat: no-repeat;
+            background-size: 15%;
+            background-position: 50% 20%;
+            font-size: rem(14);
+            margin-bottom: 5%;
+            box-shadow: 0 2px rem(4) rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            @include mq-min($sm) {
+                transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1);
+                &:hover {
+                    color: color(red);
+                    box-shadow: 0 2px rem(4) rgba(0, 0, 0, 0.5);
+                }
+            }
+            @include mq-max($md) {
+                margin: 0;
+                justify-content: center;
+                align-items: flex-end;
+                background-size: 10%;
+            }
+            @include mq-max(667px) {
+                background-size: 15%;
+            }
+            @include mq-max($xs) {
+                background-size: 25%;
+            }
+        }
+        &--gain {
+            background-color: color(lightpink);
+            flex-grow: 1;
+            @include mq-max($md) {
+                width: 40%;
+                height: rem(100);
+            }
+        }
+        &--loss {
+            background-color: color(lightpurple);
+            flex-grow: 1;
+            @include mq-max($md) {
+                width: 40%;
+                margin-right: rem(10);
+                height: rem(100);
+            }
+        }
+        &--athlete {
+            background-size: 18%;
+            flex-grow: 1;
+            background-color: color(green_c8);
+            @include mq-max($md) {
+                width: 100%;
+                height: rem(100);
+                background-size: 7%;
+                margin: rem(10) 0;
+            }
+            @include mq-max(667px) {
+                background-size: 10%;
+            }
+            @include mq-max($xs) {
+                background-size: 18%;
+            }
+        }
+        @include mq-max($md) {
+            flex-direction: row;
+            flex-wrap: wrap;
+            background-position: 50% 20%;
+        }
+    }
+    &__bmi {
+        padding: 10% 1%;
+        background-color: color(yellow);
+        color: color(darkblue);
+        background-position: 50% 30%;
+        background-size: 60%;
+        background-repeat: no-repeat;
+        flex-grow: 5;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 0 2px rem(4) rgba(0, 0, 0, 0.2);
+        .bmi-title {
+            font-size: rem(20);
+            @include mq-max($md) {
+                margin-right: rem(20);
+            }
+            @include mq-max($xs) {
+                margin-bottom: rem(50);
+            }
+        }
+        form {
+            @include mq-max($xs) {
+                margin-top: rem(40);
+            }
+        }
+        input {
+            margin: rem(10) 0;
+            border: 2px solid color(darkblue);
+            border-radius: rem(30);
+            background: transparent;
+            width: 50%;
+            background-repeat: no-repeat;
+            background-size: 15%;
+            background-position: 90%;
+            text-align: left;
+            padding: 0 20% 0 10%;
+            @include mq-max($md) {
+                width: 40%;
+            }
+            @include mq-max(667px) {
+                margin: rem(10) 0;
+                height: rem(25);
+            }
+            @include mq-max(568px) {
+                margin: rem(5) 0;
+                height: rem(30);
+            }
+            @include mq-max($xs) {
+                height: rem(30);
+                padding: 0 15% 0 5%;
+            }
+        }
+        button {
+            background: color(red);
+            border-radius: rem(30);
+            color: white;
+            padding: rem(5) rem(60);
+            @include mq-max(775px) {
+                padding: 2px rem(60);
+            }
+        }
+        @include mq-max($md) {
+            height: rem(100);
+            widows: 100%;
+            background-size: 15%;
+            flex-direction: row;
+            align-items: center;
+        }
+        @include mq-max(775px) {
+            height: rem(150);
+        }
+        @include mq-max($xs) {
+            height: rem(300);
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background-size: 30%;
+        }
+    }
+    &__slider{        
+        overflow: hidden;    
+        direction: ltr;    
+        .card__wrapper{
+            direction: rtl;
+        }
+    }
+    @include mq-max($md) {
+        flex-direction: column;
+    }
+}
+
+.active {}

@@ -1,0 +1,118 @@
+.section {
+  padding: rem(60) 0;
+  background: color(gray_e);
+  &--nopadd {
+    padding: 0;
+  }
+  &--gradient {
+    @include mq-min(940px){
+      background: linear-gradient(to left, #efeeec 0%, #efeeec 50%, #939598 50%, #e9e8e7 50%, #e9e8e7 100%);
+    }    
+  }
+  &--lowpaddtop {
+    padding-top: rem(20);
+  }
+  &--lowpadd {
+    padding: rem(30) 0;
+  }
+  &--news {
+    padding-top: rem(20);
+    padding-bottom: rem(10);
+  }
+  &--intro {
+    padding-top: rem(120);
+    padding-bottom: rem(20);
+  }
+  &-wrap {
+    position: relative;
+    margin: 0 auto;
+    max-width: width(lg);
+    padding: 0 15px;
+    &--nopad {
+      padding: 0;
+    }
+    &--introwrap {
+      @include mq-max($xs) {
+        padding: 0;
+      }
+    }
+  }
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: rem(30);
+  }
+  &-title {
+    width: rem(250);
+    display: flex;
+    align-items: center;
+    padding-left: rem(15);
+    svg {
+      margin-left: rem(10);
+      fill: color(gray_6);
+    }
+    h3 {
+      @extend %title_1;
+      color: color(gray_6);
+    }
+    &--heroes {
+      h3 {
+        @extend %title_1;
+        color: white;
+      }
+    }
+  }
+  &-caption {
+    color: color(red);
+    @extend %title_5;
+    padding-bottom: rem(20);
+    margin-bottom: rem(40);
+    position: relative;
+    &--gray {
+      color: color(gray_7);
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      max-width: rem(400);
+      height: 1px;
+      background: color(red);
+      @at-root .section-caption--gray::after {
+        background: color(gray_7);
+      }
+    }
+  }
+  &-inner {
+    background: #fff;
+    padding: rem(50);
+    margin-bottom: rem(30);
+    &--nomarg {
+      margin-bottom: 0;
+    }
+    @include mq_max($sm) {
+      padding: 30px 15px;
+    }
+  }
+  &-btn {
+    width: rem(250);
+    text-align: left;
+    padding-right: rem(15);
+  }
+  &-line {
+    width: 100%;
+    margin: 0 auto;
+    height: 2px;
+    background: #fff;
+    @include mq_max($xs) {
+      display: none;
+    }
+  }
+  &-img {
+    width: 100%;
+    height: auto;
+  }
+}

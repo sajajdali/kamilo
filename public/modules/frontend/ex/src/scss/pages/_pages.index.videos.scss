@@ -1,0 +1,74 @@
+.videos {
+    position: relative;
+    display: block;
+    max-width: $lg;
+    margin: auto;
+    .card {
+        margin: 0 rem(13);
+        @include mq-max($sm) {
+            margin: 0 0;
+        }
+        @include mq-max($xxs) {
+            max-width: rem(250);
+            &__info {
+                font-size: rem(10);
+            }
+            &__date img {
+                margin: 0 rem(15);
+            }
+        }
+        @include mq-max(320px) {
+            &__bot {
+                height: 50%;
+            }
+        }
+    }
+    &__slider {
+        direction: rtl;
+        .slick-list {
+            padding: rem(10) rem(50) !important;
+        }
+    }
+    .slick-slide {
+        div {
+            @include mq-max($sm) {
+                text-align: center;
+            }
+        }
+        @include mq-max($xxs) {
+            padding: 0 rem(10);
+        }
+    }
+    &__btn {
+        background: color(gray_ac);
+        width: rem(50);
+        height: rem(180);
+        position: absolute;
+        transform: translateY(-50%);
+        z-index: 10;
+        cursor: pointer;
+        &--right {
+            top: 50%;
+            right: 0;
+        }
+        &--left {
+            top: 50%;
+            left: 0;
+        }
+        .arrow {
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            padding: rem(10);
+            position: absolute;
+            top: 50%;
+            &--right {
+                transform: translateY(-50%) rotate(-45deg);
+                right: 30%;
+            }
+            &--left {
+                transform: translateY(-50%) rotate(135deg);
+                left: 30%;
+            }
+        }
+    }
+}

@@ -1,0 +1,132 @@
+.advertisement {
+    &__ad {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        position: relative;
+        color: white;
+        display: flex;
+        align-items: center;
+        img {
+            height: auto;
+            width: 100%;
+        }
+        .overlay {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background: rgba(220, 74, 39, .9);
+            padding: rem(10);
+            &--brownback {
+                background: rgba(98, 80, 59, .9);
+            }
+        }
+        @include mq-min($sm) {
+            transition: all .2s;
+            &:hover {
+                box-shadow: 0 2px rem(4) rgba(0, 0, 0, 0.5);
+            }
+        }
+    }
+    &__videos {
+        width: 100%;
+        margin-bottom: 0;
+        .vid-header {
+            text-align: center;
+            background: white;
+            position: relative;
+            padding: rem(10);
+            &::after {
+                content: "";
+                width: 0;
+                height: 0;
+                border-left: rem(20) solid transparent;
+                border-right: rem(20) solid transparent;
+                border-bottom: rem(20) solid white;
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                z-index: 1;
+                transform: translateX(-50%) rotate(180deg);
+            }
+            @include mq-max($sm) {
+                padding: rem(15);
+            }
+        }
+        .adwrapslider__controls {
+            background: color(gray_e);
+            padding: rem(20);
+            .slider__controls__dots {
+                justify-content: center;
+                li {
+                    margin: rem(1);
+                }
+                .dot {
+                    width: rem(12);
+                    height: rem(12);
+                }
+            }
+            @include mq-max($sm) {
+                background: white;
+            }
+        }
+        .slick-dotted.slick-slider {
+            margin-bottom: 0;
+        }
+    }
+    &__slider {
+        overflow: hidden;
+        direction: ltr;
+        .card__imgwrap {
+            max-height: rem(150);
+            max-width: none;
+        }
+        .card__overlay {
+            align-items: flex-end;
+            flex-direction: row-reverse;
+            padding-bottom: rem(10);
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .card__playicon {
+            .circle {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                .triangle {
+                    margin-top: rem(0);
+                }
+            }
+        }
+        .card__bot {
+            background: white;
+        }
+        .card__info {
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            font-size: rem(11);
+            padding: rem(10) rem(20);
+            @include mq-max($md) {
+                flex-direction: column;
+            }
+            @include mq-max($sm) {
+                flex-direction: row-reverse;
+            }
+        }
+        .card__title {
+            padding: rem(5);
+            margin: rem(10) 0 0 0;
+        }
+    }    
+    .card_vid {
+        @include mq-max($sm) {
+            max-width: none;
+        }
+    }
+    .nomargin{
+        margin-bottom: 0;
+    }
+}

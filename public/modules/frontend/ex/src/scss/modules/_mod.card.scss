@@ -1,0 +1,230 @@
+.card {
+  display: block;
+  box-shadow: 0 2px rem(4) rgba(0, 0, 0, 0.1);
+  color: color(gray_a);
+  background: white;
+
+  @include mq-min($sm) {
+    transition: all .2s;
+
+    &:hover {
+
+      box-shadow: 0 2px rem(14) rgba(0, 0, 0, 0.5);
+      color: color(red);
+    }
+  }
+  &_vid{
+    max-width: rem(270);
+  }
+  &--gallery {
+    max-width: none;
+    position: relative;
+
+    &::after{
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      opacity: 0;
+      z-index: 1;
+      transition: .15s opacity linear;
+
+      @at-root .card--gallery:hover::after{
+        opacity: .5;
+      }
+    }
+  }
+  &__wrapper {
+    border: 1px solid color(gray_e);
+
+    @include mq-min($sm) {
+      transition: all .2s;
+      &:hover {
+        box-shadow: 0 2px rem(14) rgba(0, 0, 0, 0.3);
+        .card__title {
+          color: color(red);
+        }
+        .card__txt {
+          color: color(gray_a);
+        }
+      }
+    }
+    @include mq-max($sm) {
+      display: flex;
+      justify-content: center;
+      border: none;
+    }
+  }
+  &__top {
+    position: relative;
+  }
+  &__imgwrap {
+    line-height: 0;
+    overflow: hidden;
+
+    .card--gallery &{
+      max-height: rem(280);
+    }
+
+    @include mq-max($sm) {
+      max-height: rem(175);
+    }
+  }
+  &__image {
+    width: 100%;
+    height: auto;
+  }
+  &__overlay {
+    padding: 0 rem(20);
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    width: 100%;
+    min-height: rem(50);
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+  }
+  &__playicon {
+
+    .card--gallery & {
+      @include centered(true, true);
+      opacity: 0;
+      z-index: 2;
+      transition: .15s opacity linear;
+    }
+    .card--gallery:hover &{
+      opacity: 1;
+    }
+    .circle {
+      width: rem(40);
+      height: rem(40);
+      border: 2px solid white;
+      border-radius: 50%;
+      transition: .15s border linear;
+
+      .card--gallery:hover &{
+        border-color: color(red);
+      }
+    }
+    .triangle {
+      position: relative;
+      margin-top: rem(17);
+      margin-right: rem(14);
+      width: rem(20);
+      transform: rotate(90deg);
+
+      div {
+        width: rem(20);
+        height: 2px;
+        background: white;
+        transition: .15s background linear;
+
+        .card--gallery:hover &{
+          background: color(red);
+        }
+
+        &::before {
+          content: " ";
+          display: block;
+          width: rem(20);
+          height: 2px;
+          background: white;
+          transform: rotate(56deg);
+          position: absolute;
+          top: rem(-8);
+          right: rem(-5);
+          transition: .15s background linear;
+
+          .card--gallery:hover &{
+            background: color(red);
+          }
+        }
+        &:after {
+          content: " ";
+          display: block;
+          width: rem(20);
+          height: rem(2);
+          background: white;
+          transform: rotate(-56deg);
+          position: absolute;
+          top: rem(-8);
+          left: rem(-5);
+          transition: .15s background linear;
+
+          .card--gallery:hover &{
+            background: color(red);
+          }
+        }
+      }
+    }
+  }
+  &__time {
+    color: white;
+  }
+  &__bot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__title {
+    text-align: center;
+    margin: rem(20) 0;
+    &--black {
+      color: black;
+      font-size: rem(14);
+      margin: rem(5);
+    }
+  }
+  &__txt {
+    font-size: rem(13);
+    text-align: right;
+    margin: rem(5) rem(15) rem(5);
+  }
+  &__info {
+    padding: rem(10) rem(15);
+    color: color(gray_b);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: rem(14);
+    &--smallfont {
+      font-size: rem(11);
+    }
+  }
+  &__name {
+    display: flex;
+    align-items: center;
+    p {
+      margin-right: rem(5);
+    }
+  }
+  &__userimage-wrap {
+    width: rem(30);
+    height: rem(30);
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  &__user-img {
+    width: 100%;
+    height: auto;
+  }
+  &__date {
+    display: flex;
+    span {
+      display: flex;
+      align-items: center;
+      padding-left: rem(5);
+    }
+    img {
+      width: rem(15);
+      height: auto;
+    }
+  }
+
+}

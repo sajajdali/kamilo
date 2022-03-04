@@ -1,0 +1,122 @@
+.footer {
+  background: color(gray_2);
+  color: color(gray_b1);
+  padding: rem(50);
+  &__fastaccess {
+    width: 100%;
+    hr {
+      border: 0;
+      height: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      @include mq-max($xs){
+        margin-top: rem(25);
+      }
+    }
+    @include mq-max($xs) {
+      text-align: center;
+      p{
+        margin-bottom: rem(-15);
+      }
+    }
+  }
+  &__item {
+    position: relative;
+    display: block;
+    color: color(gray_b1);
+    margin-top: rem(10);
+    margin-right: rem(20);
+    &:hover{
+      color: color(red);
+    }
+    &::before {
+      content: "";
+      width: rem(4);
+      height: rem(4);
+      border-radius: 50%;
+      background: color(gray_b1);
+      position: absolute;
+      top: 50%;
+      right: -20%;
+      transform: translateY(-50%);
+      @include mq-max($xs) {
+        opacity: 0;
+      }
+    }
+    @include mq-max($xs) {
+      font-size: rem(14);
+      margin-top: rem(25);
+    }
+  }
+  &__social {
+    hr {
+      border: 0;
+      height: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    @include mq-max($xs) {
+      text-align: center;
+    }
+  }
+  &__icon {
+    padding-left: rem(20);
+    display: flex;
+    justify-content: flex-end;
+    svg {
+      margin: 0 rem(10);
+    }
+    @include mq-max($xs) {
+      justify-content: center;
+    }
+  }
+  &__menu {
+    padding-left: rem(50);
+    display: flex;
+    justify-content: space-between;
+    @include mq-max($xs) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-left: 0;
+    }
+  }
+  &__banks {
+    display: flex;
+    justify-content: center;
+  }
+  &__bank1 {
+    @include mq-max($xs) {
+      order: -1;
+    }
+  }
+  &__bank2 {
+    margin-left: rem(50);
+    @include mq-max($xs) {
+      order: 1;
+      margin-left: 0;
+    }
+  }
+  &__copy {
+    margin-top: rem(10);
+    font-size: rem(12);
+  }
+  &__alert {
+    margin-top: rem(20);
+    text-align: center;
+    &--hide {
+      @include mq-max($xs) {
+        font-size: rem(12);
+      }
+    }
+  }
+  &__telegram,
+  &__instagram,
+  &__aparat {
+    fill: color(gray_b1);
+    cursor: pointer;
+    &:hover{
+      fill: color(red);
+    }
+  }
+}

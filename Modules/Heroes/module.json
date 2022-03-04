@@ -1,0 +1,16 @@
+{
+    "name": "Heroes",
+    "alias": "heroes",
+    "description": "",
+    "keywords": [],
+    "active": 0,
+    "order": 0,
+    "providers": [
+        "Modules\\Heroes\\Providers\\HeroesServiceProvider"
+    ],
+    "aliases": [],
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}

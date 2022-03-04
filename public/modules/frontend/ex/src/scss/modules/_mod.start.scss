@@ -1,0 +1,46 @@
+.start{
+  @extend %full-bg;
+  text-align: center;
+  background: #fff;
+
+  &-header{
+    @extend %title_2;
+    color: color(blue_0);
+    padding: rem(40) 15px;
+    background: rgba(color(yellow),.7);
+    position: relative;
+    margin-bottom: rem(60);
+
+    &::after{
+      content: '';
+      position: absolute;
+      top:100%;
+      right: 0;
+      left: 0;
+      margin:auto;
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+
+      border-top: 50px solid rgba(color(yellow),.7);
+    }
+  }
+  &-icons{
+
+    img{
+      display: inline-block;
+      margin: rem(15) rem(30);
+      height: rem(170);
+      width: auto;
+
+      @include mq_max($sm){
+        margin: rem(15);
+        height: rem(120);
+      }
+    }
+  }
+  &-btn{
+    margin: rem(70) 0 rem(60);
+  }
+}

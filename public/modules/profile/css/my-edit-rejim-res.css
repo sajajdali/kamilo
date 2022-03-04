@@ -1,0 +1,99 @@
+@media only screen and (min-width:0px) and (max-width:1214px) {
+    #bmi-chart {
+  direction: ltr;
+  margin-top: -33px;
+  position: relative;
+}
+.panel_bmi img {
+  margin-top: -24px;
+}
+.bio-graph-heading .state-overview .col-lg-3.col-sm-6:first-child {
+  padding-right: 15px;
+}
+.bio-graph-heading .state-overview .col-lg-3.col-sm-6 {
+  padding-bottom: 18px;
+}
+.bio-row {
+  width: 100%;
+}
+.bio-row p span {
+  display: inline-block;
+  width: 139px;
+}
+.bio-row.bio-row-full > p {
+  text-align: center;
+}
+.bio-row.bio-row-full span {
+  width: 100%;
+}
+.left_in_phone{
+    float: left !important;
+}
+.notify-row, .search, .dont-show, .inbox-head .sr-input, .inbox-head .sr-btn {
+  display: inline-block;
+}
+.dropdown-menu.extended {
+  margin-right: -97px !important;
+}
+.notify-arrow {
+  right: 102px;
+}
+ul.summary-list > li {
+  border-bottom: 1px solid #e4e4e4;
+  border-left: medium none !important;
+  display: inline-block;
+  padding: 14px 0;
+  text-align: center;
+  width: 100%;
+}
+table.table-striped tbody tr td {
+  line-height: 25px;
+}
+.notify-row {
+  margin-right: 9px;
+}
+.weight_change div p {
+  direction: rtl;
+  line-height: 23px;
+  margin-top: 3px;
+  padding: 0 9px 39px;
+  text-align: justify;
+}
+.bound-s {
+  border-color: #d3a3a3 !important;
+  margin-bottom: 15px;
+  width: 100%;
+  margin-top: 11px;
+}
+#rs2-preg-standard .tab-pane.active .row.rs2-main2 .col-md-10.col-md-offset-1 table .food-list-title {
+  clear: right;
+  float: right;
+  width: 100% !important;
+}
+#rs2-preg-standard .tab-pane.active .row.rs2-main2 .col-md-10.col-md-offset-1 table td {
+  clear: right;
+  float: right;
+  width: 100% !important;
+}
+.table_title {
+  border-bottom: 1px solid;
+  border-left: none;
+}
+.rejim_des .col-lg-12 {
+  display: block;
+}
+}
+@media only screen and (min-width:0px) and (max-width:1214px) {
+    .table_title {
+  border-bottom: 1px solid;
+  border-left: none;
+}
+.rejim_des .col-lg-12 {
+  display: block;
+}
+}
+@media only screen and (min-width:0px) and (max-width:650px) {
+.width_50{
+    width: 100% !important;
+}
+}

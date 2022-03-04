@@ -1,0 +1,33 @@
+.media-upload-buttons img{
+    max-width: 200px;
+    min-height: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 20px -5px rgba(0, 0, 0, 0.36);
+}
+
+.media-upload-buttons p{
+    margin: 0;
+    box-shadow: 0 0 20px -5px rgba(0, 0, 0, 0.36);
+    display: inline-block;
+    line-height: 0.8;
+    color: rgb(66, 165, 245);
+}
+
+.media-upload-buttons .button{
+    border: none;
+    background: #42A5F5;
+    color: #fff;
+    padding: 10px 20px;
+    line-height: .8;
+    font-size: 15px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 0.19);
+}
+
+.media-upload-buttons .delete-current-media{
+    background: #ff5252;
+}
+
+.media-upload-buttons .this-buttons{
+    padding : 10px 0;
+}

@@ -1,0 +1,106 @@
+.pagination {
+    direction: ltr;
+    padding: rem(10) 0;
+    margin-top: rem(30);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .goto {
+        position: relative;
+        transition: all .2s;
+        width: rem(51);
+        height: rem(42);
+        background-color: color(gray_e);
+        color: color(gray_9);
+        margin: 0 rem(5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include mq-min($sm){
+            &:hover {
+                background: color(red);
+                color: white;
+            }
+        }
+        &--active {
+            background: white;
+            border: 1px solid color(gray_e);
+        }
+        &--start,
+        &--before,
+        &--after,
+        &--end {
+            &::before,
+            &::after {
+                content: "";
+                border-radius: 2px;
+                border: solid color(gray_9);
+                border-width: 0 2px 2px 0;
+                padding: rem(7);
+                transform: rotate(135deg);
+                margin: rem(-3);
+                @include mq-max(725px){
+                    padding: rem(4);
+                }
+
+                @at-root .pagination .goto--start:hover,
+                        .pagination .goto--before:hover,
+                        .pagination .goto--after:hover,
+                        .pagination .goto--end:hover{
+                            &::before,
+                            &::after{
+                                border-color: white;
+                            }
+                }
+            }
+        }
+        &--start,
+        &--before{
+            padding-left: rem(5);
+        }
+        &--after,
+        &--end{
+            padding-right: rem(5);
+        }
+        &--before{
+            &::after{
+                display: none;
+            }
+        }
+        &--after{
+            &::before{
+                transform: rotate(-45deg);
+            }
+            &::after{
+                display: none;
+            }
+        }
+        &--end{
+            &::before,
+            &::after{
+                transform: rotate(-45deg);
+            }
+        }
+        @include mq-max(915px){
+            width: rem(41);
+            height: rem(32);
+            font-size: rem(13);
+        }
+        @include mq-max(625px){
+            width: rem(25);
+            height: rem(20);
+        }
+        @include mq-max(415px){
+            margin: 0 rem(3);
+        }
+
+        @include mq-max(375px){
+            width: rem(20);
+            height: rem(15);
+            margin: 0 rem(2);
+        }
+    }
+    ul li {
+        display: inline-block;
+    }
+}

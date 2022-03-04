@@ -1,0 +1,67 @@
+.heroes {
+    padding: rem(40);
+    height: auto;
+    background: black;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    position: relative;
+    .btn{
+        @include mq-max(320px){
+            padding: rem(15);
+        }
+    }
+    &__header {
+        @include mq-max($xs) {
+            padding: 0 rem(15);
+        }
+    }
+    &__title {
+        color: white;
+    }
+    &__wrapslide {
+        position: relative;
+    }
+    &__slider {
+        display: block;
+        margin: auto;
+        width: 85%;
+        @include mq-max($xs) {
+            width: 100%;
+        }
+    }
+    &__image {
+        display: block;
+        margin: auto;
+        width: 85%;
+        height: auto;
+        @include mq-max($xs) {
+            width: 90%;
+        }
+    }
+    &__arrow {
+        display: block;
+        border: solid white;
+        border-width: 0 rem(3) rem(3) 0;
+        padding: rem(10);
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        &--right {
+            transform: rotate(-45deg);
+            right: rem(24);
+        }
+        &--left {
+            transform: rotate(135deg);
+            left: rem(24);
+        }
+        @include mq-max($xs) {
+            opacity: 0;
+        }
+    }
+    @include mq-max($xs) {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

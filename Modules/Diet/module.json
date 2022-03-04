@@ -1,0 +1,17 @@
+{
+    "name": "Diet",
+    "alias": "diet",
+    "description": "",
+    "keywords": [],
+    "active": 0,
+    "order": 0,
+    "providers": [
+        "Modules\\Diet\\Providers\\DietServiceProvider"
+    ],
+    "aliases": [],
+    "files": [
+        "start.php",
+        "Helpers\/DietHelper.php"
+    ],
+    "requires": []
+}

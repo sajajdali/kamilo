@@ -1,0 +1,58 @@
+.icon {
+  display: inline-block;
+  overflow: hidden;
+  width: 100px;
+  height: 100px;
+  &--video {
+    width: rem(45);
+    height: rem(45);
+  }
+  &--newspaper {
+    width: rem(35);
+    height: rem(35);
+  }
+  &--social {
+    width: rem(30);
+    height: rem(30);
+  }
+  &--bank {
+    width: rem(100);
+    height: rem(100);
+  }
+  &--heroes {
+    width: rem(35);
+    height: rem(35);
+  }
+  &--heart {
+    width: rem(25);
+    margin-left: rem(10);
+    @include mq-max($sm){
+      margin-left: 0;
+    }
+  }
+  &--search{
+    width: rem(20);
+    height: rem(20);
+  }
+  &--user{
+    width: rem(20);
+    height: rem(20);
+  }
+  &--family{
+    width: rem(25);
+    fill: color(gray_63);
+    margin-left: rem(10);
+    @include mq-max($sm){
+      margin-left: 0;
+    }
+  }
+  &--back{
+    border: rem(5) solid red;
+    width: 100%;
+    height: 100%;
+  }
+  &--clock{
+    width: rem(18);
+    height: rem(18);
+  }
+}

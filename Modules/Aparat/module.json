@@ -1,0 +1,16 @@
+{
+    "name": "Aparat",
+    "alias": "aparat",
+    "description": "",
+    "keywords": [],
+    "active": 0,
+    "order": 0,
+    "providers": [
+        "Modules\\Aparat\\Providers\\AparatServiceProvider"
+    ],
+    "aliases": [],
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}

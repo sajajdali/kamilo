@@ -1,0 +1,72 @@
+.tab{
+	&-nav{
+		position: relative;
+
+		.tab--scroll &{ /* if scroll-x is needed in tablet/mobile devices */
+			position: relative;
+
+			&::after,
+			&::before{ /* right and left shade when scroll-x is enabaled */
+				content: "";
+				position: absolute;
+				width: 30px;
+				height: 100%;
+				top: 0;
+				background-color: tomato;
+				z-index: 11;
+				pointer-events: none;
+
+				@include mq_max(650px){
+					content: "";
+				}
+			}
+			&::before{
+				right: rem(-25);
+				background: linear-gradient(to left, rgba(#fff, 1) 0%, rgba(#fff, 0) 100%);
+			}
+			&::after{
+				left: rem(-25);
+				background: linear-gradient(to right, rgba(#fff, 1) 0%, rgba(#fff, 0) 100%);
+			}
+		}
+		
+		ul{
+			// @extend %clearfix;
+			.tab--scroll &{
+				white-space: nowrap;
+				padding-top: rem(10); /* bypass overflow-y when hover items */
+				padding-bottom: rem(30);
+
+				.os-scrollbar{
+					z-index: 12;
+				}
+			}
+		}
+		li{}
+		a{
+			position: relative;
+			display: inline-block;
+			color: inherit;
+		}
+		span{
+			display: inline-block;
+			vertical-align: middle;
+		}
+	}
+	&-content{
+		.tab--main &{
+			margin-top: 1.875rem;
+		}
+	}
+	&-pane{
+		display: none;
+		opacity: 0;
+		transition: all 0.3s;
+		
+		&.active{display: block;}
+		&.fade-in{opacity: 1;}
+	}
+	&-select{
+		display: none;
+	}
+}

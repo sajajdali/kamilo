@@ -1,0 +1,17 @@
+{
+    "name": "Support",
+    "alias": "support",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Support\\Providers\\SupportServiceProvider",
+        "Modules\\Support\\Providers\\EventServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}

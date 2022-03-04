@@ -1,0 +1,118 @@
+#tree ul ul .leaf:after{
+    content: '';
+    display: block;
+    margin: auto;
+    position: absolute;
+    width: 40px;
+    height: 1px;
+    border-bottom: 1px dotted #ff9328;
+    top: 0;
+    bottom: 0;
+    right: -49px;
+}
+.ui-widget {
+    font-family: wyekan, Tahoma, Verdana, Arial, sans-serif;
+}
+#tree .daredevel-tree-label{
+    padding-right: 10px;
+}
+#tree input{
+    cursor: pointer;
+}
+#tree li{
+    position: relative;
+    padding-top:10px;
+    padding-bottom:10px;
+    display: block;
+}
+#tree ul ul{
+    position: relative;
+}
+#tree ul ul:after{
+    content: '';
+    position: absolute;
+    top: -1px;
+    right: -11px;
+    width: 1px;
+    height: calc(100% - 18px);
+    border-right: 1px dotted #ff9328;
+}
+#tree ul {
+    padding: 0px 20px;
+    padding-right: 40px;
+    padding-top: 20px;
+    margin-bottom:20px;
+    /*background-color: #fff8eb !important;*/
+}
+.ui-droppable{
+    display: none!important;
+}
+#tree > ul {
+    padding: 20px 50px;
+    position: relative;
+    padding-top: 100px;
+}
+#tree > ul h2{
+    padding: 20px;
+    background-color: #e2e2de;
+    margin: 0;
+    position: absolute;
+    top:0;
+    right: 0;
+    left: 0;
+    margin: auto;
+}
+#tree ul {
+    list-style: none !important;
+}
+.ui-icon, .ui-widget-content .ui-icon{
+    position: absolute;
+    top: 14px;
+    right: -33px;
+    cursor: pointer;
+    text-indent: 0px;
+    background-image: none !important;
+    color: #ff9328;
+    font-size: 22px;
+    overflow: visible;
+    width: auto;
+    height: auto;
+}
+.ui-widget-content ul .ui-icon:after{
+    content: '';
+    display: block;
+    margin: auto;
+    position: absolute;
+    width: 14px;
+    height: 1px;
+    border-bottom: 1px dotted #ff9328;
+    top: 12px;
+    right: -15px;
+}
+.daredevel-tree-label{
+    -webkit-transition:0.3s;
+    transition:0.3s;
+}
+.expanded > .daredevel-tree-label{
+    font-size: 22px;
+}
+.daredevel-tree-label{
+    font-weight: normal !important;
+}
+.ui-widget-content {
+    border: 1px solid #dddddd;
+    background-color: #f9f9f9;
+    color: rgba(39, 216, 206, 0.67);
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.2' fill-rule='evenodd'%3E%3Ccircle cx='2' cy='2' r='2'/%3E%3Ccircle cx='50' cy='50' r='2'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    color: #333333;
+}
+.admin-form label, .admin-form input, .admin-form button, .admin-form select, .admin-form textarea {
+    margin: 0;
+    margin-bottom: 0px;
+    font-size: 14px;
+    font-family: 'wyekan', Arial, Helvetica, sans-serif;
+}
+#treeRow li .daredevel-tree-label{
+    cursor : pointer;
+}

@@ -1,0 +1,458 @@
+/*-----------------------------------
+--== Useful Classes and Variables ==-
+---------------------------------- */
+/*-- Colors --*/
+/*-----------*/
+.Fa {
+    font-family : 'wyekan', arial, sans-serif;
+    text-align  : right;
+    direction   : rtl;
+}
+
+.En {
+    font-family : 'ralewaylight', arial, sans-serif;
+    text-align  : left;
+    direction   : ltr;
+}
+
+.pointer {
+    cursor : pointer;
+}
+
+.disInB {
+    display : inline-block;
+}
+
+.disB {
+    display : block;
+}
+
+.clearFix {
+    clear : both;
+}
+
+.clear-div:after, .clear-div:before {
+    display : table;
+    content : " ";
+    clear   : both;
+}
+
+.textCenter {
+    text-align : center;
+}
+
+.backgroundCover, #main-page {
+    background-repeat       : no-repeat;
+    background-position     : center center;
+    -webkit-background-size : cover;
+    -moz-background-size    : cover;
+    -o-background-size      : cover;
+    -ms-background-size     : cover;
+    background-size         : cover;
+}
+
+/*-- Positions --*/
+.posR {
+    position : relative;
+}
+
+/*-----------------------------------
+---------== General Styles ==--------
+---------------------------------- */
+
+.centered-text {
+    text-align : center;
+}
+
+body {
+    font-family : yekan;
+}
+
+/* =======================================================================
+   =======================================================================
+   =======================================================================
+
+   						          INDEX PAGE
+
+   =======================================================================
+   =======================================================================
+   ======================================================================= */
+
+.portfolio-main {
+    margin-bottom : 20px;
+    background    : rgb(255, 255, 255);
+    border        : 1px solid rgb(224, 224, 224);
+}
+
+.details-box {
+    width : 100%;
+    float : right;
+}
+
+.details-col {
+    width      : 100%;
+    float      : right;
+    padding    : 15px;
+    position   : relative;
+    text-align : center;
+}
+
+.person-image-main {
+    width                   : 120px;
+    height                  : 120px;
+    margin                  : 0 auto;
+    background-repeat       : no-repeat;
+    background-position     : center center;
+    -webkit-background-size : cover;
+    -moz-background-size    : cover;
+    -o-background-size      : cover;
+    -ms-background-size     : cover;
+    background-size         : cover;
+    border-radius           : 50%;
+    border                  : 1px solid #DADADA;
+}
+
+.details-col .edit-profile {
+    position          : absolute;
+    right             : 50%;
+    bottom            : 15px;
+    padding           : 5px;
+    border-radius     : 5px;
+    -ms-transform     : translateX(50%);
+    -webkit-transform : translateX(50%);
+    transform         : translateX(50%);
+    background-color  : #EEEEEE;
+    border            : 1px solid #DADADA;
+    color             : #494949;
+}
+
+.numbers-box-main {
+    width      : 100%;
+    float      : right;
+    text-align : center;
+}
+
+.numbers-box {
+    display : inline-block;
+    margin  : 0 10px;
+    width   : 120px;
+    padding : 20px 0;
+}
+
+.number-holder {
+    line-height   : 80px;
+    font-size     : 25px;
+    color         : #FFFFFF;
+    border-radius : 5px 5px 0 0;
+}
+
+.text-holder {
+    color         : #FFFFFF;
+    padding       : 5px 0;
+    border-radius : 0 0 5px 5px;
+}
+
+.numbers-box.green .number-holder {
+    background-color : #43DE25;
+}
+
+.numbers-box.green .text-holder {
+    background-color : #2DBF10;
+}
+
+.numbers-box.blue .number-holder {
+    background-color : #649AE1;
+}
+
+.numbers-box.blue .text-holder {
+    background-color : #4A89DC;
+}
+
+.numbers-box.orange .number-holder {
+    background-color : #EC6F5A;
+}
+
+.numbers-box.orange .text-holder {
+    background-color : #E9573F;
+}
+
+.quick-links-main {
+
+}
+
+.quick-links {
+    position           : relative;
+    display            : block;
+    border             : 1px solid #D9D9D9;
+    text-align         : left;
+    direction          : rtl;
+    min-height         : 80px;
+    padding            : 15px;
+    margin-bottom      : 20px;
+    -webkit-transition : 0.3s;
+    transition         : 0.3s;
+}
+
+.quick-links:hover {
+    -webkit-box-shadow : 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow    : 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+    box-shadow         : 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+}
+
+.quick-links.blue {
+    background-color : #55BADF;
+}
+
+.quick-links.orange {
+    background-color : #EC6F5A;
+}
+
+.quick-links.perpul {
+    background-color : #A992E2;
+}
+
+.quick-links.yellow {
+    background-color : #F7C65F;
+}
+
+.quick-links img {
+    position : absolute;
+    right    : 0;
+    bottom   : 0;
+    height   : 60px;
+    width    : auto;
+    z-index  : 1;
+}
+
+.quick-links p {
+    position  : relative;
+    z-index   : 2;
+    float     : left;
+    font-size : 17px;
+    color     : #FFFFFF;
+}
+@media screen and (max-width : 1400px) {
+    .quick-links p {
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+    }
+}
+@media screen and (max-width : 1200px) {
+    .quick-links p {
+        font-size: 15px;
+    }
+}
+.quick-links span {
+    position  : absolute;
+    top       : 100%;
+    right     : 0;
+    color     : #044C66;
+    font-size : 14px;
+}
+
+@media screen and (min-width : 768px) {
+    .details-col {
+        width      : 33.33%;
+        text-align : right;
+    }
+}
+
+@media screen and (min-width : 1400px) {
+    .numbers-box-main {
+        width : 40%;
+    }
+    
+    .details-box {
+        width : 60%;
+    }
+}
+
+.graphs-of-rejim {
+    margin-bottom : 20px;
+    background    : rgb(255, 255, 255);
+    border        : 1px solid rgb(224, 224, 224);
+    padding       : 15px;
+}
+
+h2, h3, h4, h5 {
+    font-family : yekan !important;
+}
+
+#topnav.navbar-midnightblue {
+    background-color : #53AE9E;
+    border-color     : #458979;
+}
+
+.sidebar-midnightblue.static-sidebar-wrapper, .sidebar-midnightblue.fixed-sidebar-wrapper {
+    background : #35645C;
+}
+
+#topnav.navbar-midnightblue .navbar-brand, #topnav #trigger-sidebar a {
+    background-color : #47998B !important;
+}
+
+#topnav .yamm ul li a {
+    padding-right : 15px;
+}
+
+#topnav.navbar-midnightblue .navbar-nav > .open > a, #topnav.navbar-midnightblue .navbar-nav > .open > a:hover, #topnav.navbar-midnightblue .navbar-nav > .open > a:focus {
+    background : #35645C;
+}
+
+#topnav.navbar-midnightblue .navbar-nav > li > a:hover, #topnav.navbar-midnightblue .navbar-nav > li > a:focus {
+    background : #35645C;
+}
+
+#topnav.navbar-midnightblue.navbar .navbar-collapse .open .dropdown-menu {
+    background : #35645C;
+}
+
+#topnav.navbar-midnightblue.navbar .navbar-collapse .open .dropdown-menu li a:hover, #topnav.navbar-midnightblue.navbar .navbar-collapse .open .dropdown-menu li a:focus {
+    background-color : #47998B;
+}
+
+#topnav.navbar-midnightblue.navbar .navbar-collapse .open .dropdown-menu .divider {
+    border-bottom : 1px solid #35645C !important;
+}
+
+#topnav.navbar-midnightblue .dropdown-menu .divider, #topnav.navbar-midnightblue .yamm .dropdown-menu .divider {
+    border-bottom : 1px solid #35645C !important;
+}
+
+#topnav.navbar-midnightblue .toolbar-icon-bg > a:hover, #topnav.navbar-midnightblue .toolbar-icon-bg > a:focus, #topnav.navbar-midnightblue .toolbar-icon-bg > a.active, #topnav.navbar-midnightblue .navbar-nav > .toolbar-icon-bg.open > a {
+    background-color : #35645C !important;
+}
+
+.sidebar-midnightblue nav.widget-body > ul.acc-menu li a {
+    color            : rgb(224, 224, 224);
+    background-color : #35645C !important;
+}
+
+.sidebar-midnightblue .sidebar .widget .widget-body {
+    background-color : #35645C;
+}
+
+.sidebar-midnightblue .sidebar .widget .widget-heading, .sidebar-midnightblue .nav-separator {
+    border-top : 1px solid #35645C;
+    background : #35645C;
+}
+
+#topnav.navbar-midnightblue .navbar-nav > li > a {
+    padding-right : 30px;
+}
+
+.right-side-nav-bg {
+    position : absolute;
+    right    : 0;
+    bottom   : 0;
+    width    : 100%;
+    height   : auto;
+    z-index  : 0;
+}
+
+/* pmw edit */
+
+.chooseDiet .slide.hasLevels {
+    height: 435px;
+    padding-bottom: 185px;
+}
+
+.chooseDiet .slide.hasLevels .orderRejim {
+    -webkit-border-radius : 0;
+    -moz-border-radius    : 0;
+    border-radius         : 0;
+}
+
+.chooseDiet .slide .rejimLevelSelect {
+    height  : 185px;
+    display : none;
+}
+
+.chooseDiet .slide.hasLevels .rejimLevelSelect {
+    display : block;
+}
+
+.chooseDiet .slide .rejimLevelSelect a,
+.chooseDiet .slide .rejimLevelSelect span{
+    padding          : 10px;
+    color            : RGB(255, 255, 255);
+    background-color : rgb(36, 48, 84);
+    display          : block;
+    text-align       : center;
+    border-top       : 1px solid #FFFFFF;
+    -webkit-transition : all 0.1s;
+    -moz-transition    : all 0.1s;
+    -ms-transition     : all 0.1s;
+    -o-transition      : all 0.1s;
+    transition         : all 0.1s;
+}
+
+.chooseDiet .slide .rejimLevelSelect span {
+    background-color: rgb(0, 128, 0);
+    font-size: 17px;
+    padding: 15px;
+}
+
+.chooseDiet .slide .rejimLevelSelect a:last-of-type {
+    -webkit-border-radius : 0 0 10px 10px;
+    -moz-border-radius    : 0 0 10px 10px;
+    border-radius         : 0 0 10px 10px;
+}
+
+.chooseDiet .slide .rejimLevelSelect a:hover,
+.chooseDiet .slide .rejimLevelSelect a.selected-level{
+    color            : RGB(255, 255, 255);
+    background-color : rgb(30, 30, 60);
+}
+
+.rejim-part-edit-td{
+    background-color: #eee;
+    font-size : 2em;
+    vertical-align: middle !important;
+    padding : 0 !important;
+    position : relative;
+}
+
+.rejim-part-edit-td:after{
+    content : '';
+    width : 100%;
+    height :1px;
+    background-color: rgb(225, 225, 225);
+    position : absolute;
+    bottom : -1px;
+    right : 0;
+}
+
+.rejim-part-edit-td a{
+    color : #444;
+    padding : 10px !important;
+    display : block;
+    line-height: 0.9;
+}
+.fancybox-slide--iframe .fancybox-content {
+    max-height:400px;
+}
+@media screen and (max-width: 768px){
+    .fancybox-slide--iframe .fancybox-content {
+        max-height: calc(100% - 80px);
+    }
+}
+.step-content-main{
+    text-align: right;
+    direction: rtl;
+}
+.select-diet-main-title{
+    padding-bottom: 30px;
+    text-align: center;
+    font-size: 24px;
+}
+.step-navigator-main{
+    margin-top: 0!important;
+}
+
+.factor-table-main-div .tables table .has-diet-image {
+    padding-right: 265px !important;
+}
+
+.factor-main .total-col div[class*='col-']{
+    float : right;
+}

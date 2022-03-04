@@ -1,0 +1,20 @@
+{
+    "name": "Options",
+    "alias": "options",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Options\\Providers\\OptionsServiceProvider",
+        "Modules\\Options\\Providers\\onloadServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php",
+        "Helpers/functions.php",
+        "Helpers/OptionsBuilder.php",
+        "Http/Hooks.php"
+    ],
+    "requires": []
+}

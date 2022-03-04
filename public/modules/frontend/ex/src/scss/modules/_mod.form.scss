@@ -1,0 +1,21 @@
+.form{
+  input,textarea{
+    border: 1px solid color(gray_e8);
+    border-radius: rem(15);
+    padding: rem(10) rem(25);
+    width: 100%;
+    margin-bottom: rem(30);
+    color: color(gray_5);
+    transition: .15s border linear;
+
+    &:focus{
+      border-color: color(red);
+      color: color(gray_2);
+    }
+  }
+  textarea{
+    resize: vertical;
+    min-height: rem(170);
+  }
+
+}
