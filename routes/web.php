@@ -38,13 +38,12 @@ Route::get('/test', function () {
 //    $count = \Modules\Appointment\Entities\AppointmentUser::onlyTrashed()->update(['status' => '3']);
 //    dd($count);
 
-    $test = get_option( Modules\Appointment\Entities\Appointment::SETTING_AGENT_STATUS );
-    dd($test);
-    $sms = smsNow('09122978167','login','44');
-    dd($sms);
-    dd(App\User::latest('created_at')->first()->full_name);
-    dd(AppointmentUser::onlyTrashed()->where('status','!=','3')->count());
-    dd(AppointmentUser::whereNull('agent_id')->update(['agent_id' => '12922']));
+    smsNow( '09122978167',
+        'kamiloCancel',
+        "سجاد",
+        "۱۴:۳۰",
+        ''
+    );
 
 });
 

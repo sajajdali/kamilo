@@ -11,6 +11,11 @@ Route::group([
     Route::resource('appointment', 'AppointmentController', ['except' => 'show']);
     Route::resource('appointment_sms', 'AppointmentSmsController', ['except' => 'show']);
     Route::resource('appointment_user', 'AppointmentUserController', ['except' => 'show']);
+
+    //standard sms
+    Route::get('standard_sms/{appointment}','AppointmentUserController@sendStandardSms')->name('standard_sms');
+    Route::post('standard_sms/{appointment}','AppointmentUserController@sendStandardSmsStore')->name('standard_sms.send');
+    //standard sms
     //ajax appointment routes
     Route::post('appointment/calenderhelper','AppointmentController@calenderHelper');
     Route::post('appointment/exceptionhelper','AppointmentController@exceptionHelper');

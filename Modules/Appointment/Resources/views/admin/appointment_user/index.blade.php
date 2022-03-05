@@ -584,6 +584,9 @@
                                                                 <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'cancel','sms'=>'send']) }}">کنسل
                                                                     کردن نوبت (پیامک هم ارسال شود)</a>
                                                             </li>
+                                                                <li>
+                                                                    <a href="{{ route('admin.standard_sms', ['appointment'=>$item->id]) }}">ارسال پیامک های سیستمی</a>
+                                                                </li>
                                                         @elseif($item->status == $appointmentUserNameSpace::STATUS_PENDING)
                                                             <li>
                                                                 <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'approve']) }}">تایید

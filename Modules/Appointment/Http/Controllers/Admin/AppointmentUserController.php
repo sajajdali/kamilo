@@ -5,6 +5,7 @@ namespace Modules\Appointment\Http\Controllers\Admin;
 use App\Base\AdminApiController;
 use App\User;
 use App\UserMeta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
@@ -619,5 +620,41 @@ class AppointmentUserController extends AdminApiController
             $request->session()->flash('sys_error', 'در حال حاضر امکان حذف نوبت وجود ندارد');
         }
         return redirect()->back();
+    }
+
+    /**
+     * @param Request $request
+     * @param AppointmentUser $appointment
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sendStandardSmsStore(Request $request , AppointmentUser $appointment){
+        $template = $request->get('template');
+        $time_from = $request->get('time_from');
+
+        $firstName = $appointment->user->first_name;
+        $mobile = $appointment->user->mobile;
+        $link = $appointment->detail['SHORT_LINK'] ?? '';
+        $mobile = '09122978167';
+
+        $detail = $appointment->detail;
+        $detail['STANDARD_SMS'][$template] = [
+            'send'  => true ,
+            'admin_id'  => Auth::id(),
+            'send_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ];
+        $appointment->detail = $detail;
+        $appointment->save();
+//        $sms = smsNow($mobile , $template , $firstName , $time_from , $link);
+
+        $request->session()->flash('successful', 'پیامک با موفقیت ارسال شد');
+        return redirect()->back();
+
+    }
+    public function sendStandardSms(AppointmentUser $appointment)
+    {
+        $time = explode( ':', $appointment->time_from );
+        $timeFrom = "{$time[0]}:{$time[1]}";
+        return view('appointment::admin.standard_sms.index' , compact('appointment' , 'timeFrom'));
+
     }
 }

@@ -165,3 +165,22 @@ function checkAccessDeleteOrUpdate(){
     }
     return false;
 }
+
+function standardSmsMesages ($template = null) {
+    $templates = [
+
+        'kamiloReminder1'    =>  '%param1% عزیز سلام از کلینیک آرمان الهیه جهت یاداوری وقت فردا با شما تماس گرفته شد متاسفانه پاسخگو نبودید لطفا فردا راس ساعت %param2% بدون همراه کلینیک باشین 
+شب قبل شیو کنید.حوله، ژیلت، زایلاپی همراه داشته باشید.
+جزئیات نوبت : %param3%
+با تشکر کلینیک ارمان الهیه'
+        ,
+        'kamiloReminder2'    => '%param1% عزیز سلام 
+از کلینیک ارمان الهیه جهت یادآوری وقت فردا با شما تماس گرفته شد متاسفانه پاسخگو نبودید لطفا فردا راس ساعت %param2% بدون همراه در کلینیک حاضر باشید. 
+جزئیات نوبت : %param3%
+با تشکر کلینیک ارمان الهیه'    ];
+
+    if ($template){
+        return $templates[$template];
+    }
+    return $templates;
+}
