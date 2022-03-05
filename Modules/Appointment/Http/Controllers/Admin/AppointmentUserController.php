@@ -634,7 +634,6 @@ class AppointmentUserController extends AdminApiController
         $firstName = $appointment->user->first_name;
         $mobile = $appointment->user->mobile;
         $link = $appointment->detail['SHORT_LINK'] ?? '';
-        $mobile = '09122978167';
 
         $detail = $appointment->detail;
         $detail['STANDARD_SMS'][$template] = [
@@ -644,7 +643,7 @@ class AppointmentUserController extends AdminApiController
         ];
         $appointment->detail = $detail;
         $appointment->save();
-//        $sms = smsNow($mobile , $template , $firstName , $time_from , $link);
+        smsNow($mobile , $template , $firstName , $time_from , $link);
 
         $request->session()->flash('successful', 'پیامک با موفقیت ارسال شد');
         return redirect()->back();
