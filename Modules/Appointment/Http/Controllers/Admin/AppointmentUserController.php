@@ -43,7 +43,7 @@ class AppointmentUserController extends AdminApiController
                     /** @var AppointmentUser $query */
                     if (!Auth::user()->can('admin_type_full_appointment_user_access')) {
                         $doctorRolsid = AppointmentPart::DOCTOR_ROLES;
-                        if(in_array(auth()->user()->roles->first()->id,$doctorRolsid)){
+                        if (in_array(auth()->user()->roles->first()->id, $doctorRolsid)) {
                             $query->whereDoctorId(Auth::id());
                         } else {
                             $query->whereAgentId(Auth::id());
@@ -53,7 +53,7 @@ class AppointmentUserController extends AdminApiController
                         $query->whereUserId($request->user_id);
                     }
 
-                    if ( $request->start_date_store_appointment != null  )  {
+                    if ($request->start_date_store_appointment != null) {
 
                         $from = explode('/', $request->input('start_date_store_appointment'));
                         $from = jalali_to_gregorian($from[0], $from[1], $from[2], '-');
@@ -62,7 +62,7 @@ class AppointmentUserController extends AdminApiController
 
                     }
 
-                    if ( $request->end_date_store_appointment != null) {
+                    if ($request->end_date_store_appointment != null) {
 
                         $from = explode('/', $request->input('end_date_store_appointment'));
                         $from = jalali_to_gregorian($from[0], $from[1], $from[2], '-');
@@ -85,10 +85,9 @@ class AppointmentUserController extends AdminApiController
                     }
                     if (intval($request->status) != -1) {
                         if ($request->status == AppointmentUser::STATUS_HAS_IDENTIFIERـCODE) {
-                            $query->whereNotNull('detail->'.AppointmentUser::IDENTIFIERـCODE);
-                        }
-                        elseif ($request->status == AppointmentUser::STATUS_PANAHI) {
-                            $query->where('status' , '<>' , AppointmentUser::STATUS_DELETED);
+                            $query->whereNotNull('detail->' . AppointmentUser::IDENTIFIERـCODE);
+                        } elseif ($request->status == AppointmentUser::STATUS_PANAHI) {
+                            $query->where('status', '<>', AppointmentUser::STATUS_DELETED);
                         } else {
                             $query->whereStatus($request->status);
                         }
@@ -115,8 +114,8 @@ class AppointmentUserController extends AdminApiController
                         $query->where('time_to', '<=', $request->end_clock . ":00");
                     }
                     if ($request->identifierـcode != null) {
-                        if(\auth()->user()->getAuthIdentifier() == 1){
-                            $query->whereJsonContains('detail->'.AppointmentUser::IDENTIFIERـCODE, $request->identifierـcode);
+                        if (\auth()->user()->getAuthIdentifier() == 1) {
+                            $query->whereJsonContains('detail->' . AppointmentUser::IDENTIFIERـCODE, $request->identifierـcode);
                         }
                     }
                     if (intval($request->transaction) != 0) {
@@ -138,7 +137,7 @@ class AppointmentUserController extends AdminApiController
                         $query->whereHas('userMetas', function ($q) use ($request) {
                             $q->where([
                                 ['meta_key', 'ACQUAINTED'],
-                                ['meta_value', "=",   $request->acquainted ]
+                                ['meta_value', "=", $request->acquainted]
                             ]);
                         });
                     }
@@ -152,13 +151,13 @@ class AppointmentUserController extends AdminApiController
                         }
 
 
-                        $query->whereHas('userMetas', function ($q) use ($querySearch , $ondition) {
+                        $query->whereHas('userMetas', function ($q) use ($querySearch, $ondition) {
                             $q->where([
                                 ['meta_key', UserMeta::ADDRESS],
-                                ['meta_value', $ondition, $querySearch ]
+                                ['meta_value', $ondition, $querySearch]
                             ])->where([
                                 ['meta_key', UserMeta::ADDRESS],
-                                ['meta_value', '!=',   '' ]
+                                ['meta_value', '!=', '']
                             ]);
                         });
                     }
@@ -196,7 +195,7 @@ class AppointmentUserController extends AdminApiController
                 $mAppointmentUser = AppointmentUser::withTrashed(Auth::user()->viewTrasheed())->where(function ($query) {
                     if (!Auth::user()->can('admin_type_full_appointment_user_access')) {
                         $doctorRolsid = AppointmentPart::DOCTOR_ROLES;
-                        if(in_array(auth()->user()->roles->first()->id,$doctorRolsid)){
+                        if (in_array(auth()->user()->roles->first()->id, $doctorRolsid)) {
                             $query->whereDoctorId(Auth::id());
                         } else {
                             $query->whereAgentId(Auth::id());
@@ -213,7 +212,7 @@ class AppointmentUserController extends AdminApiController
                     /** @var AppointmentUser $query */
                     if (!Auth::user()->can('admin_type_full_appointment_user_access')) {
                         $doctorRolsid = AppointmentPart::DOCTOR_ROLES;
-                        if(in_array(auth()->user()->roles->first()->id,$doctorRolsid)){
+                        if (in_array(auth()->user()->roles->first()->id, $doctorRolsid)) {
                             $query->whereDoctorId(Auth::id());
                         } else {
                             $query->whereAgentId(Auth::id());
@@ -222,7 +221,7 @@ class AppointmentUserController extends AdminApiController
                     if (intval($request->user_id) != 0) {
                         $query->whereUserId($request->user_id);
                     }
-                    if ( $request->start_date_store_appointment != null  )  {
+                    if ($request->start_date_store_appointment != null) {
 
                         $from = explode('/', $request->input('start_date_store_appointment'));
                         $from = jalali_to_gregorian($from[0], $from[1], $from[2], '-');
@@ -231,7 +230,7 @@ class AppointmentUserController extends AdminApiController
 
                     }
 
-                    if ( $request->end_date_store_appointment != null) {
+                    if ($request->end_date_store_appointment != null) {
 
                         $from = explode('/', $request->input('end_date_store_appointment'));
                         $from = jalali_to_gregorian($from[0], $from[1], $from[2], '-');
@@ -254,10 +253,9 @@ class AppointmentUserController extends AdminApiController
 
                     if (intval($request->status) != -1) {
                         if ($request->status == AppointmentUser::STATUS_HAS_IDENTIFIERـCODE) {
-                            $query->whereNotNull('detail->'.AppointmentUser::IDENTIFIERـCODE);
-                        }
-                        elseif ($request->status == AppointmentUser::STATUS_PANAHI) {
-                            $query->where('status' , '<>' , AppointmentUser::STATUS_DELETED);
+                            $query->whereNotNull('detail->' . AppointmentUser::IDENTIFIERـCODE);
+                        } elseif ($request->status == AppointmentUser::STATUS_PANAHI) {
+                            $query->where('status', '<>', AppointmentUser::STATUS_DELETED);
                         } else {
                             $query->whereStatus($request->status);
                         }
@@ -285,8 +283,8 @@ class AppointmentUserController extends AdminApiController
                         $query->where('time_to', '<=', $request->end_clock . ":00");
                     }
                     if ($request->identifierـcode != null) {
-                        if(\auth()->user()->getAuthIdentifier() == 1){
-                            $query->whereJsonContains('detail->'.AppointmentUser::IDENTIFIERـCODE, $request->identifierـcode);
+                        if (\auth()->user()->getAuthIdentifier() == 1) {
+                            $query->whereJsonContains('detail->' . AppointmentUser::IDENTIFIERـCODE, $request->identifierـcode);
                         }
                     }
 
@@ -309,7 +307,7 @@ class AppointmentUserController extends AdminApiController
                         $query->whereHas('userMetas', function ($q) use ($request) {
                             $q->where([
                                 ['meta_key', 'ACQUAINTED'],
-                                ['meta_value', "=",   $request->acquainted ]
+                                ['meta_value', "=", $request->acquainted]
                             ]);
                         });
                     }
@@ -323,13 +321,13 @@ class AppointmentUserController extends AdminApiController
                         }
 
 
-                            $query->whereHas('userMetas', function ($q) use ($querySearch , $ondition) {
+                        $query->whereHas('userMetas', function ($q) use ($querySearch, $ondition) {
                             $q->where([
                                 ['meta_key', UserMeta::ADDRESS],
-                                ['meta_value', $ondition, $querySearch ]
+                                ['meta_value', $ondition, $querySearch]
                             ])->where([
                                 ['meta_key', UserMeta::ADDRESS],
-                                ['meta_value', '!=',   '' ]
+                                ['meta_value', '!=', '']
                             ]);
                         });
                     }
@@ -366,7 +364,7 @@ class AppointmentUserController extends AdminApiController
                 $mAppointmentUser = AppointmentUser::withTrashed(Auth::user()->viewTrasheed())->where(function ($query) {
                     if (!Auth::user()->can('admin_type_full_appointment_user_access')) {
                         $doctorRolsid = AppointmentPart::DOCTOR_ROLES;
-                        if(in_array(auth()->user()->roles->first()->id,$doctorRolsid)){
+                        if (in_array(auth()->user()->roles->first()->id, $doctorRolsid)) {
                             $query->whereDoctorId(Auth::id());
                         } else {
                             $query->whereAgentId(Auth::id());
@@ -420,11 +418,11 @@ class AppointmentUserController extends AdminApiController
         switch ($act) {
             case 'cancel':
                 $mAppointmentUser->status = AppointmentUser::STATUS_CANCELED;
-                if(request()->get('sms') == 'send'){
+                if (request()->get('sms') == 'send') {
 //                    $messgae = appointmentUserTextFilter(get_option(Appointment::SETTING_SMS_AFTER_CANCEL_MESSAGE), $mAppointmentUser);
 //                    sendSmsNow($mAppointmentUser->id, $messgae, "Modules\Appointment\Entities\AppointmentUser");
-                    $time = explode( ':', $mAppointmentUser->time_from );
-                    smsNow( $mAppointmentUser->user->mobile,
+                    $time = explode(':', $mAppointmentUser->time_from);
+                    smsNow($mAppointmentUser->user->mobile,
                         'kamiloCancel',
                         "{$mAppointmentUser->year}/{$mAppointmentUser->month}/{$mAppointmentUser->day}",
                         "{$time[0]}:{$time[1]}",
@@ -503,7 +501,7 @@ class AppointmentUserController extends AdminApiController
             request()->session()->flash('successful', "نوبت‌های انتخابی با موفقیت تایید شدن");
             return redirect()->route($this->routeBaseName . "index");
         } elseif ($act == "delete") {
-            if(!Auth::user()->can('delete_admin_appointment_user')){
+            if (!Auth::user()->can('delete_admin_appointment_user')) {
                 request()->session()->flash('sys_error', "شما به حذف نوبت ها دسترسی ندارید");
             }
             $errors = [];
@@ -511,11 +509,11 @@ class AppointmentUserController extends AdminApiController
 
             foreach ($appointments as $id) {
                 $appointment = AppointmentUser::find($id);
-                if(
+                if (
                     (checkAccessDeleteOrUpdate() == false) &&
-                    (Auth::user()->can('admin_type_limited_appointment_user_access_delete') && Auth::id() != $appointment->agent_id )
-                ){
-                    $errors[] = 'فقط نوبت هایی که خودتان ثبت کردید را میتوانید حذف کنید - امکان حذف نوبت برای ' . $appointment->user->full_name .' را ندارید';
+                    (Auth::user()->can('admin_type_limited_appointment_user_access_delete') && Auth::id() != $appointment->agent_id)
+                ) {
+                    $errors[] = 'فقط نوبت هایی که خودتان ثبت کردید را میتوانید حذف کنید - امکان حذف نوبت برای ' . $appointment->user->full_name . ' را ندارید';
                     continue;
                 }
                 if ($appointment->exists()) {
@@ -528,17 +526,17 @@ class AppointmentUserController extends AdminApiController
                     }
                 }
             }
-            if(count($errors) > 0){
+            if (count($errors) > 0) {
                 $errors = implode(" ", $errors);
                 request()->session()->flash('sys_error', $errors);
             }
-            if($successShow){
+            if ($successShow) {
                 request()->session()->flash('successful', "نوبت‌های انتخابی با موفقیت حذف شدن");
             }
             return redirect()->route($this->routeBaseName . "index");
         } elseif ($act == 'cancel') {
 
-            if(!Auth::user()->can('cancel_admin_appointment_user')){
+            if (!Auth::user()->can('cancel_admin_appointment_user')) {
                 request()->session()->flash('sys_error', "شما به کنسل کردن نوبت ها دسترسی ندارید");
             }
             $errors = [];
@@ -547,18 +545,18 @@ class AppointmentUserController extends AdminApiController
             $smsStatus = $request->sms_status;
             foreach ($appointments as $id) {
                 $appointment = AppointmentUser::find($id);
-                if(
+                if (
                     (checkAccessDeleteOrUpdate() == false) &&
                     (Auth::user()->can('admin_type_limited_appointment_user_access_cancel') && Auth::id() != $appointment->agent_id)
-                ){
-                    $errors[] = 'فقط نوبت هایی که خودتان ثبت کردید را میتوانید کنسل کنید - امکان کنسلی نوبت برای ' . $appointment->user->full_name .' را ندارید';
+                ) {
+                    $errors[] = 'فقط نوبت هایی که خودتان ثبت کردید را میتوانید کنسل کنید - امکان کنسلی نوبت برای ' . $appointment->user->full_name . ' را ندارید';
                     continue;
                 }
                 if ($appointment->exists() && ($appointment->status == AppointmentUser::STATUS_OK || $appointment->status == AppointmentUser::STATUS_PENDING)) {
                     $appointment->status = AppointmentUser::STATUS_CANCELED;
                     if ($smsStatus == "1") {
-                        $time = explode( ':', $appointment->time_from );
-                        smsNow( $appointment->user->mobile,
+                        $time = explode(':', $appointment->time_from);
+                        smsNow($appointment->user->mobile,
                             'kamiloCancel',
                             "{$appointment->year}/{$appointment->month}/{$appointment->day}",
                             "{$time[0]}:{$time[1]}",
@@ -570,11 +568,11 @@ class AppointmentUserController extends AdminApiController
                     $appointment->save();
                 }
             }
-            if(count($errors) > 0){
+            if (count($errors) > 0) {
                 $errors = implode(" ", $errors);
                 request()->session()->flash('sys_error', $errors);
             }
-            if($successShow){
+            if ($successShow) {
                 request()->session()->flash('successful', "نوبت‌های انتخابی با موفقیت کنسل شدن");
             }
             return redirect()->route($this->routeBaseName . "index");
@@ -627,7 +625,8 @@ class AppointmentUserController extends AdminApiController
      * @param AppointmentUser $appointment
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function sendStandardSmsStore(Request $request , AppointmentUser $appointment){
+    public function sendStandardSmsStore(Request $request, AppointmentUser $appointment)
+    {
         $template = $request->get('template');
         $time_from = $request->get('time_from');
 
@@ -635,25 +634,44 @@ class AppointmentUserController extends AdminApiController
         $mobile = $appointment->user->mobile;
         $link = $appointment->detail['SHORT_LINK'] ?? '';
 
+        //date appointment
+        $day = $appointment->day;
+        $month = $appointment->month;
+        $year = $appointment->year;
+        $dateAppointment = "{$year}/{$month}/{$day}";
+        $dayName = jdate('l', jmktime(0, 0, 0, $month, $day, $year));
+
+
+        //date appointment
+
         $detail = $appointment->detail;
         $detail['STANDARD_SMS'][$template] = [
-            'send'  => true ,
-            'admin_id'  => Auth::id(),
+            'send' => true,
+            'admin_id' => Auth::id(),
             'send_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ];
         $appointment->detail = $detail;
         $appointment->save();
-        smsNow($mobile , $template , $firstName , $time_from , $link);
+        if ($template == 'kamiloReminder1' || $template == 'kamiloReminder2'){
+            smsNow($mobile, $template, $firstName, $time_from, $link);
+        }
+        elseif ($template == 'kamiloReminder3' || $template == 'kamiloReminder4'){
+            smsNow($mobile, $template, $firstName,$dateAppointment,$dayName, $time_from, $link);
+        }
+        elseif ($template == 'kamiloReminder5'){
+            smsNow($mobile, $template, $firstName,$dateAppointment,$dayName, $link);
+        }
 
         $request->session()->flash('successful', 'پیامک با موفقیت ارسال شد');
         return redirect()->back();
 
     }
+
     public function sendStandardSms(AppointmentUser $appointment)
     {
-        $time = explode( ':', $appointment->time_from );
+        $time = explode(':', $appointment->time_from);
         $timeFrom = "{$time[0]}:{$time[1]}";
-        return view('appointment::admin.standard_sms.index' , compact('appointment' , 'timeFrom'));
+        return view('appointment::admin.standard_sms.index', compact('appointment', 'timeFrom'));
 
     }
 }

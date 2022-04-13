@@ -27,13 +27,13 @@ function getInfoGhasedak(){
     return $api->AccountInfo()->items;
 }
 
-function smsNow($mobile , $template , $param1, $param2 = null, $param3 = null, $param4 = null){
+function smsNow($mobile , $template , $param1, $param2 = null, $param3 = null, $param4 = null , $param5 = null){
     try
     {
 
         $receptor = $mobile;
         $api = new \Ghasedak\GhasedakApi(env('API_KEY_SMS'));
-        $api->Verify($receptor,1,$template , $param1 , $param2 , $param3, $param4);
+        $api->Verify($receptor,1,$template , $param1 , $param2 , $param3, $param4 ,$param5);
     }
     catch(\Ghasedak\Exceptions\ApiException $e){
         echo $e->errorMessage();
@@ -172,12 +172,19 @@ function standardSmsMesages ($template = null) {
         'kamiloReminder1'    =>  '%param1% عزیز سلام از کلینیک آرمان الهیه جهت یاداوری وقت فردا با شما تماس گرفته شد متاسفانه پاسخگو نبودید لطفا فردا راس ساعت %param2% بدون همراه کلینیک باشین 
 شب قبل شیو کنید.حوله، ژیلت، زایلاپی همراه داشته باشید.
 جزئیات نوبت : %param3%
-با تشکر کلینیک ارمان الهیه'
-        ,
+با تشکر کلینیک ارمان الهیه',
         'kamiloReminder2'    => '%param1% عزیز سلام 
 از کلینیک ارمان الهیه جهت یادآوری وقت فردا با شما تماس گرفته شد متاسفانه پاسخگو نبودید لطفا فردا راس ساعت %param2% بدون همراه در کلینیک حاضر باشید. 
 جزئیات نوبت : %param3%
-با تشکر کلینیک ارمان الهیه'    ];
+با تشکر کلینیک ارمان الهیه',
+    'kamiloReminder3'   =>  '%param1% عزیز سلام 
+از کلینیک ارمان الهیه جهت یادآوری وقت شما مورخ %param2% روز %param3%  تماس گرفته شد متاسفانه پاسخگو نبودید لطفا  راس ساعت %param4% بدون همراه کلینیک باشین. (دکترحاتمی)',
+    'kamiloReminder4'   => '%param1% عزیز سلام 
+از کلینیک آرمان الهیه جهت یاداوری وقت شما مورخ %param2% روز %param3% تماس گرفته شد متاسفانه پاسخگو نبودید لطفا راس ساعت %param4% بدون همراه کلینیک باشین 
+شب قبل شیو کنید.حوله، ژیلت، زایلاپی همراه داشته باشید. (لیزر)',
+    'kamiloReminder5'   => '%param1% عزیزم سلام 
+از کلینیک ارمان الهیه با شما تماس گرفته‌شد متاسفانه پاسخگو نبودید وقت شما برای %param2% روز  %param3% بدلیل عدم حضور پزشک کنسل گردید'
+    ];
 
     if ($template){
         return $templates[$template];
