@@ -476,7 +476,7 @@
                                 <label for="second_mobile" class="field prepend-icon">
                                     <input type="text" name="second_mobile" id="second_mobile" class="gui-input"
                                            placeholder="شماره دوم">
-                                    <label for="second_mobile" class="field-icon"><i class="glyphicons glyphicons-gift"></i>
+                                    <label for="second_mobile" class="field-icon"><i class="glyphicons glyphicons-headphones"></i>
                                     </label>
                                 </label>
                             </div>

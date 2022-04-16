@@ -523,6 +523,14 @@
                                         <td class="">
                                             @if($item->user != null)
                                                 {{ $item->user->mobile }}
+                                                @if(isset($item->detail['SECOND_MOBILE']))
+                                                    <br>
+                                                <span class="text-danger">
+                                                   شماره دوم : {{ $item->detail['SECOND_MOBILE'] ?? '' }}
+                                                    </span>
+                                                @endif
+
+
                                             @else
                                                 <span class="text-danger">این کاربر حذف شده است</span>
                                             @endif
