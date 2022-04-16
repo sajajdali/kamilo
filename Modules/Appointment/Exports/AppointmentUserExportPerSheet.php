@@ -53,7 +53,8 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
             "طریقه آشنایی",
             "خدمات",
             "توضیحات",
-            " کد معرف"
+            " کد معرف",
+            "شماره دوم"
         ] ];
     }
 
@@ -135,7 +136,8 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
                 $event->sheet->getDelegate()->getColumnDimension('I')->setAutoSize(true);
                 $event->sheet->getDelegate()->getColumnDimension('M')->setAutoSize(true);
                 $event->sheet->getDelegate()->getColumnDimension('N')->setAutoSize(true);
-                $event->sheet->getDelegate()->getStyle('A1:P1')->applyFromArray(
+                $event->sheet->getDelegate()->getColumnDimension('Q')->setAutoSize(true);
+                $event->sheet->getDelegate()->getStyle('A1:Q1')->applyFromArray(
                     [
                         'font' => [
                             'bold' => true,
@@ -160,8 +162,8 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
                         ],
                     ]
                 );
-                $event->sheet->getDelegate()->mergeCells('A1:P1');
-                $event->sheet->getDelegate()->getStyle('A2:P2')->applyFromArray(
+                $event->sheet->getDelegate()->mergeCells('A1:Q1');
+                $event->sheet->getDelegate()->getStyle('A2:Q2')->applyFromArray(
                     [
                         'font' => [
                             'bold' => true,
@@ -209,7 +211,7 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
                         $bg = "FFcaddf5";
                         $fontColor = "FF1f57a1";
                     }
-                    $event->sheet->getDelegate()->getStyle('A'.$counter.':P'.$counter.'')->applyFromArray(
+                    $event->sheet->getDelegate()->getStyle('A'.$counter.':Q'.$counter.'')->applyFromArray(
                         [
                             'font' => [
                                 'color' => [
