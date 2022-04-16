@@ -472,6 +472,14 @@
                                     </label>
                                 </label>
                             </div>
+                            <div class="col-md-12  pull-right">
+                                <label for="second_mobile" class="field prepend-icon">
+                                    <input type="text" name="second_mobile" id="second_mobile" class="gui-input"
+                                           placeholder="شماره دوم">
+                                    <label for="second_mobile" class="field-icon"><i class="glyphicons glyphicons-gift"></i>
+                                    </label>
+                                </label>
+                            </div>
                             <div class="col-md-12 pull-right" style="margin-top: 5px">
                                 <label for="service" class="field prepend-icon">
                                     <input type="text" name="service" id="service" class="gui-input"
@@ -1668,6 +1676,7 @@
                 data.append("lastname", $("#add_lastname").val());
                 data.append("service_detail", $("#service_detail").val());
                 data.append("identifierـcode", $("#identifierـcode").val());
+                data.append("second_mobile", $("#second_mobile").val());
                 data.append("acquainted", $("#acquainted").val());
                 data.append("age", $("#add_age").val());
                 data.append("service", $("#add_service").val());

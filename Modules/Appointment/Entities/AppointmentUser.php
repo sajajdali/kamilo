@@ -110,6 +110,7 @@ class AppointmentUser extends Model
     CONST STATUS_HAS_IDENTIFIERـCODE = 5;
     CONST STATUS_PENDING_CALL = 6;
     CONST IDENTIFIERـCODE = "IDENTIFIERـCODE";
+    CONST SECOND_MOBILE = "SECOND_MOBILE";
 
     public static $status = [
         self::STATUS_OK => [

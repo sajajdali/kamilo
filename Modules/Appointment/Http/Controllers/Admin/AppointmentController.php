@@ -1628,6 +1628,7 @@ class AppointmentController extends AdminApiController
         $firstname = $request->firstname;
         $service_detail = $request->service_detail;
         $identifierـcode = $request->identifierـcode;
+        $second_mobile = $request->second_mobile;
 
         $acquainted = $request->acquainted;
         $age = $request->age;
@@ -1748,6 +1749,10 @@ class AppointmentController extends AdminApiController
 
         if(!empty($identifierـcode)){
             $appointmentDetail[AppointmentUser::IDENTIFIERـCODE] = $identifierـcode;
+        }
+
+        if(!empty($second_mobile)){
+            $appointmentDetail[AppointmentUser::SECOND_MOBILE] = $second_mobile;
         }
 
         $appointmetn->detail = $appointmentDetail;
