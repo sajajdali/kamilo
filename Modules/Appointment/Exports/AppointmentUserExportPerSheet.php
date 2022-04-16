@@ -94,6 +94,7 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
             (isset($appointmentUser->detail[UserMeta::SERVICE_DETAIL]) ? $appointmentUser->detail[UserMeta::SERVICE_DETAIL] : ' ' ),
             (isset($appointmentUser->detail[UserMeta::SERVICE]) ? ($appointmentUser->detail[UserMeta::SERVICE] == 'undefined' ? '' : $appointmentUser->detail[UserMeta::SERVICE]) : ' ' ),
             (isset($appointmentUser->detail[AppointmentUser::IDENTIFIERـCODE]) ? $appointmentUser->detail[AppointmentUser::IDENTIFIERـCODE] : ' ' )
+            (isset($appointmentUser->detail[AppointmentUser::SECOND_MOBILE]) ? $appointmentUser->detail[AppointmentUser::SECOND_MOBILE] : ' ' )
 
         ];
     }
