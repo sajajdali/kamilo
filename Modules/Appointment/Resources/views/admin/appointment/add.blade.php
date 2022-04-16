@@ -472,7 +472,7 @@
                                     </label>
                                 </label>
                             </div>
-                            <div class="col-md-12  pull-right">
+                            <div class="col-md-12  pull-right" style="margin-top: 5px">
                                 <label for="second_mobile" class="field prepend-icon">
                                     <input type="text" name="second_mobile" id="second_mobile" class="gui-input"
                                            placeholder="شماره دوم">
