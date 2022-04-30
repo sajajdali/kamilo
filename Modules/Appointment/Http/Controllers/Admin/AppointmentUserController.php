@@ -665,7 +665,7 @@ class AppointmentUserController extends AdminApiController
             smsNow($mobile, $template, $firstName,$dateAppointment,$dayName, $link);
         }
         elseif ($template == 'kamiloReminder7'){
-            smsNow($mobile, $template, $firstName, $time_from, $link);
+            smsNow($mobile, $template, $firstName,$dateAppointment,$dayName, $link);
         }
 
         $request->session()->flash('successful', 'پیامک با موفقیت ارسال شد');
