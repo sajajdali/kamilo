@@ -134,16 +134,16 @@
                             </p>
                         </a>
 
-                            @if($appointmentDetail->cancelByUser && $appointmentDetail->status != 2)
-                                <div class="buttons">
-                                    <a id="various1" href="#cancel-fancybox" class="danger">کنسل کردن نوبت</a>
-                                    <a id="various2" href="#share-fancybox" class="alternate ">ارسال به دیگران</a>
-                                </div>
-                            @else
+{{--                            @if($appointmentDetail->cancelByUser && $appointmentDetail->status != 2)--}}
+{{--                                <div class="buttons">--}}
+{{--                                    <a id="various1" href="#cancel-fancybox" class="danger">کنسل کردن نوبت</a>--}}
+{{--                                    <a id="various2" href="#share-fancybox" class="alternate ">ارسال به دیگران</a>--}}
+{{--                                </div>--}}
+{{--                            @else--}}
                                 <div class="one-btn">
                                     <a id="various4" href="#share-fancybox"  class="alternate">ارسال به دیگران</a>
                                 </div>
-                            @endif
+{{--                            @endif--}}
 
 
                         <div class="cancel-text" >

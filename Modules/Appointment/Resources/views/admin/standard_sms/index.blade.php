@@ -85,21 +85,21 @@
                             @if (isset($appointment['detail']['STANDARD_SMS'][$sms]) && isset($appointment['detail']['STANDARD_SMS'][$sms]['send_at']))
                                 -
                             @else
-                            <div class="btn-group text-right yekan rtl txt_right">
-                                <button type="button"
-                                        class="btn btn-success br2 btn-xs fs12 dropdown-toggle yekan"
-                                        data-toggle="dropdown" aria-expanded="false"> عملیات
-                                    <span class="caret mr5"></span>
-                                </button>
-                                <ul class="dropdown-menu txt_right" role="menu">
+                                <div class="btn-group text-right yekan rtl txt_right">
+                                    <button type="button"
+                                            class="btn btn-success br2 btn-xs fs12 dropdown-toggle yekan"
+                                            data-toggle="dropdown" aria-expanded="false"> عملیات
+                                        <span class="caret mr5"></span>
+                                    </button>
+                                    <ul class="dropdown-menu txt_right" role="menu">
 
-                                    <li>
-                                        <a class="delete_ticket" data-effect="mfp-rotateLeft" data-time="{{$timeFrom}}"
-                                           href="{{$sms}}">ارسال پیامک</a>
-                                    </li>
-                                </ul>
-                            </div>
-                                @endif
+                                        <li>
+                                            <a class="delete_ticket" data-effect="mfp-rotateLeft" data-time="{{$timeFrom}}"
+                                               href="{{$sms}}">ارسال پیامک</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            @endif
                         </td>
                         <td>
                             @if (isset($appointment['detail']['STANDARD_SMS'][$sms]) && isset($appointment['detail']['STANDARD_SMS'][$sms]['send_at']))
