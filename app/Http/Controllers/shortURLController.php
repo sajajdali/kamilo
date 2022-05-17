@@ -29,7 +29,7 @@ class shortURLController extends Controller
     // Shorten a URL
 
     public static function shorten($url, $custom = "", $format = "json") {
-        $api_url = "http://im3.ir/api/?key=u6UgKDxrHtPk";
+        $api_url = "http://felit.ir/api/?key=u6UgKDxrHtPk";
         $api_url .= "&url=".urlencode(filter_var($url, FILTER_SANITIZE_URL));
         if(!empty($custom)){
             $api_url .= "&custom=".strip_tags($custom);
