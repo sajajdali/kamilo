@@ -1679,7 +1679,7 @@
                 data.append("second_mobile", $("#second_mobile").val());
                 data.append("acquainted", $("#acquainted").val());
                 data.append("age", $("#add_age").val());
-                data.append("service", $("#add_service").val());
+                data.append("service", $("#service").val());
                 data.append("address", $("#add_address").val());
                 data.append("gender", $("#gender").val());
                 data.append("start_time", $("#start_time").val() + ":00");
