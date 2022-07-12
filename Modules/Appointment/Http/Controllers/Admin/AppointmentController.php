@@ -1735,8 +1735,8 @@ class AppointmentController extends AdminApiController
         $appointmetn->save();
 
         $linkAddress = route('profile.appointment.result.show',[$appointmetn->code,$appointmetn->id]);
-//        $shorterLink = \App\Http\Controllers\shortURLController::ShortLinkMaker($linkAddress);
-        $baseShortLink = $linkAddress;
+        $shorterLink = \App\Http\Controllers\shortURLController::ShortLinkMaker($linkAddress);
+        $baseShortLink = $shorterLink;
         $appointmentDetail =  [AppointmentUser::SHORT_LINK => $shorterLink];
 
         if(!empty($service_detail)){
