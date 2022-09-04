@@ -39,6 +39,8 @@ class shortURLController extends Controller
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => $api_url
         ));
+        curl_setopt($curl, CURLOPT_TIMEOUT, env('EXCEPTION_TIME', 15)); //timeout in seconds
+
         $Response = curl_exec($curl);
         curl_close($curl);
         if($format == "text"){
@@ -55,11 +57,16 @@ class shortURLController extends Controller
 
     public static function ShortLinkMaker($url, $custom = "", $format = "json")
     {
-        $ink = self::shorten($url, $custom, $format);
-        $reult = json_decode($ink);
-        if($reult->error == 0){
-            return substr_replace($reult->short,'www.',0,7);
+        try {
+            $ink = self::shorten($url, $custom, $format);
+            $reult = json_decode($ink);
+            if ($reult->error == 0) {
+                return substr_replace($reult->short, 'www.', 0, 7);
+            }
+        }  catch (\Exception $e) {
+            return $url;
         }
+
     }
 
 
