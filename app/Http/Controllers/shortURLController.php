@@ -57,6 +57,7 @@ class shortURLController extends Controller
 
     public static function ShortLinkMaker($url, $custom = "", $format = "json")
     {
+        return $url;
         try {
             $ink = self::shorten($url, $custom, $format);
             $reult = json_decode($ink);
