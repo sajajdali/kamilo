@@ -627,6 +627,8 @@ class AppointmentUserController extends AdminApiController
      */
     public function sendStandardSmsStore(Request $request, AppointmentUser $appointment)
     {
+        $partName = $appointment->appointmentPart->title;
+        $doctorFullName = $appointment->doctor->full_name;
         $template = $request->get('template');
         $time_from = $request->get('time_from');
 
@@ -669,6 +671,9 @@ class AppointmentUserController extends AdminApiController
         }
         elseif ($template == 'kamiloReminder10'){
             smsNow($mobile, $template, $firstName);
+        }
+        elseif ($template == 'kamiloReminder11'){
+            smsNow($mobile, $template, $firstName,$dayName,$dateAppointment,$time_from,$partName,$doctorFullName);
         }
 
 

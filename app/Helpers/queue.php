@@ -27,13 +27,13 @@ function getInfoGhasedak(){
     return $api->AccountInfo()->items;
 }
 
-function smsNow($mobile , $template , $param1, $param2 = null, $param3 = null, $param4 = null , $param5 = null){
+function smsNow($mobile , $template , $param1, $param2 = null, $param3 = null, $param4 = null , $param5 = null , $param6 = null, $param7 = null){
     try
     {
 
         $receptor = $mobile;
         $api = new \Ghasedak\GhasedakApi(env('API_KEY_SMS'));
-        $api->Verify($receptor,1,$template , $param1 , $param2 , $param3, $param4 ,$param5);
+        $api->Verify($receptor,1,$template , $param1 , $param2 , $param3, $param4 ,$param5 ,$param6 , $param7);
     }
     catch(\Ghasedak\Exceptions\ApiException $e){
         echo $e->errorMessage();
