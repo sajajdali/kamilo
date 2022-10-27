@@ -198,6 +198,9 @@ function standardSmsMesages ($template = null) {
 //میدان نوبنیاد، خ‌لنگری، نبش‌کوچه‌ی لک‌پور، پلاک ۲، ساختمان آوا بهتا، طبقه‌ی اول
 //شماره تماس:
 //۰۲۱_۲۲۹۸۴۸۴۱'
+                'kamiloReminder11'  => 'سلام %param1% عزیز
+شما برای فردا مورخ %param2% %param3% ساعت %param4% وقت %param5% با %param6% را دارید.
+ادرس و لوکیشن : %param7%'
     ];
 
     if ($template){
