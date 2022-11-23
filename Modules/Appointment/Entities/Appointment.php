@@ -90,6 +90,7 @@ class Appointment extends Model
         3 => 'آنلاین (اینستا و تلگرام)',
         4 => 'تلفنی',
         5 => 'CRM',
+        6 => 'روبیکا',
     ];
     public static $JSON_KEYWORD = [
         self::JSON_STATUS => 'متغیر عمومی وضعیت',

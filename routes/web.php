@@ -81,6 +81,8 @@ Route::get('/dd', function () {
    // dd(jdate('Y-m-d H:i:s',1569094201));
 });
 
+Route::get('json', 'HomeController@json');
+
 Route::get('webservice',function(){
     dd(Auth::user()->roles->first()['name']);
     $api = new \Ghasedak\GhasedakApi(env('API_KEY_SMS'));
