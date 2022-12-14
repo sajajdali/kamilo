@@ -45,7 +45,7 @@ class AppointmentController extends AdminApiController
             'file' => 'required',
         ]);
 
-        $fileName = 'report'.$request->file->extension();
+        $fileName = 'report.'.$request->file->extension();
 
         $request->file->move(public_path('uploads/report'), $fileName);
         update_option('REPORT_FILE', $fileName);
