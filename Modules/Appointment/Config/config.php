@@ -8,6 +8,9 @@ return [
             'section' => 'admin_section'
         ],
         'permissions' => [
+            'بلک لیست' => [
+              'delete_admin_black_list' => 'حذف شماره'
+            ],
             'بخش‌ها' => [
                 'view_admin_appointment_part' => 'مشاهده بخش‌ها',
                 'add_admin_appointment_part' => 'افزودن بخش جدید',
@@ -70,6 +73,13 @@ return [
                 'has_child' => false,
             ],
             [
+                'title' => 'لیست سیاه',
+                'gate' => 'view_admin_black_list',
+                'icon' => 'fa fa-rocket',
+                'route' => 'admin.blackList.index',
+                'has_child' => false,
+            ],
+            [
                 'title' => 'بخش‌ها',
                 'gate' => 'view_admin_appointment_part',
                 'icon' => 'fa fa-building',
@@ -93,8 +103,15 @@ return [
             [
                 'title' => 'وضعیت پرتال پیامک',
                 'gate' => 'view_admin_appointment_sms',
-                'icon' => 'fa fa-envelope',
+                'icon' => 'fa fa-commenting',
                 'route' => 'admin.status.result',
+                'has_child' => false,
+            ],
+            [
+                'title' => 'فایل نوبت های روز',
+                'gate' => 'view_admin_report_appointment',
+                'icon' => 'fa fa-newspaper-o',
+                'route' => 'admin.report.index',
                 'has_child' => false,
             ],
         ]

@@ -29,6 +29,14 @@ Route::group([
     Route::post('appointment/ajax/changeAction', 'AppointmentController@changeAction');
     Route::post('appointment/ajax/checkAppointment', 'AppointmentController@checkAppointment');
     Route::get('statusSms', 'AppointmentController@statusSms')->name('status.result');
+    Route::get('appointment/report', 'AppointmentController@report')->name('report.index');
+    Route::get('appointment/report/create', 'AppointmentController@reportCreate')->name('report.create');
+    Route::post('appointment/report/store', 'AppointmentController@reportStore')->name('report.store');
+
+    // black list
+    Route::get('black_list', [\Modules\Appointment\Http\Controllers\Admin\BlackListController::class, 'index'])->name('blackList.index');
+    Route::delete('black_list/{black_list}', [\Modules\Appointment\Http\Controllers\Admin\BlackListController::class, 'delete'])->name('blackList.destroy');
+    // black list
 
 });
 

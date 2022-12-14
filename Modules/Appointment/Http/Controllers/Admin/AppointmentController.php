@@ -28,6 +28,37 @@ class AppointmentController extends AdminApiController
         $status = getInfoGhasedak();
         return view('appointment::admin.appointment.statusSms', compact('status'));
     }
+
+    public function report()
+    {
+        return view('appointment::admin.report.index');
+    }
+
+    public function reportCreate()
+    {
+        return view('appointment::admin.report.create');
+    }
+
+    public function reportStore(Request $request)
+    {
+        $request->validate([
+            'file' => 'required',
+        ]);
+
+        $fileName = 'report'.$request->file->extension();
+
+        $request->file->move(public_path('uploads/report'), $fileName);
+        update_option('REPORT_FILE', $fileName);
+        update_option('REPORT_COMMENT', $request->comment);
+        update_option('REPORT_TITLE', $request->title);
+        update_option('REPORT_TIME', jdate("Y/m/d ساعت H:i:s"));
+        update_option('REPORT_TIME_CREATE_AT', Carbon::now());
+
+        return redirect(route('admin.report.index'))
+            ->with('successful','فرم با موفقیت اضافه شد');
+
+    }
+    
     function apiIndex(Request $request)
     {
         $doctors = User::role(AppointmentPart::DOCTOR_ROLES)->get('id')->map(function ($user) {
@@ -279,7 +310,6 @@ class AppointmentController extends AdminApiController
         return parent::store($request);
     }
 
-
     function edit($id)
     {
         $doctor_id = request()->doctor_id;
@@ -303,9 +333,9 @@ class AppointmentController extends AdminApiController
         return redirect()->route('admin.appointment.index');
     }
 
-
     function apiShow(Request $request, $id)
     {
+
     }
 
     function webShow(Request $request, $id)

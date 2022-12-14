@@ -76,7 +76,7 @@
                         <th class="txt_center">وضعیت</th>
                         <th class="txt_center">متن</th>
                         <th class="txt_center">عنوان پیامک</th>
-                    </tr>
+                    </tr>w
                     </thead>
                     <tbody>
                     @foreach(standardSmsMesages() as $sms => $value)
