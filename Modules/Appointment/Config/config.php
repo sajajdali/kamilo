@@ -109,7 +109,7 @@ return [
             ],
             [
                 'title' => 'فایل نوبت های روز',
-                'gate' => 'view_admin_report_appointment',
+                'gate' => 'view_admin_appointment_user',
                 'icon' => 'fa fa-newspaper-o',
                 'route' => 'admin.report.index',
                 'has_child' => false,
