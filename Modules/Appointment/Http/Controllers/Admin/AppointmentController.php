@@ -1807,7 +1807,6 @@ class AppointmentController extends AdminApiController
                     'kamiloAdd',
                     $user->first_name,
                     "روز {$appointmetn->year}/{$appointmetn->month}/{$appointmetn->day}",
-                    "{$time[0]}:{$time[1]}",
                     ($shorterLink ?? $baseShortLink)
                 );
 
