@@ -10,8 +10,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Modules\\Media\\Providers\\MediaServiceProvider",
-                "Modules\\Media\\Providers\\OnloadServiceProvider"
+                "Modules\\Media\\Providers\\MediaServiceProvider"
             ],
             "aliases": {
                 
