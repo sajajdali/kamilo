@@ -6,8 +6,7 @@
     "active": 1,
     "order": 0,
     "providers": [
-        "Modules\\Options\\Providers\\OptionsServiceProvider",
-        "Modules\\Options\\Providers\\onloadServiceProvider"
+        "Modules\\Options\\Providers\\OptionsServiceProvider"
     ],
     "aliases": {},
     "files": [
