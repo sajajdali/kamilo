@@ -31,35 +31,7 @@ function getInfoGhasedak(){
 }
 
 function smsNow($mobile , $template , $param1, $param2 = null, $param3 = null, $param4 = null , $param5 = null , $param6 = null, $param7 = null){
-    $apiShsms = new \Ghasedak\GhasedakApi(env('API_KEY_SHSMS'));
-    if ($apiShsms != ''){
-        $condition = [
-            'receptor' => $mobile,
-            'template' => $template,
-        ];
-        $condition['param'][] = $param1;
-        if ($param2){
-            $condition['param'][] = $param2;
-        }
-        if ($param3){
-            $condition['param'][] = $param3;
-        }
-        if ($param4){
-            $condition['param'][] = $param4;
-        }
-        if ($param5){
-            $condition['param'][] = $param5;
-        }
-        if ($param6){
-            $condition['param'][] = $param6;
-        }
-        if ($param7){
-            $condition['param'][] = $param7;
-        }
-
-        Http::withToken($apiShsms)->get('http://shsms.ir/api/v1/sendms' , $condition);
-    }
-    else {
+    
         try
         {
 
@@ -73,7 +45,7 @@ function smsNow($mobile , $template , $param1, $param2 = null, $param3 = null, $
         catch(\Ghasedak\Exceptions\HttpException $e){
             echo $e->errorMessage();
         }
-    }
+
 }
 
 function is_assoc($arr)
