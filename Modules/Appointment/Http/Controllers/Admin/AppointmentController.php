@@ -58,7 +58,7 @@ class AppointmentController extends AdminApiController
             ->with('successful','فرم با موفقیت اضافه شد');
 
     }
-    
+
     function apiIndex(Request $request)
     {
         $doctors = User::role(AppointmentPart::DOCTOR_ROLES)->get('id')->map(function ($user) {

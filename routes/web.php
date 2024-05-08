@@ -42,7 +42,7 @@ Route::get('/test', function () {
         'kamiloCancel',
         "سجاد",
         "۱۴:۳۰",
-        ''
+        'kamio.ir'
     );
 
 });
@@ -84,6 +84,7 @@ Route::get('/dd', function () {
 Route::get('json', 'HomeController@json');
 
 Route::get('webservice',function(){
+    dd(smsNow('09122978167' , 'kamiloAdd' , 'سجاد زمانی' , 'دوشنبه' , 'kamilo.ir'));
     dd(Auth::user()->roles->first()['name']);
     $api = new \Ghasedak\GhasedakApi(env('API_KEY_SMS'));
     dd($api->AccountInfo()->item);

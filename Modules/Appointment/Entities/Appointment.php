@@ -91,6 +91,7 @@ class Appointment extends Model
         4 => 'تلفنی',
         5 => 'CRM',
         6 => 'روبیکا',
+        7 => 'مجله ماهان',
     ];
     public static $JSON_KEYWORD = [
         self::JSON_STATUS => 'متغیر عمومی وضعیت',
