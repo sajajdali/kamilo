@@ -270,7 +270,9 @@ function standardSmsMesages($template = null)
 ادرس و لوکیشن : %param7%',
     'kamiloReminder12' => 'سلام %param1% عزیز
 شما برای تاریخ %param2% %param3% ساعت %param4% وقت %param5% با %param6% را دارید.
-ادرس و لوکیشن : %param7%'
+ادرس و لوکیشن : %param7%',
+        'kamiloReminder13' => 'سلام %param1% عزیز
+از کلینیک ارمان الهیه چندین‌بار جهت یادآوری خدمتتون تماس گرفتیم بدلیل عدم پاسخگویی وقت‌شما کنسل شد.'
     ];
 
     if ($template) {
