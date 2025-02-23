@@ -1710,11 +1710,7 @@ class AppointmentController extends AdminApiController
                     new UserMeta(['meta_key' => UserMeta::ACQUAINTED, 'meta_value' => $acquainted]),
                 ]);
             }
-            if(!empty($appointmentFirstType)){
-                $user->userMetas()->saveMany([
-                    new UserMeta(['meta_key' => UserMeta::APPOINTMENT_FIRST_TYPE, 'meta_value' => $appointmentFirstType]),
-                ]);
-            }
+
             if(!empty($address)){
                 $user->userMetas()->saveMany([
                     new UserMeta(['meta_key' => UserMeta::ADDRESS, 'meta_value' => $address]),
@@ -1740,10 +1736,7 @@ class AppointmentController extends AdminApiController
                 UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::ADDRESS],
                     ['meta_value' => $address]);
             }
-            if(!empty($appointmentFirstType)){
-                UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::APPOINTMENT_FIRST_TYPE],
-                    ['meta_value' => $appointmentFirstType]);
-            }
+
             $user = User::find($user_id);
         }
 
@@ -1782,6 +1775,10 @@ class AppointmentController extends AdminApiController
 
         if(!empty($service_detail)){
             $appointmentDetail[UserMeta::SERVICE_DETAIL] = $service_detail;
+        }
+
+        if(!empty($appointmentFirstType)){
+            $appointmentDetail[UserMeta::APPOINTMENT_FIRST_TYPE] = $appointmentFirstType;
         }
 
         if(!empty($service)){
