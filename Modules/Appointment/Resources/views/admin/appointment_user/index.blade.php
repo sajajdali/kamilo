@@ -359,6 +359,23 @@
                                                             </label>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-6 pull-right">
+                                                        <label class="field select">
+                                                            <select name="appointment_first_type" id="transaction"
+                                                                    aria-required="true"
+                                                                    aria-invalid="false">
+                                                                <option value="0"
+                                                                        @if(request()->appointment_first_type == 0) SELECTED @endif>
+                                                                  نوبت اولی؟
+                                                                </option>
+                                                                @foreach(\Modules\Appointment\Entities\Appointment::$appointmentType as $key => $value)
+                                                                    <option value="{{ $key }}"
+                                                                            @if(request()->appointment_first_type !=null && request()->appointment_first_type == $key) SELECTED @endif>{{$value }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <i class="arrow"></i>
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="section">
