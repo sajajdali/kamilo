@@ -118,6 +118,10 @@ class AppointmentUserController extends AdminApiController
                             $query->whereJsonContains('detail->' . AppointmentUser::IDENTIFIERـCODE, $request->identifierـcode);
                         }
                     }
+                    if ($request->appointment_first_type) {
+                        $query->whereJsonContains('detail->APPOINTMENT_FIRST_TYPE' , $request->appointment_first_type);
+
+                    }
                     if (intval($request->transaction) != 0) {
                         $query->whereHas('transaction', function ($query) use ($request) {
                             /** @var $query Transaction */
@@ -141,14 +145,7 @@ class AppointmentUserController extends AdminApiController
                             ]);
                         });
                     }
-                    if ($request->appointment_first_type) {
-                        $query->whereHas('userMetas', function ($q) use ($request) {
-                            $q->where([
-                                ['meta_key', 'APPOINTMENT_FIRST_TYPE'],
-                                ['meta_value', "=", $request->appointment_first_type]
-                            ]);
-                        });
-                    }
+
                     if ($request->city) {
 
                         $querySearch = $request->city;
@@ -295,6 +292,10 @@ class AppointmentUserController extends AdminApiController
                             $query->whereJsonContains('detail->' . AppointmentUser::IDENTIFIERـCODE, $request->identifierـcode);
                         }
                     }
+                    if ($request->appointment_first_type) {
+                        $query->whereJsonContains('detail->APPOINTMENT_FIRST_TYPE' , $request->appointment_first_type);
+
+                    }
 
                     if (intval($request->transaction) != 0) {
                         $query->whereHas('transaction', function ($query) use ($request) {
@@ -319,14 +320,7 @@ class AppointmentUserController extends AdminApiController
                             ]);
                         });
                     }
-                    if ($request->appointment_first_type) {
-                        $query->whereHas('userMetas', function ($q) use ($request) {
-                            $q->where([
-                                ['meta_key', 'APPOINTMENT_FIRST_TYPE'],
-                                ['meta_value', "=", $request->appointment_first_type]
-                            ]);
-                        });
-                    }
+
                     if ($request->city) {
 
                         $querySearch = $request->city;
