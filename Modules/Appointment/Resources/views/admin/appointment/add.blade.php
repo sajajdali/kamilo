@@ -376,7 +376,20 @@
                                 </label>
                             </div>
                             <!-- end section -->
+                        </div>
+                        <div class="section row item_user_data" style="display: none;">
+                            <div class="col-md-6 pull-right">
+                                <label class="field select">
+                                    <select id="appointment_first_type" name="appointment_first_type">
+                                        <option value="">نوع نوبت</option>
+                                        @foreach(\Modules\Appointment\Entities\Appointment::$appointmentType as $key => $value)
+                                            <option value="{{$key}}">{{$value}}</option>
+                                        @endforeach
 
+                                    </select>
+                                    <i class="arrow"></i>
+                                </label>
+                            </div>
                         </div>
                         <div class="section-divider mt40 mb25" id="spy8">
                             <span class="header_expandable collapse" href=".items_visit_type" id="add_visit_type">نوع ویزیت<i
@@ -1678,6 +1691,7 @@
                 data.append("identifierـcode", $("#identifierـcode").val());
                 data.append("second_mobile", $("#second_mobile").val());
                 data.append("acquainted", $("#acquainted").val());
+                data.append("appointment_first_type", $("#appointment_first_type").val());
                 data.append("age", $("#add_age").val());
                 data.append("service", $("#service").val());
                 data.append("address", $("#add_address").val());
@@ -1817,6 +1831,7 @@
                         $("#add_service").val(data["service"]);
                         $("#add_address").val(data["address"]);
                         $("#acquainted").val(data["acquainted"]);
+                        $("#appointment_first_type").val(data["appointment_first_type"]);
                         $("#add_lastname").val(data["last_name"]);
                         $("#gender").val(data["gender"]);
                         $("#user_id").val(data["user_id"]);

@@ -1661,6 +1661,7 @@ class AppointmentController extends AdminApiController
         $second_mobile = $request->second_mobile;
 
         $acquainted = $request->acquainted;
+        $appointmentFirstType = $request->appointment_first_type;
         $age = $request->age;
         $service = $request->service;
         $address = $request->address;
@@ -1707,6 +1708,11 @@ class AppointmentController extends AdminApiController
             if(!empty($acquainted)){
                 $user->userMetas()->saveMany([
                     new UserMeta(['meta_key' => UserMeta::ACQUAINTED, 'meta_value' => $acquainted]),
+                ]);
+            }
+            if(!empty($appointmentFirstType)){
+                $user->userMetas()->saveMany([
+                    new UserMeta(['meta_key' => UserMeta::APPOINTMENT_FIRST_TYPE, 'meta_value' => $appointmentFirstType]),
                 ]);
             }
             if(!empty($address)){

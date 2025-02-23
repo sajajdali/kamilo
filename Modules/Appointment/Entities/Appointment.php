@@ -94,6 +94,13 @@ class Appointment extends Model
         7 => 'مجله ماهان',
         8 => 'تبدیل شده',
     ];
+
+    public static $appointmentType = [
+        1 => 'نوبت اولی',
+        2 => 'نوبت بازگشتی',
+        3 => 'نوبت ترمیمی',
+        4 => 'نوبت های افراد شاکی',
+    ];
     public static $JSON_KEYWORD = [
         self::JSON_STATUS => 'متغیر عمومی وضعیت',
         self::JSON_ITEMS => 'متغیر عمومی ایتم‌ها',
