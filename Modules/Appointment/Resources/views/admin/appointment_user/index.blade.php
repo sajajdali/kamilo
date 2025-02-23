@@ -626,17 +626,11 @@
                                                                 <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'change_to_main']) }}">تبدیل
                                                                     به نوبت اصلی</a>
                                                             </li>
-                                                                <li>
-                                                                    <a href="{{ route('admin.standard_sms', ['appointment'=>$item->id]) }}">ارسال پیامک های سیستمی</a>
-                                                                </li>
                                                         @elseif($item->status == $appointmentUserNameSpace::STATUS_OK && $item->kind == $appointmentUserNameSpace::KIND_MAIN_APPOINTMENT)
                                                             <li>
                                                                 <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'change_to_subsidiary']) }}">تبدیل
                                                                     به نوبت بین مریض</a>
                                                             </li>
-                                                                <li>
-                                                                    <a href="{{ route('admin.standard_sms', ['appointment'=>$item->id]) }}">ارسال پیامک های سیستمی</a>
-                                                                </li>
                                                         @endif
                                                     @endcan
                                                     @can("delete_admin_appointment_user")
@@ -657,6 +651,9 @@
                                                                    href="{{ route('admin.appointment_user.destroy', $item->id) }}">حذف
                                                                     نوبت</a>
                                                             </li>
+                                                                <li>
+                                                                    <a href="{{ route('admin.standard_sms', ['appointment'=>$item->id]) }}">ارسال پیامک های سیستمی</a>
+                                                                </li>
                                                         @endif
                                                     @endcan
                                                 </ul>
