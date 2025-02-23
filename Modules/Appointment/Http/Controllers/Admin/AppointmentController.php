@@ -1740,6 +1740,10 @@ class AppointmentController extends AdminApiController
                 UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::ADDRESS],
                     ['meta_value' => $address]);
             }
+            if(!empty($appointmentFirstType)){
+                UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::APPOINTMENT_FIRST_TYPE],
+                    ['meta_value' => $appointmentFirstType]);
+            }
             $user = User::find($user_id);
         }
 
