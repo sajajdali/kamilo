@@ -114,7 +114,7 @@ class AppointmentUserController extends AdminApiController
                         $query->where('time_to', '<=', $request->end_clock . ":00");
                     }
                     if ($request->appointment_first_type != null) {
-                        $query->whereJsonContains('detail->APPOINTMENT_FIRST_TYPE', $request->appointment_first_type);
+//                        $query->whereJsonContains('detail->APPOINTMENT_FIRST_TYPE', $request->appointment_first_type);
                     }
                     if ($request->identifierـcode != null) {
                         if (\auth()->user()->getAuthIdentifier() == 1) {
@@ -294,7 +294,7 @@ class AppointmentUserController extends AdminApiController
                         $query->where('time_to', '<=', $request->end_clock . ":00");
                     }
                     if ($request->appointment_first_type != null) {
-                        $query->whereJsonContains('detail->APPOINTMENT_FIRST_TYPE', $request->appointment_first_type);
+//                        $query->whereJsonContains('detail->APPOINTMENT_FIRST_TYPE', $request->appointment_first_type);
                     }
                     if ($request->identifierـcode != null) {
                         if (\auth()->user()->getAuthIdentifier() == 1) {
