@@ -113,6 +113,9 @@ class AppointmentUserController extends AdminApiController
                     if ($request->end_clock != null) {
                         $query->where('time_to', '<=', $request->end_clock . ":00");
                     }
+                    if ($request->appointment_first_type != null) {
+                        $query->whereJsonContains('detail->APPOINTMENT_FIRST_TYPE', $request->appointment_first_type);
+                    }
                     if ($request->identifierـcode != null) {
                         if (\auth()->user()->getAuthIdentifier() == 1) {
                             $query->whereJsonContains('detail->' . AppointmentUser::IDENTIFIERـCODE, $request->identifierـcode);
@@ -289,6 +292,9 @@ class AppointmentUserController extends AdminApiController
                     }
                     if ($request->end_clock != null) {
                         $query->where('time_to', '<=', $request->end_clock . ":00");
+                    }
+                    if ($request->appointment_first_type != null) {
+                        $query->whereJsonContains('detail->APPOINTMENT_FIRST_TYPE', $request->appointment_first_type);
                     }
                     if ($request->identifierـcode != null) {
                         if (\auth()->user()->getAuthIdentifier() == 1) {
