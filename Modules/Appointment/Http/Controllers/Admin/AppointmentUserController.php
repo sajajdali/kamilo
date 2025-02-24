@@ -113,7 +113,7 @@ class AppointmentUserController extends AdminApiController
                     if ($request->end_clock != null) {
                         $query->where('time_to', '<=', $request->end_clock . ":00");
                     }
-                    if ($request->appointment_first_type != null) {
+                    if ($request->appointment_first_type !== '0') {
                         $query->whereRaw("
     JSON_VALID(detail) 
     AND JSON_UNQUOTE(JSON_EXTRACT(detail, '$.APPOINTMENT_FIRST_TYPE')) = ?",
@@ -291,9 +291,9 @@ class AppointmentUserController extends AdminApiController
                     if ($request->end_clock != null) {
                         $query->where('time_to', '<=', $request->end_clock . ":00");
                     }
-                    if ($request->appointment_first_type != null) {
+                    if ($request->appointment_first_type !== '0') {
                         $query->whereRaw("
-    JSON_VALID(detail) 
+    JSON_VALID(detail)
     AND JSON_UNQUOTE(JSON_EXTRACT(detail, '$.APPOINTMENT_FIRST_TYPE')) = ?",
                             [$request->appointment_first_type]
                         );
