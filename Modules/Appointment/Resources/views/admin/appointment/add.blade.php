@@ -1989,7 +1989,7 @@
                     $(this).addClass('highlight');
                 }
                 const day = $(this).data('date');
-
+                const pdate = $(this).data('pdate');
 
                 $("#const_now_year").val(selp_year);
                 $("#const_now_month").val(selp_month);
@@ -2191,7 +2191,7 @@
                     processData: false,
                     success: function (data) {
                         data["days"].forEach(function (item) {
-                            $('<div class="item_day ' + item['class'] + '" data-date="' + item['day_number'] + '" data-toggle="tooltip" data-original-title="' + item['day_name'] + '"><div class="top"></div><a href="#" class="number">' + item['day_number'] + '</a></div>').insertBefore($('#nav-next-day'));
+                            $('<div class="item_day ' + item['class'] + '" data-pdate="'+item['persian_format']+'" data-date="' + item['day_number'] + '" data-toggle="tooltip" data-original-title="' + item['day_name'] + '"><div class="top"></div><a href="#" class="number">' + item['day_number'] + '</a></div>').insertBefore($('#nav-next-day'));
                         });
                         calenderTimeLineObject.slideToggle('slow');
 
