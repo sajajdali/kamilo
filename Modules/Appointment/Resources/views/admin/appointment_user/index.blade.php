@@ -202,9 +202,9 @@
                                                     <div class="col-md-6 pull-right">
                                                         <div class="section">
                                                             <label class="field prepend-icon">
-                                                                <input type="text" name="start_date" id="start_date"
+                                                                <input type="text" name="start_date" id="start_date_picker"
                                                                        autocomplete="off"
-                                                                       class="gui-input" placeholder="تاریخ شروع">
+                                                                       class="gui-input" placeholder="تاریخ شروع" data-jdp>
                                                                 <input type="hidden" name="alt_start_date"
                                                                        id="alt_start_date"/>
                                                                 <label for="start_date" class="field-icon"><i
@@ -216,9 +216,9 @@
                                                     <div class="col-md-6 pull-right">
                                                         <div class="section">
                                                             <label class="field prepend-icon">
-                                                                <input type="text" name="end_date" id="end_date"
+                                                                <input type="text" name="end_date" id="end_date_picker"
                                                                        autocomplete="off"
-                                                                       class="gui-input" placeholder="تاریخ پایان">
+                                                                       class="gui-input" placeholder="تاریخ پایان" data-jdp>
                                                                 <input type="hidden" name="alt_end_date"
                                                                        id="alt_end_date"/>
                                                                 <label for="end_date" class="field-icon"><i
@@ -785,6 +785,11 @@
     <!-- End: Content -->
 @endsection
 @push('scripts')
+    <link rel="stylesheet" href="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.css">
+    <script type="text/javascript" src="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.js"></script>
+    <script>
+        jalaliDatepicker.startWatch();
+    </script>
     <!-- Fancytree CSS -->
     <link rel="stylesheet" type="text/css"
           href="{{ asset('admin/files/vendor/plugins/fancytree/skin-win8/ui.fancytree.min.css') }}">
