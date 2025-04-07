@@ -1936,6 +1936,7 @@ class AppointmentController extends AdminApiController
                 'day_name' => jdate('l', $dayTime),
                 'day_number' => jdate('j', $dayTime, '', '', 'en'),
                 'class' => $cls,
+                'persian_format' => jdate1('l j F Y', $dayTime, 'en'),
                 'time' => $dayTime
             ];
         }
