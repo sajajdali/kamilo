@@ -693,7 +693,7 @@ class AppointmentUserController extends AdminApiController
         elseif ($template == 'kamiloReminder11' ||  $template == 'kamiloReminder12' || $template == 'kamiloReminder14'){
             smsNow($mobile, $template, $firstName,$dayName,$dateAppointment,$time_from,$partName,$doctorFullName,$link);
         }
-        elseif ($template == 'kamiloReminder13'){
+        elseif ($template == 'kamiloReminder13' || $template == 'kamiloReminder15'){
             smsNow($mobile, $template, $firstName);
         }
 

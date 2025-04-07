@@ -276,7 +276,10 @@ function standardSmsMesages($template = null)
          'kamiloReminder14' => '%param1% عزیز سلام 
 شما برای تاریخ %param2% %param3% ساعت %param4% وقت %param5% با %param6% را دارید.
 توجه داشته باشید وقت شما تقریبی بوده و احتمال معطلی وجود دارد.
-ادرس و لوکیشن : %param7%'
+ادرس و لوکیشن : %param7%',
+        'kamiloReminder15' => '%param1% عزیز سلام 
+آدرس کلینیک آرمان الهیه:
+میدان نوبنیاد، خیابان‌لنگری، نبش کوچه‌ی لک‌پور، پلاک دو، طبقه‌ی اول'
     ];
 
     if ($template) {
