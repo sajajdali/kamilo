@@ -1994,7 +1994,7 @@
                 $("#const_now_year").val(selp_year);
                 $("#const_now_month").val(selp_month);
                 $("#const_now_day").val(day);
-                $('#display_data').text(pdate);
+                $('#display_data').text(persianDate([selp_year, selp_month, day]).format('dddd, DD MMMM YYYY'));
                 display_appointments(day);
             });
 
