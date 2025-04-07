@@ -70,12 +70,12 @@
                 <div class="panel rtl yekan">
                     <div class="col-md-3 pl5-md message-tray">
 
-{{--                        @if(Auth::user()->roles[0]['name']  == 'SUPER_ADMIN' || Auth::user()->id == '389')--}}
-{{--                        <!-- quick compose button -->--}}
+                        {{--                        @if(Auth::user()->roles[0]['name']  == 'SUPER_ADMIN' || Auth::user()->id == '389')--}}
+                        {{--                        <!-- quick compose button -->--}}
                         <button type="button" id="quick-compose" class="btn btn-danger light btn-block compose-btn">ثبت
                             نوبت
                         </button>
-{{--                            @endif--}}
+                        {{--                            @endif--}}
                         <br>
 
                         <!-- message tray panel -->
@@ -481,7 +481,7 @@
                                 <label for="identifierـcode" class="field prepend-icon">
                                     <input type="text" name="identifierـcode" id="identifierـcode" class="gui-input"
                                            placeholder="کد معرف">
-                                        <label for="identifierـcode" class="field-icon"><i class="glyphicons glyphicons-gift"></i>
+                                    <label for="identifierـcode" class="field-icon"><i class="glyphicons glyphicons-gift"></i>
                                     </label>
                                 </label>
                             </div>
