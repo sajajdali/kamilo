@@ -107,7 +107,7 @@
                                                             <label class="field prepend-icon">
                                                                 <input type="text" name="start_date_store_appointment" id="start_date_store_appointment"
                                                                        autocomplete="off"
-                                                                       class="gui-input" placeholder="تاریخ شروع">
+                                                                       class="gui-input" placeholder="تاریخ شروع"  data-jdp >
                                                                 <input type="hidden" name="alt_start_date_store_appointment"
                                                                        id="alt_start_date_store_appointment"/>
                                                                 <label for="start_date" class="field-icon"><i
@@ -121,7 +121,7 @@
                                                             <label class="field prepend-icon">
                                                                 <input type="text" name="end_date_store_appointment" id="end_date_store_appointment"
                                                                        autocomplete="off"
-                                                                       class="gui-input" placeholder="تاریخ پایان">
+                                                                       class="gui-input" placeholder="تاریخ پایان"  data-jdp>
                                                                 <input type="hidden" name="alt_end_date_store_appointment"
                                                                        id="alt_end_date_store_appointment"/>
                                                                 <label for="end_date" class="field-icon"><i
