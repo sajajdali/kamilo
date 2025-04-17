@@ -1556,7 +1556,7 @@ class AppointmentController extends AdminApiController
                     $errors[] = 'در همین روز برای این کاربر توسط '.$agentName.' نوبت ثبت شده است <br/>
                     شما امکان ثبت نوبت برای این کاربر را ندارد و برای هماهنگی تغییر زمان و یا کنسل کردن نوبت با '.$agentName.' هماهنگ کنید';
                     if(Auth::user()->getRoleNames()[0] == 'CALL_CENTER') {
-                        $accessToInsert = false;
+                        $accessToInsert = true;
                     }
                 }
             }
