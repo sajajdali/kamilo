@@ -480,7 +480,7 @@
                             <div class="col-md-6 col-xs-12 pull-right">
                                 <label for="identifierـcode" class="field prepend-icon">
                                     <input type="text" name="identifierـcode" id="identifierـcode" class="gui-input"
-                                           placeholder="کد معرف">
+                                           placeholder="کد معرف / زیبایار">
                                     <label for="identifierـcode" class="field-icon"><i class="glyphicons glyphicons-gift"></i>
                                     </label>
                                 </label>
