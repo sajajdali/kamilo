@@ -352,7 +352,7 @@
                                                                 <input type="text" name="identifierـcode" id="identifierـcode"
                                                                        value="{{ request()->identifierـcode }}"
                                                                        class="gui-input"
-                                                                       placeholder="کد معرف">
+                                                                       placeholder="کد معرف / زیبایار">
                                                                 <label for="identifierـcode" class="field-icon"><i
                                                                             class="glyphicons glyphicons-gift"></i>
                                                                 </label>

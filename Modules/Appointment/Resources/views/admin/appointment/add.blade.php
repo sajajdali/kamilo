@@ -466,7 +466,7 @@
                         @endif
 
                         <div class="section-divider mb25" id="spy4">
-                            <span>نوع خدمت و کد معرف و توضیحات</span>
+                            <span>نوع خدمت و کد معرف  / زیبایار و توضیحات</span>
                         </div>
                         <div class="section row">
                             <div class="col-md-6 col-xs-12 pull-right">

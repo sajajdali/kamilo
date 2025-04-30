@@ -53,7 +53,7 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
             "طریقه آشنایی",
             "خدمات",
             "توضیحات",
-            " کد معرف",
+            " کد معرف / زیبایار",
             "شماره دوم"
         ] ];
     }
