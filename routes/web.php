@@ -13,12 +13,12 @@
 use Modules\Appointment\Entities\AppointmentUser;
 
 Auth::routes();
-//Route::get('/login', [LoginController::class, 'showLoginForm'])
-//    ->middleware(['web', 'allowiframe'])
-//    ->name('login');
-//
-//Route::post('/login', [LoginController::class, 'login'])
-//    ->middleware(['web', 'allowiframe']);
+Route::get('/login', 'Auth\LoginController@showLoginForm')
+    ->middleware(['web', 'allowiframe'])
+    ->name('login');
+
+Route::post('/login', 'Auth\LoginController@login')
+    ->middleware(['web', 'allowiframe']);
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('queue/{token}', 'QueueController@execute');
 Route::get('public',function (){
