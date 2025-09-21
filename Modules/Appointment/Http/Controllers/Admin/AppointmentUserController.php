@@ -33,7 +33,6 @@ class AppointmentUserController extends AdminApiController
      */
     function webIndex(Request $request)
     {
-
         $parts = AppointmentPart::whereParentId(0)->get();
         $doctors = User::role(AppointmentPart::DOCTOR_ROLES)->get();
         if ($request->export != null && $request->export == "1") {
@@ -693,7 +692,7 @@ class AppointmentUserController extends AdminApiController
         elseif ($template == 'kamiloReminder11' ||  $template == 'kamiloReminder12' || $template == 'kamiloReminder14'){
             smsNow($mobile, $template, $firstName,$dayName,$dateAppointment,$time_from,$partName,$doctorFullName,$link);
         }
-        elseif ($template == 'kamiloReminder13' || $template == 'kamiloReminder15'){
+        elseif ($template == 'kamiloReminder13' || $template == 'kamiloReminder15' || $template == 'kamiloReminder16'){
             smsNow($mobile, $template, $firstName);
         }
 

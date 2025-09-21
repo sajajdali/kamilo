@@ -436,34 +436,37 @@
                             </div>
                             <!-- end section -->
                         </div>
-                        @if($data['appointment']->time_for_visit[$appointmentNameSpace::JSON_STATUS])
-                            <div class="section-divider mt40 mb25" id="spy3">
-                                <span>بخش‌های مرتبط</span>
-                            </div>
-                            <div class="section row">
-                                <div class="col-md-12 pull-right text-right">
-                                    @foreach($data['appointment']->time_for_visit[$appointmentNameSpace::JSON_TIME] as $item)
-                                        @if($data['appointment']->time_for_visit[$appointmentNameSpace::JSON_SELECT_TYPE] == "multi")
-                                            <div class="option-group field mb10">
-                                                <label class="option option-primary">
-                                                    <input type="checkbox" name="r_part"
-                                                           class="related_part"
-                                                           data-name="{{ $item[$appointmentNameSpace::JSON_TITLE] }}"
-                                                           value="{{ $item[$appointmentNameSpace::JSON_TIME] }}">
-                                                    <span class="checkbox"></span>{{ $item[$appointmentNameSpace::JSON_TITLE] }} - <small>{{ date('H:i', mktime(0,$item[$appointmentNameSpace::JSON_TIME])) }}</small>
-                                                </label>
-                                            </div>
-                                        @else
-                                            <label for="item_part_time_{{ $loop->index }}" class="block mt15 option option-primary">
-                                                <input type="radio" name="r_part" id="item_part_time_{{ $loop->index }}" class="related_part"
-                                                       value="{{ $item[$appointmentNameSpace::JSON_TIME] }}" data-name="{{ $item[$appointmentNameSpace::JSON_TITLE] }}">
-                                                <span class="radio"></span>{{ $item[$appointmentNameSpace::JSON_TITLE] }} - <small>{{ date('H:i', mktime(0,$item[$appointmentNameSpace::JSON_TIME])) }}</small>
+                        <div class="section-divider mt40 mb25" id="spy3">
+                            <span>بخش‌های مرتبط</span>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-12 pull-right text-right">
+                                <!-- Input search for filtering -->
+                                <input type="text" id="searchRelatedParts" class="form-control" placeholder="جستجو کنید..." style="margin-bottom: 15px;">
+
+                                @if(isset($data['appointment']->time_for_visit[$appointmentNameSpace::JSON_TIME]))
+                                @foreach($data['appointment']->time_for_visit[$appointmentNameSpace::JSON_TIME] as $item)
+                                    @if($data['appointment']->time_for_visit[$appointmentNameSpace::JSON_SELECT_TYPE] == "multi")
+                                        <div class="option-group field mb10 related-part-item">
+                                            <label class="option option-primary">
+                                                <input type="checkbox" name="r_part"
+                                                       class="related_part"
+                                                       data-name="{{ $item[$appointmentNameSpace::JSON_TITLE] }}"
+                                                       value="{{ $item[$appointmentNameSpace::JSON_TIME] }}">
+                                                <span class="checkbox"></span>{{ $item[$appointmentNameSpace::JSON_TITLE] }} - <small>{{ date('H:i', mktime(0,$item[$appointmentNameSpace::JSON_TIME])) }}</small>
                                             </label>
-                                        @endif
-                                    @endforeach
-                                </div>
+                                        </div>
+                                    @else
+                                        <label for="item_part_time_{{ $loop->index }}" class="block mt15 option option-primary related-part-item">
+                                            <input type="radio" name="r_part" id="item_part_time_{{ $loop->index }}" class="related_part"
+                                                   value="{{ $item[$appointmentNameSpace::JSON_TIME] }}" data-name="{{ $item[$appointmentNameSpace::JSON_TITLE] }}">
+                                            <span class="radio"></span>{{ $item[$appointmentNameSpace::JSON_TITLE] }} - <small>{{ date('H:i', mktime(0,$item[$appointmentNameSpace::JSON_TIME])) }}</small>
+                                        </label>
+                                    @endif
+                                @endforeach
+                                @endif
                             </div>
-                        @endif
+                        </div>
 
                         <div class="section-divider mb25" id="spy4">
                             <span>نوع خدمت و کد معرف  / زیبایار و توضیحات</span>
@@ -2263,5 +2266,21 @@
 
             update_exception();
         });
+        $(document).ready(function() {
+            // وقتی که کاربر در فیلد جستجو تایپ می‌کند
+            $('#searchRelatedParts').on('input', function() {
+                var searchValue = $(this).val().toLowerCase(); // مقدار جستجو را به کوچک تغییر می‌دهیم
+                // برای هر آیتم در لیست، بررسی می‌کنیم که آیا شامل متن جستجو هست یا نه
+                $('.related-part-item').each(function() {
+                    var itemText = $(this).text().toLowerCase(); // متن هر آیتم
+                    if (itemText.indexOf(searchValue) !== -1) {
+                        $(this).show(); // اگر متن جستجو شده در آیتم بود، آن را نمایش می‌دهیم
+                    } else {
+                        $(this).hide(); // در غیر این صورت، مخفی می‌کنیم
+                    }
+                });
+            });
+        });
     </script>
+
 @endpush
