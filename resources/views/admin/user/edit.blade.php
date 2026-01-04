@@ -134,7 +134,7 @@
 										<div class="section mb15">
 											<label class="field prepend-icon" for="email">
 												<input type="text" value="{{ old('mobile',$user->mobile) }}"
-												       disabled
+												       
 												       placeholder="شماره موبایل"
 												       class="event-name gui-input br-light light rtl" id="mobile"
 												       name="mobile"

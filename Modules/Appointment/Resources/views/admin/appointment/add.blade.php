@@ -2206,7 +2206,8 @@
                         } else {
                             window.formatPersian = false;
                             let daySetStatus = false;
-                            const today = new persianDate().format("D");
+                            // const today = new persianDate().format("D");
+                            const today = parseInt(selp_day, 10);
                             const allItems = $('.item_day').length;
                             const indexItem = $('.item_day[data-date="' + today + '"]').index('.item_day');
                             for (var i = indexItem; i < allItems; i++) {

@@ -415,6 +415,100 @@ class AppointmentUserController extends AdminApiController
         return view('appointment::admin.appointment_user.index', compact('mAppointmentUser', 'parts', 'doctors'));
     }
 
+    private function chanePartName($title, $partName)
+    {
+
+        $partTimeOut = '';
+        if (count($partName) > 0 && is_assoc($partName)) {
+
+            $partTimeOut = ' - [ ';
+            $i = 0;
+            foreach ($partName as $name => $time) {
+                $i++;
+                $partTimeOut .= $name;
+                if ($i < count($partName)) $partTimeOut .= ' - ';
+            }
+            $partTimeOut .= ' ]';
+        }
+        return $title . $partTimeOut;
+    }
+
+    private function convertNumber($string)
+    {
+        $persinaDigits1 = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
+        $persinaDigits2 = array('٩', '٨', '٧', '٦', '٥', '٤', '٣', '٢', '١', '٠');
+        $allPersianDigits = array_merge($persinaDigits1, $persinaDigits2);
+        $replaces = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '9', '8', '7', '6', '5', '4', '3', '2', '1', '0');
+        return str_replace($allPersianDigits, $replaces, $string);
+    }
+
+    private function formatAppointments($appointments)
+    {
+        return $appointments->map(function ($appointment) {
+            // تعریف وضعیت بر اساس شرایط
+            $status = "تایید شده"; // وضعیت پیش‌فرض
+
+            if ($appointment->status == AppointmentUser::STATUS_CANCELED) {
+                $status = "کنسل شده";
+            } elseif ($appointment->status == AppointmentUser::STATUS_PENDING) {
+                $status = "در انتظار";
+            } elseif ($appointment->status == AppointmentUser::STATUS_DELETED) {
+                $status = "حذف شده";
+            } elseif ($appointment->status == AppointmentUser::STATUS_PENDING_CALL) {
+                $status = "تلفنی بدون وقت";
+            }
+
+            return [
+                'id' => $appointment->id,
+                'user_id' => $appointment->user_id,
+                'doctor' => ['id' => $appointment->doctor_id, 'name' => (optional($appointment->doctor)->full_name ?? ''),],
+                'registered_by' => (optional($appointment->agent)->full_name ?? ''),
+                'kind' => ($appointment->kind == AppointmentUser::KIND_MAIN_APPOINTMENT) ? "نوبت اصلی" : "نوبت بین مریض",
+                'user' => [
+                    'id' => $appointment->user->id,
+                    'name' => $appointment->user->first_name,
+                    'gender' => $appointment->user->gender == 1 ? 'مرد' : 'زن',
+                    'last_name' => $appointment->user->last_name,
+                    'mobile' => $appointment->user->mobile,
+                    'email' => $appointment->user->email,
+                ],
+                'part_name' => $this->chanePartName(($appointment->appointmentPart->title ?? ''), $appointment->r_part),
+
+                'code' => $appointment->code,
+                'time_from' => $appointment->time_from,
+                'time_to' => $appointment->time_to,
+                'status' => [
+                    'title' => $status,
+                    'value' => $appointment->status
+                ],  // استفاده از وضعیت جدید
+                'p_date' =>             jdate('l j F', jmktime(0, 0, 0, $appointment->month, $appointment->day, $appointment->year)),
+                'p_date_fotmat' => $this->convertNumber(jdate('Y/m/d', jmktime(0, 0, 0, $appointment->month, $appointment->day, $appointment->year))),
+                'acquainted' => (intval($appointment->user->acquainted)) ? Appointment::$ACQUAINTED[$appointment->user->acquainted] : $appointment->user->acquainted,
+                'service' =>                     (isset($appointment->detail[UserMeta::SERVICE]) ? ($appointment->detail[UserMeta::SERVICE] == 'undefined' ? '' : $appointment->detail[UserMeta::SERVICE]) : ' ' ),
+                'service_detail' =>             ($appointment->detail[UserMeta::SERVICE_DETAIL] ?? ''),
+                'identifier_code' => ($appointment->detail[AppointmentUser::IDENTIFIERـCODE] ?? ''),
+                'second_mobile' => ($appointmentUser->detail[AppointmentUser::SECOND_MOBILE] ?? ' '),
+                'created_at' => $appointment->created_at,
+                'updated_at' => $appointment->updated_at,
+            ];
+        });
+    }
+
+    public function todayList()
+    {
+        $startDate = jdate('Y/m/d', '', '', '', 'en');
+        $date = explode("/", $startDate);
+
+
+        $mAppointmentUser = AppointmentUser::withTrashed();
+        $mAppointmentUser->where([["year", $date[0]], ["month", $date[1]], ["day", $date[2]]]);
+        return response()->json([
+            'status' => 'success',
+            'appointments' => $this->formatAppointments($mAppointmentUser->get())
+        ], 200, [], JSON_UNESCAPED_UNICODE);
+
+    }
+
 
     function create()
     {
@@ -671,28 +765,21 @@ class AppointmentUserController extends AdminApiController
         ];
         $appointment->detail = $detail;
         $appointment->save();
-        if ($template == 'kamiloReminder1' || $template == 'kamiloReminder2'){
+        if ($template == 'kamiloReminder1' || $template == 'kamiloReminder2') {
             smsNow($mobile, $template, $firstName, $time_from, $link);
-        }
-        elseif ($template == 'kamiloReminder3' || $template == 'kamiloReminder4'){
-            smsNow($mobile, $template, $firstName,$dateAppointment,$dayName, $time_from, $link);
-        }
-        elseif ($template == 'kamiloReminder5'){
-            smsNow($mobile, $template, $firstName,$dateAppointment,$dayName, $link);
-        }
-        elseif ($template == 'kamiloReminder6' ||$template == 'kamiloReminder9'){
-            smsNow($mobile, $template, $firstName,$dateAppointment,$dayName, $time_from);
-        }
-        elseif ($template == 'kamiloReminder7' || $template == 'kamiloReminder8'){
-            smsNow($mobile, $template, $firstName,$dateAppointment,$dayName);
-        }
-        elseif ($template == 'kamiloReminder10'){
+        } elseif ($template == 'kamiloReminder3' || $template == 'kamiloReminder4') {
+            smsNow($mobile, $template, $firstName, $dateAppointment, $dayName, $time_from, $link);
+        } elseif ($template == 'kamiloReminder5') {
+            smsNow($mobile, $template, $firstName, $dateAppointment, $dayName, $link);
+        } elseif ($template == 'kamiloReminder6' || $template == 'kamiloReminder9') {
+            smsNow($mobile, $template, $firstName, $dateAppointment, $dayName, $time_from);
+        } elseif ($template == 'kamiloReminder7' || $template == 'kamiloReminder8') {
+            smsNow($mobile, $template, $firstName, $dateAppointment, $dayName);
+        } elseif ($template == 'kamiloReminder10') {
             smsNow($mobile, $template, $firstName);
-        }
-        elseif ($template == 'kamiloReminder11' ||  $template == 'kamiloReminder12' || $template == 'kamiloReminder14'){
-            smsNow($mobile, $template, $firstName,$dayName,$dateAppointment,$time_from,$partName,$doctorFullName,$link);
-        }
-        elseif ($template == 'kamiloReminder13' || $template == 'kamiloReminder15' || $template == 'kamiloReminder16'){
+        } elseif ($template == 'kamiloReminder11' || $template == 'kamiloReminder12' || $template == 'kamiloReminder14') {
+            smsNow($mobile, $template, $firstName, $dayName, $dateAppointment, $time_from, $partName, $doctorFullName, $link);
+        } elseif ($template == 'kamiloReminder13' || $template == 'kamiloReminder15' || $template == 'kamiloReminder16') {
             smsNow($mobile, $template, $firstName);
         }
 

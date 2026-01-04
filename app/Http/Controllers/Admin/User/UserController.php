@@ -8,6 +8,7 @@ use App\User;
 use App\UserMeta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 
 class UserController extends AdminController {
@@ -179,76 +180,100 @@ if(request()->act != null && request()->act == "search"){
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, User $user) {
-		$message = [
-			'firstname.required'  => 'لطفا نام کاربر را وارد کنید',
-			'lastname.required'   => 'لطفا نام خانوادگی کاربر را وارد کنید',
-			'password.confirmed'  => 'کلمه عبور و تکرار آن یکسان نیست',
-			'role.required'       => 'نقش کاربر را انتخاب نمایید',
-			'profile_image.image' => 'تصویر کاربر فقط به صورت فایل تصویری مجار است',
-			            'user_id.integer' => 'ایدی API باید به صورت عدد انگلیسی وارد شود',
-		];
-		$this->validate($request, [
-			'firstname'     => 'required|max:255',
-			'lastname'      => 'required|max:255',
-			'password'      => 'confirmed',
-			'role'          => 'required',
-			'profile_image' => 'image|max:5000',
-		], $message);
-		//update password
-		if($request->input("password") != null) {
-			$user->password = bcrypt($request->input('password'));
-			$user->save();
-		}
-		//update roles
-		$user->roles()->sync($request->input('role'));
-		//update metas
-		$birthday = explode("/", $request->input('bri'));
-		$b_day    = $birthday[2] ?? 0;
-		$b_month  = $birthday[1] ?? 0;
-		$b_year   = $birthday[0] ?? 0;
-		$user->userMetas()->updateOrCreate(
-		    ['meta_key' => UserMeta::FIRST_NAME],
-			['meta_value' => $request->input('firstname')]
-		);
-		$user->userMetas()->updateOrCreate(
-		    ['meta_key' => UserMeta::LAST_NAME],
-			['meta_value' => $request->input('lastname')]
 
-		);
-		$user->userMetas()->updateOrCreate(
-		    ['meta_key' => UserMeta::BIRTHDAY_YEAR],
-			['meta_value' => $b_year]
-			
-		);
-		$user->userMetas()->updateOrCreate(
-		    ['meta_key' => UserMeta::BIRTHDAY_MONTH],
-			['meta_value' => $b_month]
-		);
-		$user->userMetas()->updateOrCreate(
-		    ['meta_key' => UserMeta::BIRTHDAY_DAY],
-			['meta_value' => $b_day]
-			
-		);
-		if($request->user_id != null){
+    public function update(Request $request, User $user) {
+        $message = [
+            'firstname.required'  => 'لطفا نام کاربر را وارد کنید',
+            'lastname.required'   => 'لطفا نام خانوادگی کاربر را وارد کنید',
+            'password.confirmed'  => 'کلمه عبور و تکرار آن یکسان نیست',
+            'role.required'       => 'نقش کاربر را انتخاب نمایید',
+            'profile_image.image' => 'تصویر کاربر فقط به صورت فایل تصویری مجار است',
+            'user_id.integer'     => 'ایدی API باید به صورت عدد انگلیسی وارد شود',
+            'mobile.required'     => 'لطفا موبایل کاربر را وارد کنید',
+            'mobile.min'          => 'شماره موبایل به درستی وارد نشده',
+            'mobile.unique'       => 'این شماره موبایل قبلا در سایت ثبت شده است',
+        ];
+
+        $this->validate($request, [
+            'firstname'     => 'required|max:255',
+            'lastname'      => 'required|max:255',
+            'mobile'        => [
+                'required',
+                'min:11',
+                Rule::unique('users', 'mobile')->ignore($user->id),
+            ],
+            'password'      => 'confirmed',
+            'role'          => 'required',
+            'profile_image' => 'image|max:5000',
+        ], $message);
+
+        // -----------------------------
+        // موبایل را نرمالایز و ست کن
+        // -----------------------------
+        $mobile = $request->input('mobile');
+        $mobile = str_replace(' ', '', $mobile);
+        $mobile = str_replace('(', '', $mobile);
+        $mobile = str_replace(')', '', $mobile);
+        $user->mobile = $mobile;
+
+        // اگر پسورد پر شده بود، عوضش کن
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+
+        // ذخیره تغییرات روی خود user
+        $user->save();
+
+        //update roles
+        $user->roles()->sync($request->input('role'));
+
+        //update metas
+        $birthday = explode("/", $request->input('bri'));
+        $b_day    = $birthday[2] ?? 0;
+        $b_month  = $birthday[1] ?? 0;
+        $b_year   = $birthday[0] ?? 0;
+
+        $user->userMetas()->updateOrCreate(
+            ['meta_key' => UserMeta::FIRST_NAME],
+            ['meta_value' => $request->input('firstname')]
+        );
+        $user->userMetas()->updateOrCreate(
+            ['meta_key' => UserMeta::LAST_NAME],
+            ['meta_value' => $request->input('lastname')]
+        );
+        $user->userMetas()->updateOrCreate(
+            ['meta_key' => UserMeta::BIRTHDAY_YEAR],
+            ['meta_value' => $b_year]
+        );
+        $user->userMetas()->updateOrCreate(
+            ['meta_key' => UserMeta::BIRTHDAY_MONTH],
+            ['meta_value' => $b_month]
+        );
+        $user->userMetas()->updateOrCreate(
+            ['meta_key' => UserMeta::BIRTHDAY_DAY],
+            ['meta_value' => $b_day]
+        );
+
+        if($request->user_id != null){
             $user->userMetas()->updateOrCreate(
                 ['meta_key' => UserMeta::USER_API_ID],
                 ['meta_value' => $request->user_id]
             );
         }
-		if($request->hasFile('profile_image')) {
-			$fileName = $user->id . uniqid('__img_') . '.' . $request->file('profile_image')->getClientOriginalExtension();;
-			$request->file('profile_image')->move(public_path('uploads/avatar'), $fileName);
-			$user->userMetas()->updateOrCreate(
-			    ['meta_key' => UserMeta::PROFILE_AVATAR],
-				['meta_value' => $fileName]
-			);
-		}
-		$request->session()->flash('successful', 'کاربر با موفقیت ,ویرایش شد.');
 
-		return redirect()->route($this->routeBaseName . 'index');
-	}
+        if($request->hasFile('profile_image')) {
+            $fileName = $user->id . uniqid('__img_') . '.' . $request->file('profile_image')->getClientOriginalExtension();
+            $request->file('profile_image')->move(public_path('uploads/avatar'), $fileName);
+            $user->userMetas()->updateOrCreate(
+                ['meta_key' => UserMeta::PROFILE_AVATAR],
+                ['meta_value' => $fileName]
+            );
+        }
 
+        $request->session()->flash('successful', 'کاربر با موفقیت ,ویرایش شد.');
+
+        return redirect()->route($this->routeBaseName . 'index');
+    }
 	/**
 	 * Remove the user
 	 *
