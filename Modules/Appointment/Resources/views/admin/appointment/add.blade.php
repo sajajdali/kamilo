@@ -390,6 +390,14 @@
                                     <i class="arrow"></i>
                                 </label>
                             </div>
+                            <div class="col-md-6 pull-right">
+                                <label for="add_national_code" class="field prepend-icon">
+                                    <input type="text" name="national_code" id="add_national_code" class="gui-input"
+                                           placeholder="کد ملی">
+                                    <label for="add_national_code" class="field-icon"><i class="fa fa-info"></i>
+                                    </label>
+                                </label>
+                            </div>
                         </div>
                         <div class="section-divider mt40 mb25" id="spy8">
                             <span class="header_expandable collapse" href=".items_visit_type" id="add_visit_type">نوع ویزیت<i
@@ -1696,6 +1704,7 @@
                 data.append("acquainted", $("#acquainted").val());
                 data.append("appointment_first_type", $("#appointment_first_type").val());
                 data.append("age", $("#add_age").val());
+                data.append("national_code", $("#add_national_code").val());
                 data.append("service", $("#service").val());
                 data.append("address", $("#add_address").val());
                 data.append("gender", $("#gender").val());
@@ -1831,6 +1840,7 @@
                         $("#add_step_2").slideDown();
                         $("#add_firstname").val(data["first_name"]);
                         $("#add_age").val(data["age"]);
+                        $("#add_national_code").val(data["national_code"]);
                         $("#add_service").val(data["service"]);
                         $("#add_address").val(data["address"]);
                         $("#acquainted").val(data["acquainted"]);

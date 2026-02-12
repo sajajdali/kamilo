@@ -136,6 +136,19 @@
 											</label>
 										</label>
 									</div>
+									<div class="section mb15">
+										<label class="field prepend-icon" for="national_code">
+											<input type="text" value="{{ old('national_code') }}"
+
+												   placeholder="کد ملی"
+												   class="event-name gui-input br-light light rtl" id="national_code"
+												   name="national_code"
+												   style="direction: ltr ! important; text-align: right;"
+												   tabindex="6">
+											<label class="field-icon" for="national_code"><i class="fa fa-code"></i>
+											</label>
+										</label>
+									</div>
 									<div class="section mb15 rtl yekan">
 										@can('admin_all_role_user_access')
 										@foreach($roles as $role)

@@ -128,6 +128,10 @@ class User extends Authenticatable
     {
         return optional($this->userMetas()->whereMetaKey(UserMeta::FIRST_NAME)->first())->meta_value;
     }
+    public function getNationalCodeAttribute()
+    {
+        return optional($this->userMetas()->whereMetaKey(UserMeta::NATIONAL_CODE)->first())->meta_value;
+    }
 
     public function viewTrasheed()
     {

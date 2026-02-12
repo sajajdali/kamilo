@@ -1676,6 +1676,7 @@ class AppointmentController extends AdminApiController
         $custom_sms_text = $request->custom_sms_text;
         $sms_text_status = $request->sms_text_status;
         $year = $request->year;
+        $nationalCode = $request->national_code;
         $month = $request->month;
         $day = $request->day;
         $type = $request->type;
@@ -1704,6 +1705,11 @@ class AppointmentController extends AdminApiController
                     new UserMeta(['meta_key' => UserMeta::AGE, 'meta_value' => $age]),
                 ]);
             }
+            if(!empty($nationalCode)){
+                $user->userMetas()->saveMany([
+                    new UserMeta(['meta_key' => UserMeta::NATIONAL_CODE, 'meta_value' => $nationalCode]),
+                ]);
+            }
 
             if(!empty($acquainted)){
                 $user->userMetas()->saveMany([
@@ -1727,6 +1733,10 @@ class AppointmentController extends AdminApiController
             if(!empty($age)){
                 UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::AGE],
                     ['meta_value' => $age]);
+            }
+            if(!empty($nationalCode)){
+                UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::NATIONAL_CODE],
+                    ['meta_value' => $nationalCode]);
             }
             if(!empty($acquainted)){
                 UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::ACQUAINTED],

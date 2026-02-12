@@ -54,7 +54,8 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
             "خدمات",
             "توضیحات",
             " کد معرف / زیبایار",
-            "شماره دوم"
+            "شماره دوم",
+            "کد ملی"
         ] ];
     }
 
@@ -94,7 +95,8 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
             (isset($appointmentUser->detail[UserMeta::SERVICE_DETAIL]) ? $appointmentUser->detail[UserMeta::SERVICE_DETAIL] : ' ' ),
             (isset($appointmentUser->detail[UserMeta::SERVICE]) ? ($appointmentUser->detail[UserMeta::SERVICE] == 'undefined' ? '' : $appointmentUser->detail[UserMeta::SERVICE]) : ' ' ),
             (isset($appointmentUser->detail[AppointmentUser::IDENTIFIERـCODE]) ? $appointmentUser->detail[AppointmentUser::IDENTIFIERـCODE] : ' ' ),
-            (isset($appointmentUser->detail[AppointmentUser::SECOND_MOBILE]) ? $appointmentUser->detail[AppointmentUser::SECOND_MOBILE] : ' ' )
+            (isset($appointmentUser->detail[AppointmentUser::SECOND_MOBILE]) ? $appointmentUser->detail[AppointmentUser::SECOND_MOBILE] : ' ' ),
+            $appointmentUser->user->national_code,
 
         ];
     }
@@ -138,7 +140,8 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
                 $event->sheet->getDelegate()->getColumnDimension('M')->setAutoSize(true);
                 $event->sheet->getDelegate()->getColumnDimension('N')->setAutoSize(true);
                 $event->sheet->getDelegate()->getColumnDimension('Q')->setAutoSize(true);
-                $event->sheet->getDelegate()->getStyle('A1:Q1')->applyFromArray(
+                $event->sheet->getDelegate()->getColumnDimension('R')->setAutoSize(true);
+                $event->sheet->getDelegate()->getStyle('A1:R1')->applyFromArray(
                     [
                         'font' => [
                             'bold' => true,
@@ -163,8 +166,8 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
                         ],
                     ]
                 );
-                $event->sheet->getDelegate()->mergeCells('A1:Q1');
-                $event->sheet->getDelegate()->getStyle('A2:Q2')->applyFromArray(
+                $event->sheet->getDelegate()->mergeCells('A1:R1');
+                $event->sheet->getDelegate()->getStyle('A2:R2')->applyFromArray(
                     [
                         'font' => [
                             'bold' => true,
@@ -212,7 +215,7 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
                         $bg = "FFcaddf5";
                         $fontColor = "FF1f57a1";
                     }
-                    $event->sheet->getDelegate()->getStyle('A'.$counter.':Q'.$counter.'')->applyFromArray(
+                    $event->sheet->getDelegate()->getStyle('A'.$counter.':R'.$counter.'')->applyFromArray(
                         [
                             'font' => [
                                 'color' => [

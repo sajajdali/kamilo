@@ -143,6 +143,12 @@ if(request()->act != null && request()->act == "search"){
 				new UserMeta(['meta_key' => UserMeta::BIRTHDAY_DAY, 'meta_value' => $b_day])
 			]);
 		}
+        if ($request->has('national_code')) {
+            $user->userMetas()->updateOrCreate(
+                ['meta_key' => UserMeta::NATIONAL_CODE],
+                ['meta_value' => $request->input('national_code')]
+            );
+        }
 		if($request->hasFile('profile_image')) {
 			$fileName = $user->id . uniqid('__img_') . '.' . $request->file('profile_image')->getClientOriginalExtension();;
 			$request->file('profile_image')->move(public_path('uploads/avatar'), $fileName);
@@ -237,6 +243,13 @@ if(request()->act != null && request()->act == "search"){
             ['meta_key' => UserMeta::FIRST_NAME],
             ['meta_value' => $request->input('firstname')]
         );
+
+        if ($request->has('national_code')) {
+            $user->userMetas()->updateOrCreate(
+                ['meta_key' => UserMeta::FIRST_NAME],
+                ['meta_value' => $request->input('national_code')]
+            );
+        }
         $user->userMetas()->updateOrCreate(
             ['meta_key' => UserMeta::LAST_NAME],
             ['meta_value' => $request->input('lastname')]
@@ -245,6 +258,12 @@ if(request()->act != null && request()->act == "search"){
             ['meta_key' => UserMeta::BIRTHDAY_YEAR],
             ['meta_value' => $b_year]
         );
+        if ($request->has('national_code')) {
+            $user->userMetas()->updateOrCreate(
+                ['meta_key' => UserMeta::NATIONAL_CODE],
+                ['meta_value' => $request->input('national_code')]
+            );
+        }
         $user->userMetas()->updateOrCreate(
             ['meta_key' => UserMeta::BIRTHDAY_MONTH],
             ['meta_value' => $b_month]
