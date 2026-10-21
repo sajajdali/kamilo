@@ -132,6 +132,10 @@ class User extends Authenticatable
     {
         return optional($this->userMetas()->whereMetaKey(UserMeta::NATIONAL_CODE)->first())->meta_value;
     }
+    public function getMedicalRecordNumberAttribute()
+    {
+        return optional($this->userMetas()->whereMetaKey(UserMeta::MEDICAL_RECORD_NUMBER)->first())->meta_value;
+    }
 
     public function viewTrasheed()
     {
@@ -200,6 +204,11 @@ class User extends Authenticatable
     public function getAddressAttribute()
     {
         return optional($this->userMetas()->whereMetaKey(UserMeta::ADDRESS)->first())->meta_value;
+    }
+
+    public function getSecondMobileAttribute()
+    {
+        return optional($this->userMetas()->whereMetaKey(UserMeta::SECOND_MOBILE)->first())->meta_value;
     }
 
 

@@ -307,8 +307,7 @@
 						<tr class="bg-light yekan rtl ">
 							
 							<th class="txt_center">عملیات</th>
-							<th class="txt_center">تعداد کاربران</th>
-							<th class="txt_center">گروه پیشفرض</th>
+								<th class="txt_center">گروه پیشفرض</th>
 							<th class="txt_center">مدیریت</th>
 							<th class="txt_right">عنوان گروه</th>
 						</tr>
@@ -351,8 +350,7 @@
 										</ul>
 									</div>
 								</td>
-								<td class="txt_center yekan">{{ $role->users->count() }}</td>
-								<td class="txt_center yekan">
+									<td class="txt_center yekan">
 									@if($role->is_default)
 										<i class="glyphicons glyphicons-ok_2" style="color:green"></i>
 									@else

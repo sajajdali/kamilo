@@ -32,6 +32,8 @@ return [
                 'view_admin_appointment_user' => 'مشاهده بخش عملیات نوبت‌ها',
                 'add_admin_appointment_user' => 'افزودن نوبت جدید',
                 'edit_admin_appointment_user' => 'ویرایش و تغییر وضعیت',
+                'edit_admin_appointment_user_details' => 'ویرایش جزئیات نوبت',
+                'confirm_admin_appointment_user' => 'دسترسی به confirm نوبت‌ها',
                 'delete_admin_appointment_user' => 'امکان حذف نوبت‌ها',
                 'cancel_admin_appointment_user' => 'امکان کنسل کردن نوبت‌ها',
                 'change_time_admin_appointment_user' => 'امکان تغییر زمان نوبت‌ها',
@@ -70,6 +72,13 @@ return [
                 'gate' => 'view_admin_appointment_user',
                 'icon' => 'fa fa-file',
                 'route' => 'admin.appointment_user.index',
+                'has_child' => false,
+            ],
+            [
+                'title' => 'لیست confirm شده‌ها',
+                'gate' => 'confirm_admin_appointment_user',
+                'icon' => 'fa fa-list-alt',
+                'route' => 'admin.appointment_user.confirmed.index',
                 'has_child' => false,
             ],
             [
@@ -117,4 +126,3 @@ return [
         ]
     ]
 ];
-

@@ -280,7 +280,7 @@
                                 </p>
                                 <label for="email" class="field prepend-icon">
                                     <input type="text" name="mobile" id="add_mobile" class="gui-input"
-                                           onkeyup="AutoFarsiNum('#add_mobile');"
+                                           inputmode="numeric" dir="ltr"
                                            placeholder="شماره موبایل">
                                     <label for="add_mobile" class="field-icon"><i class="fa fa-mobile"></i>
                                     </label>
@@ -378,23 +378,30 @@
                             <!-- end section -->
                         </div>
                         <div class="section row item_user_data" style="display: none;">
-                            <div class="col-md-6 pull-right">
+                            <div class="col-md-4 pull-right">
                                 <label class="field select">
                                     <select id="appointment_first_type" name="appointment_first_type">
                                         <option value="">نوع نوبت</option>
                                         @foreach(\Modules\Appointment\Entities\Appointment::$appointmentType as $key => $value)
-                                            <option value="{{$key}}">{{$value}}</option>
+                                            <option value="{{ $key }}">{{ $value }}</option>
                                         @endforeach
-
                                     </select>
                                     <i class="arrow"></i>
                                 </label>
                             </div>
-                            <div class="col-md-6 pull-right">
+                            <div class="col-md-4 pull-right">
                                 <label for="add_national_code" class="field prepend-icon">
                                     <input type="text" name="national_code" id="add_national_code" class="gui-input"
                                            placeholder="کد ملی">
                                     <label for="add_national_code" class="field-icon"><i class="fa fa-info"></i>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="col-md-4 pull-right">
+                                <label for="add_medical_record_number" class="field prepend-icon">
+                                    <input type="text" name="medical_record_number" id="add_medical_record_number"
+                                           class="gui-input" maxlength="50" placeholder="شماره پرونده">
+                                    <label for="add_medical_record_number" class="field-icon"><i class="fa fa-folder-open"></i>
                                     </label>
                                 </label>
                             </div>
@@ -499,6 +506,7 @@
                             <div class="col-md-12  pull-right" style="margin-top: 5px">
                                 <label for="second_mobile" class="field prepend-icon">
                                     <input type="text" name="second_mobile" id="second_mobile" class="gui-input"
+                                           inputmode="numeric" dir="ltr"
                                            placeholder="شماره دوم">
                                     <label for="second_mobile" class="field-icon"><i class="glyphicons glyphicons-headphones"></i>
                                     </label>
@@ -709,6 +717,42 @@
             </div>
         </div>
     </div>
+
+    <div id="sms-recipients-modal" class="popup-basic bg-none mfp-with-anim mfp-hide rtl yekan">
+        <div class="panel" style="border-radius: 8px; overflow: hidden;">
+            <div class="panel-heading bg-primary" style="text-align: right;">
+                <span class="panel-icon"><i class="fa fa-envelope-o"></i></span>
+                <span class="panel-title text-white">انتخاب شماره‌های دریافت‌کننده پیامک</span>
+            </div>
+            <div class="panel-body" style="text-align: right; padding: 25px;">
+                <p class="mb20" style="font-size: 15px;">پیامک نوبت به کدام شماره‌های کاربر ارسال شود؟</p>
+
+                <label for="send_sms_to_primary_mobile" class="sms-recipient-row">
+                    <input type="checkbox" id="send_sms_to_primary_mobile" checked>
+                    <span class="sms-recipient-check"><i class="fa fa-check"></i></span>
+                    <span class="sms-recipient-info">
+                        <strong>شماره اصلی کاربر</strong>
+                        <span id="sms_primary_mobile_text" dir="ltr"></span>
+                    </span>
+                </label>
+
+                <label for="send_sms_to_second_mobile" id="sms_second_mobile_row" class="sms-recipient-row">
+                    <input type="checkbox" id="send_sms_to_second_mobile">
+                    <span class="sms-recipient-check"><i class="fa fa-check"></i></span>
+                    <span class="sms-recipient-info">
+                        <strong>شماره دوم کاربر</strong>
+                        <span id="sms_second_mobile_text" dir="ltr"></span>
+                    </span>
+                </label>
+            </div>
+            <div class="panel-footer text-left">
+                <a class="btn btn-default" id="cancel_sms_recipients" href="#">بازگشت</a>
+                <a class="btn btn-success" id="confirm_sms_recipients" href="#">
+                    <i class="fa fa-paper-plane ml5"></i> ثبت نوبت و ارسال پیامک
+                </a>
+            </div>
+        </div>
+    </div>
     <!-- End: Content -->
 @endsection
 @push('scripts')
@@ -749,6 +793,57 @@
 
         .popup-full {
             margin: 0 auto;
+        }
+
+        .sms-recipient-row {
+            align-items: center;
+            background: #f8fafc;
+            border: 1px solid #dfe5eb;
+            border-radius: 7px;
+            cursor: pointer;
+            display: flex;
+            margin-bottom: 12px;
+            padding: 14px 16px;
+            transition: border-color .2s, background-color .2s;
+        }
+
+        .sms-recipient-row:hover {
+            background: #f1f8f6;
+            border-color: #70c7ad;
+        }
+
+        .sms-recipient-row input {
+            display: none;
+        }
+
+        .sms-recipient-check {
+            align-items: center;
+            border: 2px solid #b8c2cc;
+            border-radius: 5px;
+            color: transparent;
+            display: flex;
+            height: 24px;
+            justify-content: center;
+            margin-left: 13px;
+            width: 24px;
+        }
+
+        .sms-recipient-row input:checked + .sms-recipient-check {
+            background: #2ebc98;
+            border-color: #2ebc98;
+            color: #fff;
+        }
+
+        .sms-recipient-info strong,
+        .sms-recipient-info span {
+            display: block;
+        }
+
+        .sms-recipient-info span {
+            color: #687785;
+            font-size: 14px;
+            margin-top: 4px;
+            text-align: right;
         }
 
         #table_loader {
@@ -1164,18 +1259,16 @@
         let isTimeSet = false;
 
         function AutoFarsiNum(btnid) {
-            let val = $(btnid).val();
-            val = val.replace('۰', '0');
-            val = val.replace('۱', '1');
-            val = val.replace('۲', '2');
-            val = val.replace('۳', '3');
-            val = val.replace('۴', '4');
-            val = val.replace('۵', '5');
-            val = val.replace('۶', '6');
-            val = val.replace('۷', '7');
-            val = val.replace('۸', '8');
-            val = val.replace('۹', '9');
-            $(btnid).val(val);
+            const input = $(btnid);
+            const value = String(input.val() || '')
+                .replace(/[۰-۹]/g, function (digit) {
+                    return String(digit.charCodeAt(0) - 1776);
+                })
+                .replace(/[٠-٩]/g, function (digit) {
+                    return String(digit.charCodeAt(0) - 1632);
+                });
+
+            input.val(value);
         }
 
         $(document).ready(function () {
@@ -1184,9 +1277,21 @@
 
             let stepAddAppointment = 0;
             const ladda_btn = Ladda.create(document.querySelector('.ladda-button'));
-            $('body').on('click','#success_appointment', function () {
-                $.magnificPopup.close();
+            $('#add_mobile, #second_mobile').on('input', function () {
+                AutoFarsiNum(this);
+            });
+            $('body').on('click','#success_appointment', function (event) {
+                event.preventDefault();
                 ladda_btn.start();
+
+                // When SMS confirmation is enabled, requestFinalRegister opens the
+                // recipients popup itself. Closing the warning popup first starts
+                // its delayed removal animation, which can close the new popup too
+                // and leave Magnific Popup's overlay in a broken state.
+                if ($("input[name='sms_status']:checked").val() !== '1') {
+                    $.magnificPopup.close();
+                }
+
                 requestFinalRegister();
             });
             $('body').on('click','#cancell_appointment', function () {
@@ -1204,6 +1309,24 @@
                         }
                     },
                     midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+                });
+            });
+            $('body').on('click', '#confirm_sms_recipients', function (event) {
+                event.preventDefault();
+                $.magnificPopup.close();
+                ladda_btn.start();
+                requestFinalRegister(true);
+            });
+            $('body').on('click', '#cancel_sms_recipients', function (event) {
+                event.preventDefault();
+                $.magnificPopup.open({
+                    removalDelay: 300,
+                    items: { src: '#modal-form' },
+                    callbacks: {
+                        beforeOpen: function () {
+                            this.st.mainClass = 'mfp-zoomIn';
+                        }
+                    }
                 });
             });
 
@@ -1480,11 +1603,14 @@
 
                         }
                     },
-                }).fail(function () {
+                }).fail(function (xhr) {
                     ladda_btn.stop();
+                    $.magnificPopup.close();
                     new PNotify({
                         title: 'خطا!',
-                        text: "خطا در سرور. لطفا مجددا تلاش نمایید.",
+                        text: xhr.responseJSON && xhr.responseJSON.message
+                            ? xhr.responseJSON.message
+                            : "خطا در سرور. لطفا مجددا تلاش نمایید.",
                         shadow: true,
                         opacity: '1',
                         addclass: 'stack_bar_top rtl yekan',
@@ -1690,7 +1816,30 @@
                 });
 
             }
-            function requestFinalRegister() {
+            function requestFinalRegister(smsRecipientsConfirmed) {
+                const secondMobile = $.trim($("#second_mobile").val());
+                const shouldSendSms = $("input[name='sms_status']:checked").val() === '1';
+
+                if (shouldSendSms && smsRecipientsConfirmed !== true) {
+                    ladda_btn.stop();
+                    $('#sms_primary_mobile_text').text($.trim($('#add_mobile').val()));
+                    $('#sms_second_mobile_text').text(secondMobile);
+                    $('#send_sms_to_primary_mobile').prop('checked', true);
+                    $('#send_sms_to_second_mobile').prop('checked', false);
+                    $('#sms_second_mobile_row').toggle(secondMobile.length > 0);
+
+                    $.magnificPopup.open({
+                        removalDelay: 300,
+                        items: { src: '#sms-recipients-modal' },
+                        callbacks: {
+                            beforeOpen: function () {
+                                this.st.mainClass = 'mfp-zoomIn';
+                            }
+                        }
+                    });
+                    return;
+                }
+
                 const data = new FormData();
                 data.append("doctor_id", '{{ $data['doctor_id'] }}');
                 data.append("part_id", '{{ $data['part']->id }}');
@@ -1700,11 +1849,14 @@
                 data.append("lastname", $("#add_lastname").val());
                 data.append("service_detail", $("#service_detail").val());
                 data.append("identifierـcode", $("#identifierـcode").val());
-                data.append("second_mobile", $("#second_mobile").val());
+                data.append("second_mobile", secondMobile);
+                data.append("send_sms_to_primary_mobile", $('#send_sms_to_primary_mobile').prop('checked') ? "1" : "0");
+                data.append("send_sms_to_second_mobile", secondMobile.length > 0 && $('#send_sms_to_second_mobile').prop('checked') ? "1" : "0");
                 data.append("acquainted", $("#acquainted").val());
                 data.append("appointment_first_type", $("#appointment_first_type").val());
                 data.append("age", $("#add_age").val());
                 data.append("national_code", $("#add_national_code").val());
+                data.append("medical_record_number", $("#add_medical_record_number").val());
                 data.append("service", $("#service").val());
                 data.append("address", $("#add_address").val());
                 data.append("gender", $("#gender").val());
@@ -1775,11 +1927,14 @@
                             });
                         }
                     },
-                }).fail(function () {
+                }).fail(function (xhr) {
                     ladda_btn.stop();
+                    $.magnificPopup.close();
                     new PNotify({
                         title: 'خطا!',
-                        text: "خطا در سرور. لطفا مجددا تلاش نمایید.",
+                        text: xhr.responseJSON && xhr.responseJSON.message
+                            ? xhr.responseJSON.message
+                            : "خطا در سرور. لطفا مجددا تلاش نمایید.",
                         shadow: true,
                         opacity: '1',
                         addclass: 'stack_bar_top rtl yekan',
@@ -1841,10 +1996,12 @@
                         $("#add_firstname").val(data["first_name"]);
                         $("#add_age").val(data["age"]);
                         $("#add_national_code").val(data["national_code"]);
+                        $("#add_medical_record_number").val(data["medical_record_number"] || '');
                         $("#add_service").val(data["service"]);
                         $("#add_address").val(data["address"]);
+                        $("#second_mobile").val(data["second_mobile"] || '');
                         $("#acquainted").val(data["acquainted"]);
-                        $("#appointment_first_type").val(data["appointment_first_type"]);
+                        $("#appointment_first_type").val('');
                         $("#add_lastname").val(data["last_name"]);
                         $("#gender").val(data["gender"]);
                         $("#user_id").val(data["user_id"]);

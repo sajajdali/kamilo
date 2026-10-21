@@ -3,6 +3,7 @@
 namespace Modules\Appointment\Http\Controllers\Admin;
 
 use App\Base\AdminApiController;
+use App\Support\AdminActivityLogger;
 use App\User;
 use App\UserMeta;
 use Auth;
@@ -11,6 +12,7 @@ use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Modules\Appointment\Entities\Appointment;
 use Modules\Appointment\Entities\AppointmentException;
 use Modules\Appointment\Entities\AppointmentPart;
@@ -1227,6 +1229,9 @@ class AppointmentController extends AdminApiController
                 $data['acquainted'] = $user->acquainted;
                 $data['service'] = '';
                 $data['address'] = $user->address;
+                $data['second_mobile'] = $user->second_mobile;
+                $data['national_code'] = $user->national_code;
+                $data['medical_record_number'] = $user->medical_record_number;
 
 
 
@@ -1240,6 +1245,9 @@ class AppointmentController extends AdminApiController
                 $data['acquainted'] ='';
                 $data['service'] ='';
                 $data['address'] = '';
+                $data['second_mobile'] = '';
+                $data['national_code'] = '';
+                $data['medical_record_number'] = '';
             }
             return response()->json($data, 200, array(), JSON_UNESCAPED_UNICODE);
         } else {
@@ -1611,6 +1619,7 @@ class AppointmentController extends AdminApiController
 
 
         $oldAppointment = AppointmentUser::where('id' , $appointment_code)->first();
+        $oldValues = AdminActivityLogger::modelValues($oldAppointment);
         $oldStartTime = $this->HourToMin($oldAppointment->time_from);
         $oldEndTime = $this->HourToMin($oldAppointment->time_to);
         $overTime = $oldEndTime - $oldStartTime;
@@ -1623,6 +1632,11 @@ class AppointmentController extends AdminApiController
         $oldAppointment->time_from = $start_time;
         $oldAppointment->time_to = $end_time;
         $oldAppointment->save();
+        AdminActivityLogger::log('appointment.time.updated', $oldAppointment, $oldValues, AdminActivityLogger::modelValues($oldAppointment), [
+            'module' => 'appointment',
+            'description' => 'زمان نوبت تغییر کرد',
+            'request_payload' => $request->except(['_token']),
+        ]);
 
 
 
@@ -1648,8 +1662,31 @@ class AppointmentController extends AdminApiController
         return response()->json(['status' => true, 'code' => $appointment_code], 200, array(), JSON_UNESCAPED_UNICODE);
 
     }
+    /**
+     * Build the placeholder email used for users created from the appointment form.
+     * Keep the legacy value when it is available and use an internal unique address
+     * when an older user already owns it.
+     */
+    private function appointmentUserEmail(string $mobile): string
+    {
+        $email = $mobile . '@user';
+
+        if (!User::whereEmail($email)->exists()) {
+            return $email;
+        }
+
+        do {
+            $email = 'appointment-' . $mobile . '-' . Str::random(12) . '@user.local';
+        } while (User::whereEmail($email)->exists());
+
+        return $email;
+    }
+
     function storeAppointment(Request $request)
     {
+        $request->validate([
+            'medical_record_number' => ['nullable', 'string', 'max:50'],
+        ]);
 
         $mobile = $request->mobile;
         $doctor_id = $request->doctor_id;
@@ -1658,7 +1695,9 @@ class AppointmentController extends AdminApiController
         $firstname = $request->firstname;
         $service_detail = $request->service_detail;
         $identifierـcode = $request->identifierـcode;
-        $second_mobile = $request->second_mobile;
+        $second_mobile = trim((string) $request->second_mobile);
+        $send_sms_to_primary_mobile = $request->input('send_sms_to_primary_mobile') === '1';
+        $send_sms_to_second_mobile = $request->input('send_sms_to_second_mobile') === '1';
 
         $acquainted = $request->acquainted;
         $appointmentFirstType = $request->appointment_first_type;
@@ -1677,6 +1716,7 @@ class AppointmentController extends AdminApiController
         $sms_text_status = $request->sms_text_status;
         $year = $request->year;
         $nationalCode = $request->national_code;
+        $medicalRecordNumber = trim((string) $request->medical_record_number);
         $month = $request->month;
         $day = $request->day;
         $type = $request->type;
@@ -1684,7 +1724,7 @@ class AppointmentController extends AdminApiController
         if ($user_id == 0 || !User::whereId($user_id)->exists()) {
             $user = User::create([
                 'mobile' => $mobile,
-                'email' => $mobile . "@user",
+                'email' => $this->appointmentUserEmail((string) $mobile),
                 'charge' => 0,
                 'password' => Hash::make($mobile),
                 'remember_token' => null,
@@ -1699,6 +1739,13 @@ class AppointmentController extends AdminApiController
                 new UserMeta(['meta_key' => UserMeta::GENDER, 'meta_value' => $gender]),
                 new UserMeta(['meta_key' => UserMeta::AGENT, 'meta_value' => Auth::id()])
             ]);
+            AdminActivityLogger::log('user.created.from_appointment', $user, [], [
+                'user' => AdminActivityLogger::modelValues($user),
+                'metas' => $user->userMetas()->pluck('meta_value', 'meta_key')->toArray(),
+            ], [
+                'module' => 'appointment',
+                'description' => 'کاربر هنگام ثبت نوبت ایجاد شد',
+            ]);
 
             if(!empty($age)){
                 $user->userMetas()->saveMany([
@@ -1708,6 +1755,11 @@ class AppointmentController extends AdminApiController
             if(!empty($nationalCode)){
                 $user->userMetas()->saveMany([
                     new UserMeta(['meta_key' => UserMeta::NATIONAL_CODE, 'meta_value' => $nationalCode]),
+                ]);
+            }
+            if($medicalRecordNumber !== ''){
+                $user->userMetas()->saveMany([
+                    new UserMeta(['meta_key' => UserMeta::MEDICAL_RECORD_NUMBER, 'meta_value' => $medicalRecordNumber]),
                 ]);
             }
 
@@ -1724,6 +1776,11 @@ class AppointmentController extends AdminApiController
             }
 
         } else {
+            $userBeforeAppointmentUpdate = User::find($user_id);
+            $oldUserValues = $userBeforeAppointmentUpdate ? [
+                'user' => AdminActivityLogger::modelValues($userBeforeAppointmentUpdate),
+                'metas' => $userBeforeAppointmentUpdate->userMetas()->pluck('meta_value', 'meta_key')->toArray(),
+            ] : [];
             UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::FIRST_NAME],
                 ['meta_value' => $firstname]);
             UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::LAST_NAME],
@@ -1738,6 +1795,10 @@ class AppointmentController extends AdminApiController
                 UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::NATIONAL_CODE],
                     ['meta_value' => $nationalCode]);
             }
+            if($medicalRecordNumber !== ''){
+                UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::MEDICAL_RECORD_NUMBER],
+                    ['meta_value' => $medicalRecordNumber]);
+            }
             if(!empty($acquainted)){
                 UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_key' => UserMeta::ACQUAINTED],
                     ['meta_value' => $acquainted]);
@@ -1748,6 +1809,13 @@ class AppointmentController extends AdminApiController
             }
 
             $user = User::find($user_id);
+            AdminActivityLogger::log('user.updated.from_appointment', $user, $oldUserValues, [
+                'user' => AdminActivityLogger::modelValues($user),
+                'metas' => $user->userMetas()->pluck('meta_value', 'meta_key')->toArray(),
+            ], [
+                'module' => 'appointment',
+                'description' => 'اطلاعات کاربر هنگام ثبت نوبت ویرایش شد',
+            ]);
         }
 
         $appointmetn = AppointmentUser::create([
@@ -1799,14 +1867,30 @@ class AppointmentController extends AdminApiController
             $appointmentDetail[AppointmentUser::IDENTIFIERـCODE] = $identifierـcode;
         }
 
+        if($medicalRecordNumber !== ''){
+            $appointmentDetail[AppointmentUser::MEDICAL_RECORD_NUMBER] = $medicalRecordNumber;
+        }
+
         if(!empty($second_mobile)){
             $appointmentDetail[AppointmentUser::SECOND_MOBILE] = $second_mobile;
+        }
+
+        if (!empty($second_mobile)) {
+            UserMeta::updateOrCreate(
+                ['user_id' => $user_id, 'meta_key' => UserMeta::SECOND_MOBILE],
+                ['meta_value' => $second_mobile]
+            );
         }
 
         $appointmetn->detail = $appointmentDetail;
 
         //create short link
         $appointmetn->save();
+        AdminActivityLogger::log('appointment.created.from_admin', $appointmetn, [], AdminActivityLogger::modelValues($appointmetn), [
+            'module' => 'appointment',
+            'description' => 'نوبت از پنل مدیریت ثبت شد',
+            'request_payload' => $request->except(['_token']),
+        ]);
 
 
         if ($sms_status == "1") {
@@ -1820,13 +1904,25 @@ class AppointmentController extends AdminApiController
             $time = explode( ':', $appointmetn->time_from );
 
 
-                smsNow(
-                    $appointmetn->user->mobile,
-                    'kamiloAdd',
-                    $user->first_name,
-                    "روز {$appointmetn->year}/{$appointmetn->month}/{$appointmetn->day}",
-                    ($shorterLink ?? $baseShortLink)
-                );
+                if ($send_sms_to_primary_mobile) {
+                    smsNow(
+                        $appointmetn->user->mobile,
+                        'kamiloAdd',
+                        $user->first_name,
+                        "روز {$appointmetn->year}/{$appointmetn->month}/{$appointmetn->day}",
+                        ($shorterLink ?? $baseShortLink)
+                    );
+                }
+
+                if ($send_sms_to_second_mobile && !empty($second_mobile)) {
+                    smsNow(
+                        $second_mobile,
+                        'kamiloAdd',
+                        $user->first_name,
+                        "روز {$appointmetn->year}/{$appointmetn->month}/{$appointmetn->day}",
+                        ($shorterLink ?? $baseShortLink)
+                    );
+                }
 
         }
 
@@ -1963,9 +2059,14 @@ class AppointmentController extends AdminApiController
     function apiDestroy(Request $request, $id)
     {
         $appointment = AppointmentUser::findOrFail($id);
+        $oldValues = AdminActivityLogger::modelValues($appointment);
         $status = true;
         try {
             $appointment->delete();
+            AdminActivityLogger::log('appointment.deleted.api', $appointment, $oldValues, [], [
+                'module' => 'appointment',
+                'description' => AdminActivityLogger::appointmentDeletionDescription($appointment, 'API مدیریت'),
+            ]);
             $request->session()->flash('successful', 'نوبت با موفقیت حذف شد');
         } catch (\Exception $e) {
             $status = false;
@@ -1984,8 +2085,13 @@ class AppointmentController extends AdminApiController
     function webDestroy(Request $request, $id)
     {
         $appointment = AppointmentUser::findOrFail($id);
+        $oldValues = AdminActivityLogger::modelValues($appointment);
         try {
             $appointment->delete();
+            AdminActivityLogger::log('appointment.deleted.web', $appointment, $oldValues, [], [
+                'module' => 'appointment',
+                'description' => AdminActivityLogger::appointmentDeletionDescription($appointment, 'پنل مدیریت'),
+            ]);
             $request->session()->flash('successful', 'نوبت با موفقیت حذف شد');
         } catch (\Exception $e) {
             $request->session()->flash('sys_error', 'در حال حاضر امکان حذف نوبت وجود ندارد');
@@ -1996,6 +2102,7 @@ class AppointmentController extends AdminApiController
     function changeAction(Request $request)
     {
         $appointmentUser = AppointmentUser::findOrFail($request->id);
+        $oldValues = AdminActivityLogger::modelValues($appointmentUser);
         $message = '';
         switch ($request->action) {
             case 'cancel':
@@ -2020,6 +2127,11 @@ class AppointmentController extends AdminApiController
                 break;
 
         }
+        AdminActivityLogger::log('appointment.action.' . $request->action, $appointmentUser, $oldValues, AdminActivityLogger::modelValues($appointmentUser), [
+            'module' => 'appointment',
+            'description' => 'عملیات مدیریتی روی نوبت انجام شد',
+            'request_payload' => $request->except(['_token']),
+        ]);
         return response()->json(['status' => true, 'message' => $message], Response::HTTP_OK, array(),
             JSON_UNESCAPED_UNICODE);
     }

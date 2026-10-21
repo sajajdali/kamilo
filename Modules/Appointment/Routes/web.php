@@ -10,8 +10,26 @@ Route::group([
     Route::get('appointment/change','AppointmentController@changeTime')->name('appointment.change');
     Route::resource('appointment', 'AppointmentController', ['except' => 'show']);
     Route::resource('appointment_sms', 'AppointmentSmsController', ['except' => 'show']);
+    Route::get('appointment_user/confirmed', 'AppointmentUserController@confirmedIndex')
+        ->middleware('permission:confirm_admin_appointment_user')
+        ->name('appointment_user.confirmed.index');
+    Route::put('appointment_user/{appointmentUser}/confirm', 'AppointmentUserController@updateConfirm')
+        ->middleware('permission:confirm_admin_appointment_user')
+        ->name('appointment_user.confirm.update');
+    Route::put('appointment_user/{appointmentUser}/confirmed-list-details', 'AppointmentUserController@updateConfirmedListDetails')
+        ->middleware('permission:confirm_admin_appointment_user')
+        ->name('appointment_user.confirmed_list_details.update');
+    Route::get('appointment-audit-report', 'AppointmentUserController@auditReport')
+        ->middleware('permission:SUPERADMIN_ACCESS')
+        ->name('appointment_user.audit_report');
+    Route::post('appointment-audit-report/unlock', 'AppointmentUserController@unlockAuditReport')
+        ->middleware('permission:SUPERADMIN_ACCESS')
+        ->name('appointment_user.audit_report.unlock');
     Route::resource('appointment_user', 'AppointmentUserController', ['except' => 'show']);
-
+    Route::put('appointment_user/{appointmentUser}/identifier-code', 'AppointmentUserController@updateIdentifierCode')
+        ->name('appointment_user.update_identifier_code');
+    Route::put('appointment_user/{appointmentUser}/details', 'AppointmentUserController@updateDetails')
+        ->name('appointment_user.update_details');
     //standard sms
     Route::get('standard_sms/{appointment}','AppointmentUserController@sendStandardSms')->name('standard_sms');
     Route::post('standard_sms/{appointment}','AppointmentUserController@sendStandardSmsStore')->name('standard_sms.send');
@@ -29,7 +47,7 @@ Route::group([
     Route::post('appointment/ajax/changeAction', 'AppointmentController@changeAction');
     Route::post('appointment/ajax/checkAppointment', 'AppointmentController@checkAppointment');
     Route::get('statusSms', 'AppointmentController@statusSms')->name('status.result');
-    Route::get('appointment/report', 'AppointmentController@report')->name('report.index');
+    Route::get('appointment/report', 'AppointmentUserController@confirmedDailyIndex')->name('report.index');
     Route::get('appointment/report/create', 'AppointmentController@reportCreate')->name('report.create');
     Route::post('appointment/report/store', 'AppointmentController@reportStore')->name('report.store');
 
@@ -77,5 +95,3 @@ Route::group([
     Route::get('result/{code}/{id}', 'AppointmentResultController@result')->name('appointment.result.show');
 
 });
-
-

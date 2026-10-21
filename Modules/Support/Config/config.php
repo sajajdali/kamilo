@@ -64,6 +64,13 @@ return [
                 'has_child' => false
             ],
             [
+                'title' => 'گزارش لگ',
+                'gate' => 'SUPERADMIN_ACCESS',
+                'icon' => 'fa fa-history',
+                'route' => 'admin.appointment_user.audit_report',
+                'has_child' => false
+            ],
+            [
                 'title' => 'سوالات پرتکرار',
                 'gate' => 'view_admin_support_questions',
                 'icon' => 'fa fa-question-circle-o',

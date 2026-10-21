@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\User;
 
 use App\Base\AdminController;
 use App\Base\Authorizable;
+use App\Support\AdminActivityLogger;
 use App\User;
 use App\UserMeta;
 use Illuminate\Http\Request;
@@ -160,6 +161,15 @@ if(request()->act != null && request()->act == "search"){
                 new UserMeta(['meta_key' => UserMeta::USER_API_ID, 'meta_value' => $request->user_id])
             ]);
         }
+        AdminActivityLogger::log('user.created.full', $user, [], [
+            'user' => AdminActivityLogger::modelValues($user),
+            'roles' => $user->roles()->pluck('id')->toArray(),
+            'metas' => $this->userMetaSnapshot($user),
+        ], [
+            'module' => 'user',
+            'description' => 'کاربر از پنل مدیریت اضافه شد',
+            'request_payload' => $request->except(['password', 'password_confirmation', '_token']),
+        ]);
 		$request->session()->flash('successful', 'کاربر با موفقیت اضافه شد.');
 
 		return redirect()->route($this->routeBaseName . 'index');
@@ -188,6 +198,12 @@ if(request()->act != null && request()->act == "search"){
 	 */
 
     public function update(Request $request, User $user) {
+        $oldSnapshot = $this->userAuditSnapshot($user);
+        $request->merge([
+            'mobile' => $this->normalizeMobile($request->input('mobile')),
+            'second_mobile' => $this->normalizeMobile($request->input('second_mobile')),
+        ]);
+
         $message = [
             'firstname.required'  => 'لطفا نام کاربر را وارد کنید',
             'lastname.required'   => 'لطفا نام خانوادگی کاربر را وارد کنید',
@@ -198,6 +214,8 @@ if(request()->act != null && request()->act == "search"){
             'mobile.required'     => 'لطفا موبایل کاربر را وارد کنید',
             'mobile.min'          => 'شماره موبایل به درستی وارد نشده',
             'mobile.unique'       => 'این شماره موبایل قبلا در سایت ثبت شده است',
+            'second_mobile.min'   => 'شماره دوم به درستی وارد نشده است',
+            'second_mobile.different' => 'شماره دوم باید با شماره اصلی متفاوت باشد',
         ];
 
         $this->validate($request, [
@@ -206,21 +224,15 @@ if(request()->act != null && request()->act == "search"){
             'mobile'        => [
                 'required',
                 'min:11',
-                Rule::unique('users', 'mobile')->ignore($user->id),
+                Rule::unique($user->getTable(), 'mobile')->ignore($user->getKey(), $user->getKeyName()),
             ],
+            'second_mobile' => 'nullable|min:11|max:20|different:mobile',
             'password'      => 'confirmed',
             'role'          => 'required',
             'profile_image' => 'image|max:5000',
         ], $message);
 
-        // -----------------------------
-        // موبایل را نرمالایز و ست کن
-        // -----------------------------
-        $mobile = $request->input('mobile');
-        $mobile = str_replace(' ', '', $mobile);
-        $mobile = str_replace('(', '', $mobile);
-        $mobile = str_replace(')', '', $mobile);
-        $user->mobile = $mobile;
+        $user->mobile = $request->input('mobile');
 
         // اگر پسورد پر شده بود، عوضش کن
         if ($request->filled('password')) {
@@ -243,13 +255,11 @@ if(request()->act != null && request()->act == "search"){
             ['meta_key' => UserMeta::FIRST_NAME],
             ['meta_value' => $request->input('firstname')]
         );
+        $user->userMetas()->updateOrCreate(
+            ['meta_key' => UserMeta::FIRST_NAME],
+            ['meta_value' => $request->input('firstname')]
+        );
 
-        if ($request->has('national_code')) {
-            $user->userMetas()->updateOrCreate(
-                ['meta_key' => UserMeta::FIRST_NAME],
-                ['meta_value' => $request->input('national_code')]
-            );
-        }
         $user->userMetas()->updateOrCreate(
             ['meta_key' => UserMeta::LAST_NAME],
             ['meta_value' => $request->input('lastname')]
@@ -263,6 +273,14 @@ if(request()->act != null && request()->act == "search"){
                 ['meta_key' => UserMeta::NATIONAL_CODE],
                 ['meta_value' => $request->input('national_code')]
             );
+        }
+        if ($request->filled('second_mobile')) {
+            $user->userMetas()->updateOrCreate(
+                ['meta_key' => UserMeta::SECOND_MOBILE],
+                ['meta_value' => $request->input('second_mobile')]
+            );
+        } else {
+            $user->userMetas()->where('meta_key', UserMeta::SECOND_MOBILE)->delete();
         }
         $user->userMetas()->updateOrCreate(
             ['meta_key' => UserMeta::BIRTHDAY_MONTH],
@@ -289,9 +307,46 @@ if(request()->act != null && request()->act == "search"){
             );
         }
 
+        $user->load('roles', 'userMetas');
+        AdminActivityLogger::log('user.updated.full', $user, $oldSnapshot, $this->userAuditSnapshot($user), [
+            'module' => 'user',
+            'description' => 'اطلاعات کاربر از پنل مدیریت ویرایش شد',
+            'request_payload' => $request->except(['password', 'password_confirmation', '_token']),
+        ]);
+
         $request->session()->flash('successful', 'کاربر با موفقیت ,ویرایش شد.');
 
         return redirect()->route($this->routeBaseName . 'index');
+    }
+
+    private function normalizeMobile($mobile)
+    {
+        $mobile = trim((string) $mobile);
+        $mobile = strtr($mobile, [
+            '۰' => '0',
+            '۱' => '1',
+            '۲' => '2',
+            '۳' => '3',
+            '۴' => '4',
+            '۵' => '5',
+            '۶' => '6',
+            '۷' => '7',
+            '۸' => '8',
+            '۹' => '9',
+            '٠' => '0',
+            '١' => '1',
+            '٢' => '2',
+            '٣' => '3',
+            '٤' => '4',
+            '٥' => '5',
+            '٦' => '6',
+            '٧' => '7',
+            '٨' => '8',
+            '٩' => '9',
+        ]);
+        $mobile = str_replace([' ', '(', ')', '-', '_'], '', $mobile);
+
+        return preg_replace('/\s+/u', '', $mobile);
     }
 	/**
 	 * Remove the user
@@ -302,9 +357,31 @@ if(request()->act != null && request()->act == "search"){
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function destroy(Request $request, User $user) {
+        $oldSnapshot = $this->userAuditSnapshot($user);
 		$user->delete();
+        AdminActivityLogger::log('user.deleted.full', $user, $oldSnapshot, [], [
+            'module' => 'user',
+            'description' => 'کاربر از پنل مدیریت حذف شد',
+        ]);
 		$request->session()->flash('successful', 'کاربر با موفقیت حذف شد');
 
 		return redirect()->route($this->routeBaseName . 'index');
 	}
+
+    private function userAuditSnapshot(User $user)
+    {
+        return [
+            'user' => AdminActivityLogger::modelValues($user),
+            'roles' => $user->roles()->pluck('id')->toArray(),
+            'metas' => $this->userMetaSnapshot($user),
+        ];
+    }
+
+    private function userMetaSnapshot(User $user)
+    {
+        return $user->userMetas()
+            ->get(['meta_key', 'meta_value'])
+            ->pluck('meta_value', 'meta_key')
+            ->toArray();
+    }
 }

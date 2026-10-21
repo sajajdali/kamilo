@@ -349,11 +349,11 @@
                                                     <div class="col-md-6 pull-right">
                                                         <div class="section">
                                                             <label class="field prepend-icon">
-                                                                <input type="text" name="identifierـcode" id="identifierـcode"
-                                                                       value="{{ request()->identifierـcode }}"
+                                                                <input type="text" name="identifier_code" id="identifier_code"
+                                                                       value="{{ request()->identifier_code ?? request()->identifierـcode }}"
                                                                        class="gui-input"
                                                                        placeholder="کد معرف / زیبایار">
-                                                                <label for="identifierـcode" class="field-icon"><i
+                                                                <label for="identifier_code" class="field-icon"><i
                                                                             class="glyphicons glyphicons-gift"></i>
                                                                 </label>
                                                             </label>
@@ -481,12 +481,28 @@
                             <tbody>
                             @if(sizeof($mAppointmentUser))
                                 @foreach($mAppointmentUser as $item)
-                                    <tr class="data-visit @if($item->status == $appointmentUserNameSpace::STATUS_OK && $item->kind == $appointmentUserNameSpace::KIND_SUBSIDIARY_APPOINTMENT) primary @else {{ $appointmentUserNameSpace::$status[$item->status]['class'] }} @endif">
+                                    @php
+                                        $appointmentSetting = \Modules\Appointment\Entities\Appointment::whereUserIdAndAppointmentPartId($item->doctor_id, $item->appointment_part_id)->first();
+                                        $relatedPartOptions = [];
+                                        $relatedSelectType = '';
+                                        if ($appointmentSetting && isset($appointmentSetting->time_for_visit[\Modules\Appointment\Entities\Appointment::JSON_TIME])) {
+                                            $relatedSelectType = $appointmentSetting->time_for_visit[\Modules\Appointment\Entities\Appointment::JSON_SELECT_TYPE] ?? '';
+                                            foreach ($appointmentSetting->time_for_visit[\Modules\Appointment\Entities\Appointment::JSON_TIME] as $relatedPartOption) {
+                                                if (isset($relatedPartOption[\Modules\Appointment\Entities\Appointment::JSON_TITLE], $relatedPartOption[\Modules\Appointment\Entities\Appointment::JSON_TIME])) {
+                                                    $relatedPartOptions[$relatedPartOption[\Modules\Appointment\Entities\Appointment::JSON_TITLE]] = $relatedPartOption[\Modules\Appointment\Entities\Appointment::JSON_TIME];
+                                                }
+                                            }
+                                        }
+                                    @endphp
+                                    <tr class="data-visit @if($item->is_confirmed) appointment-confirmed @endif @if($item->status == $appointmentUserNameSpace::STATUS_OK && $item->kind == $appointmentUserNameSpace::KIND_SUBSIDIARY_APPOINTMENT) primary @else {{ $appointmentUserNameSpace::$status[$item->status]['class'] }} @endif">
                                         <td class="text-center">
                                             @if($item->status == $appointmentUserNameSpace::STATUS_OK && $item->kind == $appointmentUserNameSpace::KIND_SUBSIDIARY_APPOINTMENT)
                                                 بین مریض
                                             @else
-                                                @if($item->status == $appointmentUserNameSpace::STATUS_OK)
+                                                @if(in_array($item->status, [
+                                                    $appointmentUserNameSpace::STATUS_OK,
+                                                    $appointmentUserNameSpace::STATUS_DELETED,
+                                                ]))
                                                     {{ $item->id }}
                                                 @else
                                                     -
@@ -502,6 +518,10 @@
                                         <td class="text-center">
 
                                             <i class="{{ $appointmentUserNameSpace::$status[$item->status]['icon'] }} text-{{ $appointmentUserNameSpace::$status[$item->status]['class'] }}"></i>
+                                            @if($item->is_confirmed)
+                                                <br>
+                                                <span class="label bg-success mt5">Confirm شده</span>
+                                            @endif
                                         </td>
                                         <td class="text-right">
                                             @if($item->agent != null)
@@ -521,15 +541,27 @@
                                                 <img src="{{ $item->user->avatar }}" title="user"
                                                      class="img-responsive mw20 ib ">
                                                 <span>{{ $item->user->full_name }}</span>
-                                                @if(isset($item->detail[$appointmentUserNameSpace::IDENTIFIERـCODE]))
-                                                    <span class="sidebar-title-tray">
-                                                        <span class="label bg-danger">معرف : {{$item->detail[$appointmentUserNameSpace::IDENTIFIERـCODE]}}</span>
-                                                    </span>
-                                                @endif
+                                                <span class="sidebar-title-tray identifier-code-wrap"
+                                                      data-appointment-id="{{ $item->id }}">
+    @if(isset($item->detail[$appointmentUserNameSpace::IDENTIFIERـCODE]) && $item->detail[$appointmentUserNameSpace::IDENTIFIERـCODE])
+                                                        <span class="label bg-danger identifier-code-label">
+            معرف : {{ $item->detail[$appointmentUserNameSpace::IDENTIFIERـCODE] }}
+        </span>
+                                                    @endif
+</span>
                                                 @if($item->user->national_code)
                                                     <a href="{{ route('admin.user.edit',['id'=>$item->user->id]) }}" class="sidebar-title-tray">
                                                         <span class="label bg-info"> کد ملی : {{$item->user->national_code}}</span>
                                                     </a>
+                                                @endif
+                                                @php
+                                                    $medicalRecordNumber = $item->user->medical_record_number
+                                                        ?: ($item->detail[$appointmentUserNameSpace::MEDICAL_RECORD_NUMBER] ?? '');
+                                                @endphp
+                                                @if(!empty($medicalRecordNumber))
+                                                    <span class="sidebar-title-tray">
+                                                        <span class="label bg-primary">شماره پرونده : {{ $medicalRecordNumber }}</span>
+                                                    </span>
                                                 @endif
                                             @else
                                                 <span class="text-danger">این کاربر حذف شده است</span>
@@ -597,6 +629,14 @@
                                                                     <a href="{{ route('admin.appointment.add',['part_id' => $item->appointment_part_id , 'doctor_id' => $item->doctor_id,'code' => $item->id , 'month' => $item->month , 'year' => $item->year , 'day' => $item->day]) }}">ویرایش زمان نوبت </a>
                                                                 </li>
                                                             @endif
+                                                                @if(auth()->check() && auth()->user()->roles()->whereIn('id', [1, 28])->exists())
+
+                                                                <li>
+                                                                 <a href="{{ route('admin.user.edit', $item->user->id) }}">
+                                                                     ویرایش مشخصات کاربر
+                                                                 </a>
+                                                             </li>
+                                                                @endif
                                                         @endcan
                                                     @endif
                                                     @can('cancel_admin_appointment_user')
@@ -611,7 +651,10 @@
                                                             >
                                                                 <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'cancel']) }}">کنسل
                                                                     کردن نوبت (معمولی)</a>
-                                                                <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'cancel','sms'=>'send']) }}">کنسل
+                                                                <a class="cancel-appointment-with-sms"
+                                                                   data-primary-mobile="{{ e(optional($item->user)->mobile) }}"
+                                                                   data-second-mobile="{{ e($item->detail[$appointmentUserNameSpace::SECOND_MOBILE] ?? optional($item->user)->second_mobile) }}"
+                                                                   href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'cancel','sms'=>'send']) }}">کنسل
                                                                     کردن نوبت (پیامک هم ارسال شود)</a>
                                                             </li>
                                                                 <li>
@@ -624,8 +667,55 @@
                                                             </li>
                                                         @endif
                                                     @endcan
-                                                    @can("edit_admin_appointment_user")
+                                                    @if(Auth::user()->hasRole('SUPER_ADMIN') || Auth::user()->can('SUPERADMIN_ACCESS') || Auth::user()->can('edit_admin_appointment_user_details'))
+                                                        <li>
+                                                            <a href="javascript:void(0)"
+                                                               class="btn-edit-appointment-details"
+                                                               data-appointment-id="{{ $item->id }}"
+                                                               data-service-detail="{{ e($item->detail[\App\UserMeta::SERVICE_DETAIL] ?? '') }}"
+                                                               data-identifier-code="{{ e($item->detail[$appointmentUserNameSpace::IDENTIFIERـCODE] ?? '') }}"
+                                                               data-medical-record-number="{{ e(optional($item->user)->medical_record_number ?: ($item->detail[$appointmentUserNameSpace::MEDICAL_RECORD_NUMBER] ?? '')) }}"
+                                                               data-second-mobile="{{ e($item->detail[$appointmentUserNameSpace::SECOND_MOBILE] ?? '') }}"
+                                                               data-service="{{ e($item->detail[\App\UserMeta::SERVICE] ?? '') }}"
+                                                               data-related-parts="{{ e(json_encode($item->r_part ?? [], JSON_UNESCAPED_UNICODE)) }}"
+                                                               data-related-options="{{ e(json_encode($relatedPartOptions, JSON_UNESCAPED_UNICODE)) }}"
+                                                               @if(Auth::user()->hasRole('SUPER_ADMIN') || Auth::user()->can('SUPERADMIN_ACCESS'))
+                                                               data-identifier-history="{{ e(json_encode($item->identifierHistories->map(function ($history) {
+                                                                   return [
+                                                                       'action' => $history->action,
+                                                                       'old_value' => $history->old_value,
+                                                                       'new_value' => $history->new_value,
+                                                                       'changed_by' => $history->changed_by_name ?: optional($history->actor)->full_name ?: ($history->changed_by ? 'کاربر حذف‌شده' : 'سیستم'),
+                                                                       'changed_by_id' => $history->changed_by,
+                                                                       'changed_by_mobile' => $history->changed_by_mobile ?: optional($history->actor)->mobile,
+                                                                       'ip' => $history->ip,
+                                                                       'changed_at' => jdate('H:i | Y/m/d', $history->created_at->timestamp, '', '', 'en'),
+                                                                   ];
+                                                               }), JSON_UNESCAPED_UNICODE)) }}"
+                                                               @endif
+                                                               data-related-select-type="{{ $relatedSelectType }}">
+                                                                ویرایش جزئیات نوبت
+                                                            </a>
+                                                        </li>
+                                                    @endif
 
+                                                    @can("confirm_admin_appointment_user")
+                                                        <li>
+                                                            <a href="javascript:void(0)"
+                                                               class="btn-toggle-appointment-confirm"
+                                                               data-action="{{ route('admin.appointment_user.confirm.update', $item->id) }}"
+                                                               data-time="{{ substr($item->confirmed_time_from ?: $item->time_from, 0, 5) }}"
+                                                               data-confirm-value="{{ $item->is_confirmed ? 0 : 1 }}">
+                                                                @if($item->is_confirmed)
+                                                                    برداشتن confirm نوبت
+                                                                @else
+                                                                    Confirm کردن نوبت
+                                                                @endif
+                                                            </a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                    @endcan
+                                                    @can("edit_admin_appointment_user")
                                                         @if($item->status == $appointmentUserNameSpace::STATUS_OK && $item->kind == $appointmentUserNameSpace::KIND_SUBSIDIARY_APPOINTMENT)
                                                             <li>
                                                                 <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'change_to_main']) }}">تبدیل
@@ -656,9 +746,7 @@
                                                                    href="{{ route('admin.appointment_user.destroy', $item->id) }}">حذف
                                                                     نوبت</a>
                                                             </li>
-                                                                <li>
-                                                                    <a href="{{ route('admin.standard_sms', ['appointment'=>$item->id]) }}">ارسال پیامک های سیستمی</a>
-                                                                </li>
+                                                             
                                                         @endif
                                                     @endcan
                                                 </ul>
@@ -787,12 +875,166 @@
         </form>
 
     </div>
+    <div id="modal-appointment-details" class="popup-basic admin-form mfp-with-anim mfp-hide rtl yekan">
+        <div class="panel yekan rtl">
+            <div class="panel-heading text-right">
+                <span class="panel-title">ویرایش جزئیات نوبت</span>
+            </div>
+
+            <div class="panel-body p25">
+                <div class="section row">
+                    <div class="col-md-6 pull-right">
+                        <label class="field prepend-icon">
+                            <input type="text" id="appointment_service_detail_input" class="gui-input" placeholder="نام خدمت">
+                            <label class="field-icon"><i class="glyphicons glyphicons-tie"></i></label>
+                        </label>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <label class="field prepend-icon">
+                            <input type="text" id="identifier_code_input" class="gui-input" placeholder="کد معرف / زیبایار">
+                            <label class="field-icon"><i class="glyphicons glyphicons-gift"></i></label>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="section row">
+                    <div class="col-md-6 pull-right">
+                        <label class="field prepend-icon">
+                            <input type="text" id="appointment_medical_record_number_input" class="gui-input"
+                                   maxlength="50" placeholder="شماره پرونده">
+                            <label class="field-icon"><i class="fa fa-folder-open"></i></label>
+                        </label>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <label class="field prepend-icon">
+                            <input type="text" id="appointment_second_mobile_input" class="gui-input" placeholder="شماره دوم">
+                            <label class="field-icon"><i class="glyphicons glyphicons-headphones"></i></label>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <label class="field prepend-icon">
+                        <textarea id="appointment_service_input" class="gui-textarea" placeholder="توضیحات بیشتر"></textarea>
+                        <label class="field-icon"><i class="fa fa-comment"></i></label>
+                    </label>
+                </div>
+
+                <div class="section-divider mt20 mb25">
+                    <span>بخش‌های مرتبط</span>
+                </div>
+                <div class="section">
+                    <div id="appointment_related_parts_container" class="text-right"></div>
+                </div>
+
+                @if(Auth::user()->hasRole('SUPER_ADMIN') || Auth::user()->can('SUPERADMIN_ACCESS'))
+                    <div class="section-divider mt20 mb20">
+                        <span>تاریخچه معرف (فقط مدیر کل)</span>
+                    </div>
+                    <div id="appointment_identifier_history" class="text-right"></div>
+                @endif
+
+                <div class="text-danger" id="appointment_details_error" style="display:none;"></div>
+            </div>
+
+            <div class="panel-footer text-left">
+                <button type="button" class="btn btn-primary" id="btn-save-appointment-details">ذخیره</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cancel-sms-recipients-modal" class="popup-basic bg-none mfp-with-anim mfp-hide rtl yekan">
+        <div class="panel" style="border-radius: 8px; overflow: hidden;">
+            <div class="panel-heading bg-primary text-right">
+                <span class="panel-icon"><i class="fa fa-envelope-o"></i></span>
+                <span class="panel-title text-white">انتخاب شماره‌های دریافت‌کننده پیامک</span>
+            </div>
+            <div class="panel-body" style="text-align: right; padding: 25px;">
+                <p class="mb20" style="font-size: 15px;">پیامک کنسل‌شدن نوبت به کدام شماره‌های کاربر ارسال شود؟</p>
+
+                <label for="cancel_sms_primary_checkbox" class="sms-recipient-row">
+                    <input type="checkbox" id="cancel_sms_primary_checkbox" checked>
+                    <span class="sms-recipient-check"><i class="fa fa-check"></i></span>
+                    <span class="sms-recipient-info">
+                        <strong>شماره اصلی کاربر</strong>
+                        <span id="cancel_sms_primary_mobile_text" dir="ltr"></span>
+                    </span>
+                </label>
+
+                <label for="cancel_sms_second_checkbox" class="sms-recipient-row">
+                    <input type="checkbox" id="cancel_sms_second_checkbox">
+                    <span class="sms-recipient-check"><i class="fa fa-check"></i></span>
+                    <span class="sms-recipient-info">
+                        <strong>شماره دوم کاربر</strong>
+                        <span id="cancel_sms_second_mobile_text" dir="ltr"></span>
+                    </span>
+                </label>
+            </div>
+            <div class="panel-footer text-left">
+                <button type="button" class="btn btn-default" id="cancel_cancel_sms_modal">بازگشت</button>
+                <button type="button" class="btn btn-success" id="confirm_cancel_with_sms">
+                    <i class="fa fa-paper-plane ml5"></i> کنسل نوبت و ارسال پیامک
+                </button>
+            </div>
+        </div>
+    </div>
     <!-- End: Content -->
 @endsection
 @push('scripts')
 {{--    <link rel="stylesheet" href="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.css">--}}
 <script src="{{ asset('admin/files/datepicker/js/jalalidatepicker.min.js') }}"></script>
 <style>
+    .sms-recipient-row {
+        align-items: center;
+        background: #f8fafc;
+        border: 1px solid #dfe5eb;
+        border-radius: 7px;
+        cursor: pointer;
+        display: flex;
+        margin-bottom: 12px;
+        padding: 14px 16px;
+        transition: border-color .2s, background-color .2s;
+    }
+
+    .sms-recipient-row:hover {
+        background: #f1f8f6;
+        border-color: #70c7ad;
+    }
+
+    .sms-recipient-row input {
+        display: none;
+    }
+
+    .sms-recipient-check {
+        align-items: center;
+        border: 2px solid #b8c2cc;
+        border-radius: 5px;
+        color: transparent;
+        display: flex;
+        height: 24px;
+        justify-content: center;
+        margin-left: 13px;
+        width: 24px;
+    }
+
+    .sms-recipient-row input:checked + .sms-recipient-check {
+        background: #2ebc98;
+        border-color: #2ebc98;
+        color: #fff;
+    }
+
+    .sms-recipient-info strong,
+    .sms-recipient-info span {
+        display: block;
+    }
+
+    .sms-recipient-info span {
+        color: #687785;
+        font-size: 14px;
+        margin-top: 4px;
+        text-align: right;
+    }
+
     jdp-container {
         animation: jdpOpenAnimation .3s cubic-bezier(.23, 1, .32, 1);
         background: #fff;
@@ -1091,6 +1333,7 @@
     <script>
         jalaliDatepicker.startWatch();
     </script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Fancytree CSS -->
     <link rel="stylesheet" type="text/css"
           href="{{ asset('admin/files/vendor/plugins/fancytree/skin-win8/ui.fancytree.min.css') }}">
@@ -1141,6 +1384,21 @@
         #choice_all {
             cursor: pointer;
         }
+
+        .appointment-confirmed > td {
+            background: #eefaf0 !important;
+            border-top: 2px solid #70ca63 !important;
+            border-bottom: 2px solid #70ca63 !important;
+        }
+
+        .appointment-confirmed > td:first-child {
+            border-right: 5px solid #2ecc71 !important;
+        }
+
+        .appointment-confirmed > td:last-child {
+            border-left: 2px solid #70ca63 !important;
+        }
+
     </style>
 
     <script src="{{ asset('admin/files/datepicker/js/persian-date-0.1.8.min.js') }}"></script>
@@ -1152,6 +1410,263 @@
 
     <script type="text/javascript">
         jQuery(document).ready(function () {
+            var cancelSmsUrl = '';
+
+            $('.cancel-appointment-with-sms').on('click', function (event) {
+                var secondMobile = $.trim($(this).data('second-mobile') || '');
+                if (secondMobile.length === 0) {
+                    return;
+                }
+
+                event.preventDefault();
+                cancelSmsUrl = $(this).attr('href');
+                $('#cancel_sms_primary_mobile_text').text($.trim($(this).data('primary-mobile') || ''));
+                $('#cancel_sms_second_mobile_text').text(secondMobile);
+                $('#cancel_sms_primary_checkbox').prop('checked', true);
+                $('#cancel_sms_second_checkbox').prop('checked', false);
+
+                $.magnificPopup.open({
+                    removalDelay: 300,
+                    items: { src: '#cancel-sms-recipients-modal' },
+                    callbacks: {
+                        beforeOpen: function () {
+                            this.st.mainClass = 'mfp-zoomIn';
+                        }
+                    }
+                });
+            });
+
+            $('#cancel_cancel_sms_modal').on('click', function () {
+                $.magnificPopup.close();
+            });
+
+            $('#confirm_cancel_with_sms').on('click', function () {
+                var sendToPrimary = $('#cancel_sms_primary_checkbox').prop('checked');
+                var sendToSecond = $('#cancel_sms_second_checkbox').prop('checked');
+
+                if (!sendToPrimary && !sendToSecond) {
+                    alert('لطفاً حداقل یک شماره را برای ارسال پیامک انتخاب کنید.');
+                    return;
+                }
+
+                window.location.href = cancelSmsUrl
+                    + '&send_sms_to_primary_mobile=' + (sendToPrimary ? '1' : '0')
+                    + '&send_sms_to_second_mobile=' + (sendToSecond ? '1' : '0');
+            });
+
+            let currentAppointmentId = null;
+
+            function readJsonData($element, name, fallback) {
+                try {
+                    const raw = $element.attr('data-' + name);
+                    return raw ? JSON.parse(raw) : fallback;
+                } catch (e) {
+                    return fallback;
+                }
+            }
+
+            function renderRelatedParts(options, selectedParts, selectType) {
+                const container = $('#appointment_related_parts_container');
+                const inputType = selectType === 'multi' ? 'checkbox' : 'radio';
+                const names = Object.keys(options || {});
+
+                container.empty();
+
+                if (!names.length && selectedParts && Object.keys(selectedParts).length) {
+                    Object.keys(selectedParts).forEach(function (name) {
+                        options[name] = selectedParts[name];
+                        names.push(name);
+                    });
+                }
+
+                if (!names.length) {
+                    container.html('<span class="text-muted">برای این نوبت بخش مرتبطی تعریف نشده است.</span>');
+                    return;
+                }
+
+                names.forEach(function (name, index) {
+                    const value = options[name];
+                    const isChecked = selectedParts && String(selectedParts[name]) === String(value);
+                    const html =
+                        '<label class="block mt15 option option-primary">' +
+                        '<input type="' + inputType + '" name="appointment_related_part" ' +
+                        'value="' + $('<div>').text(value).html() + '" ' +
+                        'data-name="' + $('<div>').text(name).html() + '" ' +
+                        (isChecked ? 'checked' : '') + '>' +
+                        '<span class="' + (inputType === 'checkbox' ? 'checkbox' : 'radio') + '"></span>' +
+                        $('<div>').text(name).html() +
+                        ' - <small>' + $('<div>').text(value).html() + ' دقیقه</small>' +
+                        '</label>';
+                    container.append(html);
+                });
+            }
+
+            $(document).on('click', '.btn-edit-appointment-details', function () {
+                const btn = $(this);
+                currentAppointmentId = btn.data('appointment-id');
+                const relatedParts = readJsonData(btn, 'related-parts', {});
+                const relatedOptions = readJsonData(btn, 'related-options', {});
+
+                $('#appointment_service_detail_input').val(btn.data('service-detail') || '');
+                $('#identifier_code_input').val(btn.data('identifier-code') || '');
+                $('#appointment_medical_record_number_input').val(btn.data('medical-record-number') || '');
+                $('#appointment_second_mobile_input').val(btn.data('second-mobile') || '');
+                $('#appointment_service_input').val(btn.data('service') || '');
+                $('#appointment_details_error').hide().text('');
+                renderRelatedParts(relatedOptions, relatedParts, btn.data('related-select-type'));
+                @if(Auth::user()->hasRole('SUPER_ADMIN') || Auth::user()->can('SUPERADMIN_ACCESS'))
+                renderIdentifierHistory(readJsonData(btn, 'identifier-history', []));
+                @endif
+
+                $.magnificPopup.open({
+                    removalDelay: 300,
+                    items: { src: '#modal-appointment-details' },
+                    midClick: true
+                });
+            });
+
+            @if(Auth::user()->hasRole('SUPER_ADMIN') || Auth::user()->can('SUPERADMIN_ACCESS'))
+            function renderIdentifierHistory(history) {
+                const container = $('#appointment_identifier_history').empty();
+                if (!Array.isArray(history) || history.length === 0) {
+                    container.html('<div class="alert alert-default mbn">هنوز تغییری برای معرف این نوبت ثبت نشده است.</div>');
+                    return;
+                }
+
+                const actionLabels = {added: 'افزودن', updated: 'ویرایش', removed: 'حذف'};
+                let html = '<div class="table-responsive"><table class="table table-bordered table-striped mbn">' +
+                    '<thead><tr><th>عملیات</th><th>مقدار قبلی</th><th>مقدار جدید</th><th>انجام‌دهنده</th><th>IP</th><th>تاریخ و ساعت</th></tr></thead><tbody>';
+                history.forEach(function (row) {
+                    const escape = function (value) { return $('<div>').text(value || '—').html(); };
+                    let actor = escape(row.changed_by);
+                    if (row.changed_by_id) actor += '<br><small>کاربر ' + escape(String(row.changed_by_id)) + '</small>';
+                    if (row.changed_by_mobile) actor += '<br><small dir="ltr">' + escape(row.changed_by_mobile) + '</small>';
+                    html += '<tr><td>' + escape(actionLabels[row.action] || row.action) + '</td>' +
+                        '<td>' + escape(row.old_value) + '</td><td>' + escape(row.new_value) + '</td>' +
+                        '<td>' + actor + '</td><td dir="ltr">' + escape(row.ip) + '</td>' +
+                        '<td dir="ltr">' + escape(row.changed_at) + '</td></tr>';
+                });
+                container.html(html + '</tbody></table></div>');
+            }
+            @endif
+
+            $('#btn-save-appointment-details').on('click', function () {
+                if (!currentAppointmentId) return;
+
+                const payload = {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    _method: 'PUT',
+                    service_detail: $('#appointment_service_detail_input').val(),
+                    identifier_code: $('#identifier_code_input').val(),
+                    medical_record_number: $('#appointment_medical_record_number_input').val(),
+                    second_mobile: $('#appointment_second_mobile_input').val(),
+                    service: $('#appointment_service_input').val()
+                };
+
+                $("input[name='appointment_related_part']:checked").each(function () {
+                    payload['related_parts[' + $(this).data('name') + ']'] = $(this).val();
+                });
+
+                $('#appointment_details_error').hide().text('');
+
+                $.ajax({
+                    url: "{{ url('admin/appointment_user') }}/" + currentAppointmentId + "/details",
+                    type: "POST",
+                    data: payload,
+                    success: function (res) {
+                        $.magnificPopup.close();
+
+                        new PNotify({
+                            title: 'انجام شد',
+                            text: res.message || 'ذخیره شد.',
+                            addclass: 'stack_bar_top rtl yekan',
+                            type: 'success',
+                            width: "100%",
+                            delay: 1500,
+                        });
+
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 700);
+                    },
+                    error: function (xhr) {
+                        let msg = 'خطا در ذخیره سازی.';
+                        if (xhr.status === 422 && xhr.responseJSON?.errors) {
+                            const firstKey = Object.keys(xhr.responseJSON.errors)[0];
+                            msg = xhr.responseJSON.errors[firstKey][0];
+                        }
+                        $('#appointment_details_error').show().text(msg);
+                    }
+                });
+            });
+
+            $(document).on('click', '.btn-toggle-appointment-confirm', function (e) {
+                e.preventDefault();
+
+                const action = $(this).data('action');
+                const confirmValue = $(this).data('confirm-value');
+                let confirmedTime = '';
+                const message = parseInt(confirmValue) === 1
+                    ? 'آیا از confirm کردن این نوبت مطمئن هستید؟'
+                    : 'آیا از برداشتن confirm این نوبت مطمئن هستید؟';
+
+                if (parseInt(confirmValue) === 1) {
+                    confirmedTime = window.prompt(
+                        'ساعت نوبت را بررسی کنید و در صورت نیاز تغییر دهید:',
+                        String($(this).data('time') || '')
+                    );
+
+                    if (confirmedTime === null) {
+                        return;
+                    }
+
+                    confirmedTime = $.trim(confirmedTime);
+                    if (!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(confirmedTime)) {
+                        alert('لطفاً ساعت را به‌صورت صحیح، مانند 14:30 وارد کنید.');
+                        return;
+                    }
+                }
+
+                if (!confirm(message)) {
+                    return;
+                }
+
+                const form = $('<form>', {
+                    method: 'POST',
+                    action: action,
+                    style: 'display:none'
+                });
+
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: '_token',
+                    value: $('meta[name="csrf-token"]').attr('content')
+                }));
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: '_method',
+                    value: 'PUT'
+                }));
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: 'is_confirmed',
+                    value: confirmValue
+                }));
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: 'confirmed_time_from',
+                    value: confirmedTime
+                }));
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: 'send_confirmation_sms',
+                    value: '0'
+                }));
+
+                $('body').append(form);
+                form.submit();
+            });
+
             //cancel group
             $("#btn-cancel").on('click', function () {
                 const smsStatus = $('input[name="sms_status"]:checked').val();

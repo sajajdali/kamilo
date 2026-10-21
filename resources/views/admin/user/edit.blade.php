@@ -145,6 +145,17 @@
 											</label>
 										</div>
 										<div class="section mb15">
+											<label class="field prepend-icon" for="second_mobile">
+												<input type="text" value="{{ old('second_mobile', $user->second_mobile) }}"
+												       placeholder="شماره دوم"
+												       class="event-name gui-input br-light light rtl" id="second_mobile"
+												       name="second_mobile" inputmode="numeric" dir="ltr"
+												       style="text-align: right;" tabindex="7">
+												<label class="field-icon" for="second_mobile"><i class="fa fa-phone-square"></i>
+												</label>
+											</label>
+										</div>
+										<div class="section mb15">
 											<label class="field prepend-icon" for="national_code">
 												<input type="text" value="{{ old('national_code',$user->national_code) }}"
 
@@ -260,6 +271,16 @@
             // Init jQuery masked inputs
             $('#bri').mask('9999/99/99');
             $('#mobile').mask('(9999)  9999999');
+            $('#second_mobile').on('input', function () {
+                var value = String($(this).val() || '')
+                    .replace(/[۰-۹]/g, function (digit) {
+                        return String(digit.charCodeAt(0) - 1776);
+                    })
+                    .replace(/[٠-٩]/g, function (digit) {
+                        return String(digit.charCodeAt(0) - 1632);
+                    });
+                $(this).val(value);
+            });
 
         });
 	</script>

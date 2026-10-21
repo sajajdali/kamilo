@@ -28,6 +28,12 @@ use Modules\Finance\Entities\Transaction;
  * @property int $status
  * @property int $visit
  * @property int $kind
+ * @property int $is_confirmed
+ * @property int|null $confirmed_by
+ * @property \Illuminate\Support\Carbon|null $confirmed_at
+ * @property string|null $confirmed_time_from
+ * @property string|null $confirmed_service_name
+ * @property string|null $confirmed_comment
  * @property string $r_part
  * @property string $detail
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -86,6 +92,8 @@ class AppointmentUser extends Model
     protected $guarded = ['id'];
     protected $casts = [
         'kind' => 'Boolean',
+        'is_confirmed' => 'Boolean',
+        'confirmed_at' => 'datetime',
         'r_part' => 'json',
         'detail' => 'json'
     ];
@@ -111,6 +119,7 @@ class AppointmentUser extends Model
     CONST STATUS_PENDING_CALL = 6;
     CONST IDENTIFIERـCODE = "IDENTIFIERـCODE";
     CONST SECOND_MOBILE = "SECOND_MOBILE";
+    CONST MEDICAL_RECORD_NUMBER = "MEDICAL_RECORD_NUMBER";
 
     public static $status = [
         self::STATUS_OK => [
@@ -190,6 +199,16 @@ class AppointmentUser extends Model
     public function doctor()
     {
         return $this->belongsTo(User::class,'doctor_id');
+    }
+
+    public function confirmedBy()
+    {
+        return $this->belongsTo(User::class, 'confirmed_by');
+    }
+
+    public function identifierHistories()
+    {
+        return $this->hasMany(AppointmentIdentifierHistory::class)->orderBy('created_at', 'desc');
     }
 
     public function appointmentPart()
