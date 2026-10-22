@@ -130,7 +130,7 @@ class MenuController extends AdminController
             $title = array();
             foreach ( Config::get( 'app.locales' ) as $key => $value )
             {
-                $title{$key . '_title'} = $title_input[ $counter ];
+                $title[$key . '_title'] = $title_input[ $counter ];
                 $counter++;
             }
             $menu_item->title = json_encode( $title );
@@ -258,7 +258,7 @@ class MenuController extends AdminController
             $title = array();
             foreach ( Config::get( 'app.locales' ) as $key => $value )
             {
-                $title{$key . '_title'} = $title_input[ $counter ];
+                $title[$key . '_title'] = $title_input[ $counter ];
                 $counter++;
             }
             $menu_item->title = json_encode( $title );
