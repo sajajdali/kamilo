@@ -203,7 +203,7 @@
                                             </div>
                                         </td>
                                         <td class="txt_center yekan rtl">{{ jdate('d-F-Y',strtotime($nn->created_at)) }}</td>
-                                        <td class="rtl yekan">{!!  str_limit(strip_tags($nn->content),50) !!}</td>
+                                        <td class="rtl yekan">{!!  \Illuminate\Support\Str::limit(strip_tags($nn->content), 50) !!}</td>
                                         <td class="rtl yekan">
                                             @if($nn->meal_type == 2 && $nn->metas()->where('meta_key','total_calorie')->exists())
                                                 {{ $nn->metas()->where('meta_key','total_calorie')->first()->meta_value }}

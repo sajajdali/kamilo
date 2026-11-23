@@ -23,6 +23,6 @@
         }
     },
     "require": {
-        "intervention/image": "^2.4"
+        "intervention/image-laravel": "^4.1"
     }
 }

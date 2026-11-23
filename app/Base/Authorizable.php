@@ -45,7 +45,7 @@ trait Authorizable
 		if(sizeof($routeName) >= 2){
 			unset($routeName[sizeof($routeName)-1]);
 		}
-		$action = array_get($this->getAbilities(), $method);
+		$action = \Illuminate\Support\Arr::get($this->getAbilities(), $method);
 		return $action ? $action . '_' . implode("_",$routeName) : null;
 	}
 	/**

@@ -50,7 +50,9 @@
                             <span class="input-container__checkmark input-container__checkmark--white"></span>
                         </label>
                         <div>
-                            <a class="" href="{{ route('user.recovery.step1') }}" style="display: none;">رمزت رو فراموش کردی؟</a>
+                            @if (Route::has('user.recovery.step1'))
+                                <a class="" href="{{ route('user.recovery.step1') }}" style="display: none;">رمزت رو فراموش کردی؟</a>
+                            @endif
                         </div>
                     </div>
                 </form>

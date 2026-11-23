@@ -91,16 +91,16 @@ class AppointmentUser extends Model
     use SoftDeletes;
     protected $guarded = ['id'];
     protected $casts = [
-        'kind' => 'Boolean',
-        'is_confirmed' => 'Boolean',
+        'kind' => 'boolean',
+        'is_confirmed' => 'boolean',
         'confirmed_at' => 'datetime',
         'r_part' => 'json',
         'detail' => 'json'
     ];
 
-    protected function asJson($value)
+    protected function asJson($value, $flags = 0)
     {
-        return json_encode($value,JSON_UNESCAPED_UNICODE);
+        return json_encode($value, $flags | JSON_UNESCAPED_UNICODE);
     }
 
 

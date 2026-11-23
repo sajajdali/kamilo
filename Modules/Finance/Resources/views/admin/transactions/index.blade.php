@@ -160,7 +160,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.finance.transactions.show',['id' => $transaction->id]) }}"><button class="btn btn-system">ویرایش</button></a>
+                                            <a href="{{ route('admin.finance.transactions.show', ['transaction' => $transaction->id]) }}"><button class="btn btn-system">ویرایش</button></a>
                                         </td>
                                     </tr>
                                 @endforeach

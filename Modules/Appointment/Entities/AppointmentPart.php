@@ -31,7 +31,7 @@ class AppointmentPart extends Model
     public $timestamps = false;
     protected $guarded = [];
     protected $casts = [
-        'status' => 'Boolean'
+        'status' => 'boolean'
     ];
 
     /** @var array doctor role ids */

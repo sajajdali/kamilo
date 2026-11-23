@@ -1,0 +1,13 @@
+{
+    "Aparat": false,
+    "Appointment": true,
+    "Blog": false,
+    "Diet": false,
+    "Finance": true,
+    "Heroes": false,
+    "Media": true,
+    "Options": true,
+    "Page": false,
+    "Personalize": true,
+    "Support": true
+}

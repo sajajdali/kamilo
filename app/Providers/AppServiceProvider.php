@@ -7,6 +7,7 @@ use App\Observers\GenericAdminModelObserver;
 use App\Observers\UserObserver;
 use App\User;
 use App\UserMeta;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Modules\Appointment\Entities\Appointment;
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrapThree();
+
         User::observe(UserObserver::class);
         UserMeta::observe(GenericAdminModelObserver::class);
         Role::observe(GenericAdminModelObserver::class);

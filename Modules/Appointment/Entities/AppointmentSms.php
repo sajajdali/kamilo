@@ -38,8 +38,8 @@ class AppointmentSms extends Model
     public $timestamps = true;
     protected $table = "appointment_sms";
     protected $casts = [
-        'status' => 'Boolean',
-        'day_before' => 'Integer'
+        'status' => 'boolean',
+        'day_before' => 'integer'
     ];
 
     public function scopeActive($query)

@@ -38,7 +38,7 @@ class AppointmentException extends Model
 
     protected $casts = [
         'content' => 'json',
-        'type' => 'Boolean'
+        'type' => 'boolean'
     ];
     public function user()
     {

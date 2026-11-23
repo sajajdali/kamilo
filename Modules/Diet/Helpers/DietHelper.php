@@ -570,11 +570,11 @@ function makeRejim($catRejim)
             })->pluck('meal_id');
             $Rejim = createTableRejim($catRejim, $requestRejimProgram, $mealRejimed, $calorie, $rejimType, $user_id, null, $oldId->toArray());
             if((collect($Rejim)->search('', true))){
-                $emptyDaies = array_where($Rejim, function($value, $key) {
+                $emptyDaies = \Illuminate\Support\Arr::where($Rejim, function($value, $key) {
                     return empty($value);
                 });
                 $limit = sizeof($emptyDaies);
-                $Rejim = createTableRejim($catRejim, $requestRejimProgram, $mealRejimed, $calorie, $rejimType, $user_id, $Rejim, array_flatten($Rejim), $limit);
+                $Rejim = createTableRejim($catRejim, $requestRejimProgram, $mealRejimed, $calorie, $rejimType, $user_id, $Rejim, \Illuminate\Support\Arr::flatten($Rejim), $limit);
             }
             insertMealRejim($catRejim, $requestRejimProgram->rejim_type, $Rejim, $mealRejimed, $calorie, $user_id);
             if($requestRejimProgram->request_type == 2) break; // Break loop for rejim one page
@@ -689,7 +689,7 @@ function createTableRejim($catRejim, $requestRejimProgram = null, $meal_type = 1
             }
         }
         // only for special days
-        $emptyDaies = array_where($ProgramDay, function($value, $key) {
+        $emptyDaies = \Illuminate\Support\Arr::where($ProgramDay, function($value, $key) {
             return empty($value);
         });
         $uniqueIds = array_keys($emptyDaies);
@@ -720,7 +720,7 @@ function createTableRejim($catRejim, $requestRejimProgram = null, $meal_type = 1
 
 function insertMealRejim($catRejim, $rejim_type, $day_meals, $meal, $calorie, $user_id)
 {
-    $rejimDay = array_where($day_meals, function($value, $key) {
+    $rejimDay = \Illuminate\Support\Arr::where($day_meals, function($value, $key) {
         return !empty($value);
     });
     if(count($rejimDay) == 0){

@@ -6,7 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\Laravel\Facades\Image;
 use Modules\Media\Models\Media;
 use Illuminate\Support\Facades\File;
 
@@ -89,7 +89,7 @@ class MediaController extends Controller
                     // resize image and make thumbnails
                     if ( in_array( $file_mime, Media::ALLOWED_CROPABLE_IMAGE_TYPES ) )
                     {
-                        $img = Image::make( public_path( Media::UPLOAD_PATH . '/' . $file_name ) );
+                        $img = Image::decodePath( public_path( Media::UPLOAD_PATH . '/' . $file_name ) );
                         $crop_size = $img->width();
                         if ( $img->width() > $img->height() )
                             $crop_size = $img->height();

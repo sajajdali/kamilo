@@ -73,9 +73,11 @@ Route::name('admin.')->prefix('admin')->namespace('Admin')->middleware([
     Route::get('doc/{module}', 'Doc\DocController@index');
 });
 
-Route::get('user_recovery', '\Modules\Profile\Http\Controllers\UserController@recovery');
-Route::post('user_recovery', '\Modules\Profile\Http\Controllers\UserController@step2')->name('user.recovery.step1');
-Route::put('user_recovery', '\Modules\Profile\Http\Controllers\UserController@step3')->name('user.recovery.step2');
+if (class_exists(\Modules\Profile\Http\Controllers\UserController::class)) {
+    Route::get('user_recovery', '\Modules\Profile\Http\Controllers\UserController@recovery');
+    Route::post('user_recovery', '\Modules\Profile\Http\Controllers\UserController@step2')->name('user.recovery.step1');
+    Route::put('user_recovery', '\Modules\Profile\Http\Controllers\UserController@step3')->name('user.recovery.step2');
+}
 
 
 Route::get('/dd', function () {

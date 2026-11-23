@@ -85,7 +85,7 @@ class AppointmentUser extends Model
     use SoftDeletes;
     protected $guarded = ['id'];
     protected $casts = [
-        'kind' => 'Boolean',
+        'kind' => 'boolean',
         'r_part' => 'json',
         'detail' => 'json'
     ];

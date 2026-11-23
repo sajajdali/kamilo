@@ -3,6 +3,7 @@
 namespace Modules\Appointment\Exports;
 
 use App\UserMeta;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -122,9 +123,14 @@ class AppointmentUserExportPerSheet implements FromQuery, WithMapping, WithHeadi
         return $title . $partTimeOut;
     }
 
-    public function query()
+    public function query(): EloquentBuilder
     {
-        return AppointmentUser::withTrashed(Auth::user()->viewTrasheed())->whereIn('id',$this->appointment_ids)->orderBy('doctor_id','DESC')->orderBy('appointment_part_id','DESC')->orderBy('time_from','ASC');
+        return AppointmentUser::withTrashed(Auth::user()->viewTrasheed())
+            ->whereIn('id', $this->appointment_ids)
+            ->orderBy('doctor_id', 'DESC')
+            ->orderBy('appointment_part_id', 'DESC')
+            ->orderBy('time_from', 'ASC')
+            ->orderBy('id', 'ASC');
     }
 
     /**

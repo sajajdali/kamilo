@@ -64,7 +64,7 @@
                 <div class="panel">
 
                     <form id="admin-form" method="post" novalidate="novalidate"
-                          action="{{ route('admin.diet.package.update',['id' => $package->id]) }}">
+                          action="{{ route('admin.diet.package.update', ['package' => $package->id]) }}">
 
                         <div class="panel-body">
                             @csrf

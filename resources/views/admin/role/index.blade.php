@@ -327,14 +327,14 @@
 											@unless($role->id=='1')
 												@can('edit_admin_role')
 													<li>
-														<a href="{{ route('admin.role.edit',['id' => $role->id]) }}">ویرایش</a>
+												<a href="{{ route('admin.role.edit', ['role' => $role->id]) }}">ویرایش</a>
 													</li>
 												@endcan
 											@endunless
 											@unless($role->id=='1' || $role->is_default)
 												@can('delete_admin_role')
 													<li>
-														<a class="delete_page" data-effect="mfp-rotateLeft"  href="{{ route('admin.role.destroy',['id' => $role->id]) }}">حذف</a>
+												<a class="delete_page" data-effect="mfp-rotateLeft"  href="{{ route('admin.role.destroy', ['role' => $role->id]) }}">حذف</a>
 													</li>
 												@endcan
 											@endunless
@@ -342,7 +342,7 @@
 												@can('edit_admin_role')
 												<li class="divider"></li>
 													<li>
-														<a href="{{ route('admin.role.show',['id'=>$role->id]) }}">انتخاب
+												<a href="{{ route('admin.role.show', ['role' => $role->id]) }}">انتخاب
 															به عنوان پیشفرض</a>
 													</li>
 												@endcan

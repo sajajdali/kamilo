@@ -5,7 +5,7 @@ namespace Modules\Options\Providers;
 use Illuminate\Support\ServiceProvider;
 use Modules\Options\Http\Hooks;
 
-class onloadServiceProvider extends ServiceProvider
+class OnloadServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.

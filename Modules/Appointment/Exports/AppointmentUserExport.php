@@ -2,16 +2,17 @@
 
 namespace Modules\Appointment\Exports;
 use Illuminate\Contracts\Support\Responsable;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class AppointmentUserExport implements WithMultipleSheets,Responsable
+class AppointmentUserExport implements Export, WithMultipleSheets, Responsable
 {
     use Exportable;
     private $sheetsContainer = [];
-    private $fileName = 'export.xlsx';
     public function __construct()
     {
+        $this->fileName = 'export.xlsx';
         $this->sheetsContainer = func_get_args();
     }
 

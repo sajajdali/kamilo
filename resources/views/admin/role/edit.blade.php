@@ -65,7 +65,7 @@
 						</li>
 					</ul>
 				</div>
-				<form method="post" role="form" action="{{ route('admin.role.update',['id'=>$role->id]) }}">
+				<form method="post" role="form" action="{{ route('admin.role.update', ['role' => $role->id]) }}">
 					@csrf
 					@method('PUT')
 					<div class="panel-body p20 pb10">

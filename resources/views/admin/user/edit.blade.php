@@ -45,7 +45,7 @@
 					</ul>
 				</div>
 			@endif
-			<form class="form-horizontal" role="form" action="{{ route('admin.user.update',['id'=>$user->id]) }}" method="post"
+			<form class="form-horizontal" role="form" action="{{ route('admin.user.update', ['user' => $user->id]) }}" method="post"
 			      enctype="multipart/form-data">
 				@csrf
 				@method('PUT')

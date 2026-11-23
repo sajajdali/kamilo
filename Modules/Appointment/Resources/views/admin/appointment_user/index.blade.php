@@ -538,31 +538,52 @@
 
                                         <td class="text-right">
                                             @if($item->user != null)
-                                                <img src="{{ $item->user->avatar }}" title="user"
-                                                     class="img-responsive mw20 ib ">
-                                                <span>{{ $item->user->full_name }}</span>
-                                                <span class="sidebar-title-tray identifier-code-wrap"
-                                                      data-appointment-id="{{ $item->id }}">
-    @if(isset($item->detail[$appointmentUserNameSpace::IDENTIFIERـCODE]) && $item->detail[$appointmentUserNameSpace::IDENTIFIERـCODE])
-                                                        <span class="label bg-danger identifier-code-label">
-            معرف : {{ $item->detail[$appointmentUserNameSpace::IDENTIFIERـCODE] }}
-        </span>
-                                                    @endif
-</span>
-                                                @if($item->user->national_code)
-                                                    <a href="{{ route('admin.user.edit',['id'=>$item->user->id]) }}" class="sidebar-title-tray">
-                                                        <span class="label bg-info"> کد ملی : {{$item->user->national_code}}</span>
-                                                    </a>
-                                                @endif
-                                                @php
-                                                    $medicalRecordNumber = $item->user->medical_record_number
-                                                        ?: ($item->detail[$appointmentUserNameSpace::MEDICAL_RECORD_NUMBER] ?? '');
-                                                @endphp
-                                                @if(!empty($medicalRecordNumber))
-                                                    <span class="sidebar-title-tray">
-                                                        <span class="label bg-primary">شماره پرونده : {{ $medicalRecordNumber }}</span>
-                                                    </span>
-                                                @endif
+                                                <div class="appointment-patient">
+                                                    <div class="appointment-patient-name">
+                                                        <img src="{{ $item->user->avatar }}" title="user"
+                                                             class="img-responsive mw20 ib">
+                                                        <span>{{ $item->user->full_name }}</span>
+                                                    </div>
+                                                    @php
+                                                        $acquaintedValue = $item->user->acquainted;
+                                                        $acquaintedTitle = !empty($acquaintedValue)
+                                                            ? (\Modules\Appointment\Entities\Appointment::$ACQUAINTED[$acquaintedValue] ?? $acquaintedValue)
+                                                            : null;
+                                                        $identifierCode = $item->detail[$appointmentUserNameSpace::IDENTIFIERـCODE] ?? '';
+                                                        $medicalRecordNumber = $item->user->medical_record_number
+                                                            ?: ($item->detail[$appointmentUserNameSpace::MEDICAL_RECORD_NUMBER] ?? '');
+                                                    @endphp
+                                                    <div class="appointment-patient-meta">
+                                                        @if(!empty($acquaintedTitle))
+                                                            <span class="appointment-meta-chip appointment-meta-chip-source">
+                                                                <small>آشنایی</small>
+                                                                <strong>{{ $acquaintedTitle }}</strong>
+                                                            </span>
+                                                        @endif
+                                                        <span class="identifier-code-wrap"
+                                                              data-appointment-id="{{ $item->id }}">
+                                                            @if(!empty($identifierCode))
+                                                                <span class="appointment-meta-chip appointment-meta-chip-referrer identifier-code-label">
+                                                                    <small>معرف</small>
+                                                                    <strong>{{ $identifierCode }}</strong>
+                                                                </span>
+                                                            @endif
+                                                        </span>
+                                                        @if($item->user->national_code)
+                                                            <a href="{{ route('admin.user.edit', ['user' => $item->user->id]) }}"
+                                                               class="appointment-meta-chip appointment-meta-chip-national">
+                                                                <small>کد ملی</small>
+                                                                <strong>{{ $item->user->national_code }}</strong>
+                                                            </a>
+                                                        @endif
+                                                        @if(!empty($medicalRecordNumber))
+                                                            <span class="appointment-meta-chip appointment-meta-chip-record">
+                                                                <small>پرونده</small>
+                                                                <strong>{{ $medicalRecordNumber }}</strong>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
                                             @else
                                                 <span class="text-danger">این کاربر حذف شده است</span>
                                             @endif
@@ -629,10 +650,10 @@
                                                                     <a href="{{ route('admin.appointment.add',['part_id' => $item->appointment_part_id , 'doctor_id' => $item->doctor_id,'code' => $item->id , 'month' => $item->month , 'year' => $item->year , 'day' => $item->day]) }}">ویرایش زمان نوبت </a>
                                                                 </li>
                                                             @endif
-                                                                @if(auth()->check() && auth()->user()->roles()->whereIn('id', [1, 28])->exists())
+                                                                @if($item->user_id && auth()->check() && auth()->user()->roles()->whereIn('id', [1, 28])->exists())
 
                                                                 <li>
-                                                                 <a href="{{ route('admin.user.edit', $item->user->id) }}">
+                                                                 <a href="{{ route('admin.user.edit', ['user' => $item->user_id]) }}">
                                                                      ویرایش مشخصات کاربر
                                                                  </a>
                                                              </li>
@@ -649,12 +670,12 @@
                                                                     @endif
                                                                     @endif
                                                             >
-                                                                <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'cancel']) }}">کنسل
+                                                                <a href="{{ route('admin.appointment_user.edit', ['appointment_user'=>$item->id,'act'=>'cancel']) }}">کنسل
                                                                     کردن نوبت (معمولی)</a>
                                                                 <a class="cancel-appointment-with-sms"
                                                                    data-primary-mobile="{{ e(optional($item->user)->mobile) }}"
                                                                    data-second-mobile="{{ e($item->detail[$appointmentUserNameSpace::SECOND_MOBILE] ?? optional($item->user)->second_mobile) }}"
-                                                                   href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'cancel','sms'=>'send']) }}">کنسل
+                                                                   href="{{ route('admin.appointment_user.edit', ['appointment_user'=>$item->id,'act'=>'cancel','sms'=>'send']) }}">کنسل
                                                                     کردن نوبت (پیامک هم ارسال شود)</a>
                                                             </li>
                                                                 <li>
@@ -662,7 +683,7 @@
                                                                 </li>
                                                         @elseif($item->status == $appointmentUserNameSpace::STATUS_PENDING)
                                                             <li>
-                                                                <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'approve']) }}">تایید
+                                                                <a href="{{ route('admin.appointment_user.edit', ['appointment_user'=>$item->id,'act'=>'approve']) }}">تایید
                                                                     نوبت</a>
                                                             </li>
                                                         @endif
@@ -718,12 +739,12 @@
                                                     @can("edit_admin_appointment_user")
                                                         @if($item->status == $appointmentUserNameSpace::STATUS_OK && $item->kind == $appointmentUserNameSpace::KIND_SUBSIDIARY_APPOINTMENT)
                                                             <li>
-                                                                <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'change_to_main']) }}">تبدیل
+                                                                <a href="{{ route('admin.appointment_user.edit', ['appointment_user'=>$item->id,'act'=>'change_to_main']) }}">تبدیل
                                                                     به نوبت اصلی</a>
                                                             </li>
                                                         @elseif($item->status == $appointmentUserNameSpace::STATUS_OK && $item->kind == $appointmentUserNameSpace::KIND_MAIN_APPOINTMENT)
                                                             <li>
-                                                                <a href="{{ route('admin.appointment_user.edit', ['id'=>$item->id,'act'=>'change_to_subsidiary']) }}">تبدیل
+                                                                <a href="{{ route('admin.appointment_user.edit', ['appointment_user'=>$item->id,'act'=>'change_to_subsidiary']) }}">تبدیل
                                                                     به نوبت بین مریض</a>
                                                             </li>
                                                         @endif
@@ -984,6 +1005,72 @@
 {{--    <link rel="stylesheet" href="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.css">--}}
 <script src="{{ asset('admin/files/datepicker/js/jalalidatepicker.min.js') }}"></script>
 <style>
+    .appointment-patient-name {
+        align-items: center;
+        display: flex;
+        font-weight: 600;
+        gap: 6px;
+    }
+
+    .appointment-patient-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 7px;
+    }
+
+    .appointment-meta-chip {
+        align-items: center;
+        background: #f7f9fb;
+        border: 1px solid #dfe5eb;
+        border-radius: 5px;
+        color: #344050;
+        display: inline-flex;
+        font-size: 11px;
+        line-height: 1.35;
+        padding: 3px 7px;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .appointment-meta-chip small {
+        color: #788695;
+        font-size: 10px;
+        font-weight: 400;
+        margin-left: 5px;
+    }
+
+    .appointment-meta-chip strong {
+        color: inherit;
+        font-weight: 600;
+    }
+
+    .appointment-meta-chip-source {
+        background: #fffbeb;
+        border-right: 3px solid #d9a300;
+    }
+
+    .appointment-meta-chip-referrer {
+        background: #fff4f6;
+        border-right: 3px solid #d95770;
+    }
+
+    .appointment-meta-chip-national {
+        background: #f0f7ff;
+        border-right: 3px solid #438bd1;
+    }
+
+    .appointment-meta-chip-record {
+        background: #f7f4ff;
+        border-right: 3px solid #8065c6;
+    }
+
+    a.appointment-meta-chip:hover,
+    a.appointment-meta-chip:focus {
+        color: #1f2d3d;
+        text-decoration: none;
+    }
+
     .sms-recipient-row {
         align-items: center;
         background: #f8fafc;

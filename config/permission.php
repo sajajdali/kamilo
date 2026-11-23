@@ -26,7 +26,30 @@ return [
 
         'role' => Spatie\Permission\Models\Role::class,
 
+        'team' => null,
+
+        'default_model' => null,
+
     ],
+
+    'column_names' => [
+        'role_pivot_key' => null,
+        'permission_pivot_key' => null,
+        'model_morph_key' => 'model_id',
+        'team_foreign_key' => 'team_id',
+    ],
+
+    'register_permission_check_method' => true,
+
+    'register_octane_reset_listener' => false,
+
+    'events_enabled' => false,
+
+    'teams' => false,
+
+    'team_resolver' => Spatie\Permission\DefaultTeamResolver::class,
+
+    'use_passport_client_credentials' => false,
 
     'table_names' => [
 
@@ -86,4 +109,14 @@ return [
      */
 
     'display_permission_in_exception' => false,
+
+    'display_role_in_exception' => false,
+
+    'enable_wildcard_permission' => false,
+
+    'cache' => [
+        'expiration_time' => DateInterval::createFromDateString('0 seconds'),
+        'key' => 'spatie.permission.cache',
+        'store' => 'default',
+    ],
 ];

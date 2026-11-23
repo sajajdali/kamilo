@@ -92,7 +92,7 @@ class AppointmentServiceProvider extends ServiceProvider
      */
     public function registerFactories()
     {
-        if (! app()->environment('production')) {
+        if (! app()->environment('production') && class_exists(Factory::class)) {
             app(Factory::class)->load(__DIR__ . '/../Database/factories');
         }
     }

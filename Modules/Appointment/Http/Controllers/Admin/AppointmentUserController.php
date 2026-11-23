@@ -805,13 +805,8 @@ class AppointmentUserController extends AdminApiController
                 })->whereHas('agent', function ($query) use ($request) {
                     if ($request->agent_name != null) {
                         $query->whereHas('userMetas', function ($q) use ($request) {
-                            $q->where([
-                                ['meta_key', UserMeta::FIRST_NAME],
-                                ['meta_value', "LIKE", "%" . $request->agent_name . "%"]
-                            ])->orwhere([
-                                ['meta_key', UserMeta::LAST_NAME],
-                                ['meta_value', "LIKE", "%" . $request->agent_name . "%"]
-                            ]);
+                            $q->whereIn('meta_key', [UserMeta::FIRST_NAME, UserMeta::LAST_NAME])
+                                ->where('meta_value', 'LIKE', '%' . trim($request->agent_name) . '%');
                         });
                     }
                 })->get();
@@ -969,13 +964,8 @@ class AppointmentUserController extends AdminApiController
                 })->whereHas('agent', function ($query) use ($request) {
                     if ($request->agent_name != null) {
                         $query->whereHas('userMetas', function ($q) use ($request) {
-                            $q->where([
-                                ['meta_key', UserMeta::FIRST_NAME],
-                                ['meta_value', "LIKE", "%" . $request->agent_name . "%"]
-                            ])->orwhere([
-                                ['meta_key', UserMeta::LAST_NAME],
-                                ['meta_value', "LIKE", "%" . $request->agent_name . "%"]
-                            ]);
+                            $q->whereIn('meta_key', [UserMeta::FIRST_NAME, UserMeta::LAST_NAME])
+                                ->where('meta_value', 'LIKE', '%' . trim($request->agent_name) . '%');
                         });
                     }
                 })->orderBy('id', 'DESC')->paginate(30)->appends(request()->query());

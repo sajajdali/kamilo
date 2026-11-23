@@ -22,16 +22,16 @@ class ConfirmedAppointmentUserExport implements FromCollection, WithMapping, Wit
 
     private $appointments;
     private $title;
-    private $fileName = 'confirmed-appointments.xlsx';
     private $rowNumber = 0;
 
     public function __construct(Collection $appointments, $title)
     {
+        $this->fileName = 'confirmed-appointments.xlsx';
         $this->appointments = $appointments;
         $this->title = $title;
     }
 
-    public function collection()
+    public function collection(): Collection
     {
         return $this->appointments;
     }

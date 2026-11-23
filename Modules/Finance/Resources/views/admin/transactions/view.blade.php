@@ -62,7 +62,7 @@
                             فقط برای سفارش‌های «در انتظار» امکان تغییر وضعیت وجود خواهد داشت.
                         </div>
                         <form role="form" class="form-horizontal" method="post" id="storeNewTransaction"
-                              action="{{ route('admin.finance.transactions.update',['id' => $transaction->id]) }}">
+                              action="{{ route('admin.finance.transactions.update', ['transaction' => $transaction->id]) }}">
                             <input type="hidden" name="metas[AGENT_CHANGER_ID]" value="{{ \Auth::id() }}">
                             <input type="hidden" name="metas[AGENT_CHANGER_NAME]" value="{{ \Auth::user()->full_name }}">
                             <input type="hidden" name="metas[AGENT_CHANGER_IP]" value="{{ request()->ip() }}">

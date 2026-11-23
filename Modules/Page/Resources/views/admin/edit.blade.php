@@ -3,7 +3,7 @@
 @section('content')
 	<div id="content">
 		<div class="row rtl yekan">
-			<form method="post" action="{{ route('admin.pages.update',['id'=>$page->id]) }}">
+			<form method="post" action="{{ route('admin.pages.update', ['page' => $page->id]) }}">
 				@csrf
 				@method('PUT')
 				<div class="col-md-3">

@@ -166,12 +166,12 @@
 											@if($us->id != 1)
 												@can('edit_admin_user')
 													<li>
-														<a href="{{ route('admin.user.edit',['id'=>$us->id]) }}">ویرایش</a>
+												<a href="{{ route('admin.user.edit', ['user' => $us->id]) }}">ویرایش</a>
 													</li>
 												@endcan
 												@can('delete_admin_user')
 													<li>
-														<a href="{{ route('admin.user.destroy',['id'=>$us->id]) }}"
+														<a href="{{ route('admin.user.destroy', ['user' => $us->id]) }}"
 														   class="delete_user" data-effect="mfp-rotateLeft">حذف</a>
 													</li>
 												@endcan
