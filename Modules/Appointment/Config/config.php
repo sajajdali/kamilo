@@ -123,6 +123,13 @@ return [
                 'route' => 'admin.report.index',
                 'has_child' => false,
             ],
+            [
+                'title' => 'اتصال به سامانه ویپ',
+                'gate' => 'admin_appointment_access',
+                'icon' => 'fa fa-phone',
+                'route' => 'admin.voip_connection.edit',
+                'has_child' => false,
+            ],
         ]
     ]
 ];

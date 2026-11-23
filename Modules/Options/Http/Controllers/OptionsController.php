@@ -3,6 +3,7 @@
 namespace Modules\Options\Http\Controllers;
 
 use App\Base\AdminController;
+use App\Support\VoipIntegration;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Options\Helpers\OptionsBuilder;
@@ -34,6 +35,22 @@ class OptionsController extends AdminController
         $files = $request->files->all();
         unset( $inputs['_token'], $inputs['submit'] );
         $errors = [];
+
+        // «اتصال به سامانه ویپ» — store encrypted JSON via VoipIntegration
+        $voipKeys = ['voip_panel_enabled', 'voip_panel_url', 'voip_panel_username', 'voip_panel_password'];
+        $hasVoip = false;
+        foreach ($voipKeys as $vk) {
+            if (array_key_exists($vk, $inputs)) {
+                $hasVoip = true;
+                break;
+            }
+        }
+        if ($hasVoip) {
+            VoipIntegration::saveConnectionFromRequest($request);
+            foreach ($voipKeys as $vk) {
+                unset($inputs[$vk]);
+            }
+        }
         
         $this->upload_files( $files, $inputs );
         

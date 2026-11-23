@@ -56,6 +56,10 @@ Route::group([
     Route::delete('black_list/{black_list}', [\Modules\Appointment\Http\Controllers\Admin\BlackListController::class, 'delete'])->name('blackList.destroy');
     // black list
 
+    // اتصال به سامانه ویپ
+    Route::get('voip-connection', 'VoipConnectionController@edit')->name('voip_connection.edit');
+    Route::post('voip-connection', 'VoipConnectionController@update')->name('voip_connection.update');
+
 });
 
 Route::group([

@@ -36,12 +36,20 @@ class VoipAppointmentController extends Controller
         $ctx = $this->auth($request);
         $doctor = $ctx['doctor_id'] ? User::find($ctx['doctor_id']) : null;
 
+        $conn = VoipIntegration::publicSettings();
+
         return response()->json([
             'ok' => true,
             'provider' => 'kamilo',
             'doctor_id' => $ctx['doctor_id'],
             'doctor_name' => $doctor ? trim((string) $doctor->full_name) : null,
             'scope' => $ctx['doctor_id'] ? 'doctor' : 'all',
+            'connection' => [
+                'enabled' => $conn['enabled'],
+                'panel_url' => $conn['panel_url'],
+                'username' => $conn['username'],
+                'has_password' => $conn['has_password'],
+            ],
         ], 200, [], JSON_UNESCAPED_UNICODE);
     }
 

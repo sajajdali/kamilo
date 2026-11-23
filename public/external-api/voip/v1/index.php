@@ -142,12 +142,23 @@ function normalizePhone(string $phone): string
     return $phone;
 }
 
+function voipOptionRow(PDO $pdo, string $prefix): array
+{
+    $st = $pdo->prepare("SELECT value FROM {$prefix}options WHERE name = 'voip_integration' LIMIT 1");
+    $st->execute();
+    $raw = $st->fetchColumn();
+    $saved = is_string($raw) ? json_decode($raw, true) : [];
+
+    return is_array($saved) ? $saved : [];
+}
+
 function me(PDO $pdo, string $prefix, array $auth): array
 {
     $name = null;
     if ($auth['doctor_id']) {
         $name = fullName(metaMap($pdo, $prefix, (int) $auth['doctor_id']));
     }
+    $saved = voipOptionRow($pdo, $prefix);
 
     return [
         'ok' => true,
@@ -155,6 +166,12 @@ function me(PDO $pdo, string $prefix, array $auth): array
         'doctor_id' => $auth['doctor_id'],
         'doctor_name' => $name !== '' ? $name : null,
         'scope' => $auth['doctor_id'] ? 'doctor' : 'all',
+        'connection' => [
+            'enabled' => !empty($saved['enabled']),
+            'panel_url' => isset($saved['panel_url']) ? rtrim((string) $saved['panel_url'], '/') : '',
+            'username' => (string) ($saved['username'] ?? ''),
+            'has_password' => !empty($saved['password']),
+        ],
     ];
 }
 

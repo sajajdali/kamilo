@@ -1,5 +1,9 @@
 <?php
 
+$voip = class_exists(\App\Support\VoipIntegration::class)
+    ? \App\Support\VoipIntegration::settings()
+    : ['enabled' => false, 'panel_url' => '', 'username' => '', 'password' => ''];
+
 return [
     'menu'    => [
         [ // <<<<<<<<<<<<<<<< general >>>>>>>>>>>>>>>>
@@ -20,7 +24,14 @@ return [
                     'class'          => '',
                     'before_content' => '',
                     'after_content'  => '',
-                ]
+                ],
+                [
+                    'id'             => 'voip_connection',
+                    'title'          => 'اتصال به سامانه ویپ',
+                    'class'          => '',
+                    'before_content' => '',
+                    'after_content'  => '',
+                ],
             ],
             'class'          => '',
             'before_content' => '',
@@ -271,5 +282,82 @@ return [
 
             ],
         ], // #-- end block --#
+        [
+            'id'             => 'voip_connection',
+            'title'          => 'اتصال به سامانه ویپ',
+            'class'          => '',
+            'before_content' => '',
+            'after_content'  => '',
+            'settings'       => [
+                [
+                    'title'          => 'فعال بودن اتصال',
+                    'value'          => !empty($voip['enabled']) ? '1' : '0',
+                    'type'           => 'radio',
+                    'input_args'     => [
+                        'name' => 'voip_panel_enabled',
+                        'items' => [
+                            '0' => 'غیرفعال',
+                            '1' => 'فعال',
+                        ],
+                    ],
+                    'list_item_args' => '',
+                    'class'          => '',
+                    'id'             => '',
+                    'description'    => 'در حالت غیرفعال، API نوبت‌ها برای پنل ویپ پاسخ نمی‌دهد.',
+                    'before_content' => '',
+                    'after_content'  => '',
+                ],
+                [
+                    'title'          => 'آدرس پایه پنل ویپ',
+                    'value'          => $voip['panel_url'] ?? '',
+                    'type'           => 'input',
+                    'input_args'     => [
+                        'name' => 'voip_panel_url',
+                        'type' => 'url',
+                        'placeholder' => 'https://192.168.89.50',
+                        'class' => 'ltr',
+                    ],
+                    'list_item_args' => '',
+                    'class'          => '',
+                    'id'             => '',
+                    'description'    => 'مثال: https://192.168.89.50 یا https://voip.s8n.ir (بدون مسیر اضافی)',
+                    'before_content' => '',
+                    'after_content'  => '',
+                ],
+                [
+                    'title'          => 'نام کاربری پنل ویپ',
+                    'value'          => $voip['username'] ?? '',
+                    'type'           => 'input',
+                    'input_args'     => [
+                        'name' => 'voip_panel_username',
+                        'placeholder' => 'مثلاً sina',
+                        'class' => 'ltr',
+                    ],
+                    'list_item_args' => '',
+                    'class'          => '',
+                    'id'             => '',
+                    'description'    => 'نام کاربری ورود به پنل ویپ (tenant)',
+                    'before_content' => '',
+                    'after_content'  => '',
+                ],
+                [
+                    'title'          => 'رمز عبور پنل ویپ',
+                    'value'          => '',
+                    'type'           => 'input',
+                    'input_args'     => [
+                        'name' => 'voip_panel_password',
+                        'type' => 'password',
+                        'placeholder' => !empty($voip['password']) ? '•••••••• (خالی بگذارید تا تغییر نکند)' : 'رمز عبور',
+                        'class' => 'ltr',
+                    ],
+                    'list_item_args' => '',
+                    'class'          => '',
+                    'id'             => '',
+                    'description'    => 'برای حفظ رمز فعلی، این فیلد را خالی بگذارید.',
+                    'before_content' => '',
+                    'after_content'  => '',
+                ],
+            ],
+        ],
     ],
 ];
