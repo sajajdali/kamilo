@@ -164,7 +164,8 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE', true),
+    // false for local `php artisan serve` over HTTP; set true behind HTTPS in production
+    'secure' => env('SESSION_SECURE_COOKIE', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -192,6 +193,8 @@ return [
     |
     */
 
-    'same_site' => 'none',
+    // 'none' requires Secure cookies (HTTPS only). Use 'lax' for HTTP artisan serve.
+    'same_site' => env('SESSION_SAME_SITE', 'lax'),
 
 ];
+
