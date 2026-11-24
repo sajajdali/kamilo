@@ -19,4 +19,5 @@ Route::group([
     Route::get('me', 'VoipAppointmentController@me');
     Route::get('appointments', 'VoipAppointmentController@appointments');
     Route::get('patients/by-phone/{phone}', 'VoipAppointmentController@byPhone')->where('phone', '.*');
+    Route::get('patients/{id}/dossier', 'VoipAppointmentController@dossier')->where('id', '[0-9]+');
 });
