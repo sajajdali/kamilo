@@ -302,8 +302,8 @@ function dossierById(PDO $pdo, string $prefix, array $auth, int $id): array
 function fieldGaps(): array
 {
     return [
-        'province' => 'No dedicated province column; user_metas.ADDRESS is city-like text (sometimes "city/province").',
-        'dossier_notes' => 'No patient dossier notes table/column; stub only. Per-appointment notes live in appointment_users.confirmed_comment.',
+        'province' => 'No dedicated province column; parse from user_metas.ADDRESS when "city / province".',
+        'dossier_notes' => 'No dedicated table; read/write via user_metas.DOSSIER_NOTES. Per-appointment notes: appointment_users.confirmed_comment.',
         'city' => 'Mapped from user_metas.ADDRESS (meta_key=ADDRESS), not a column on users.',
     ];
 }
@@ -332,8 +332,8 @@ function emptyDossier(string $phone, $doctorId, $requestedId = null): array
         'in_person_appointments' => [],
         'online_appointments' => [],
         'dossier_notes' => null,
-        'dossier_notes_supported' => false,
-        'dossier_notes_note' => 'No patient-level dossier notes column/table in kamilo (only per-appointment confirmed_comment).',
+        'dossier_notes_supported' => true,
+        'dossier_notes_note' => 'Stored in user_metas.DOSSIER_NOTES (no dedicated column).',
         'field_gaps' => fieldGaps(),
     ];
 }
@@ -356,6 +356,13 @@ function splitCityProvince(string $address): array
     }
 
     return [$address, null];
+}
+
+function resolveDossierNotes(array $meta): ?string
+{
+    $raw = trim((string) ($meta['DOSSIER_NOTES'] ?? ''));
+
+    return $raw !== '' ? $raw : null;
 }
 
 function isTerminalStatus(int $status): bool
@@ -515,6 +522,7 @@ function buildDossier(PDO $pdo, string $prefix, array $auth, int $uid, string $p
     $focus = $nextModel ?: ($rows[0] ?? null);
     $address = trim((string) ($meta['ADDRESS'] ?? ''));
     [$city, $province] = splitCityProvince($address);
+    $dossierNotes = resolveDossierNotes($meta);
     $secondMobile = null;
     if ($focus) {
         $fd = is_string($focus['detail'] ?? null) ? json_decode($focus['detail'], true) : [];
@@ -536,6 +544,15 @@ function buildDossier(PDO $pdo, string $prefix, array $auth, int $uid, string $p
     $summary = null;
     if ($focus) {
         $f = formatDossierAppointment($pdo, $prefix, $focus);
+        $identifier = $f['identifier_code'];
+        if ($identifier === null || $identifier === '') {
+            foreach ($dossierAppts as $row) {
+                if (!empty($row['identifier_code'])) {
+                    $identifier = $row['identifier_code'];
+                    break;
+                }
+            }
+        }
         $summary = [
             'full_name' => $name,
             'agent_name' => $f['agent_name'],
@@ -563,12 +580,12 @@ function buildDossier(PDO $pdo, string $prefix, array $auth, int $uid, string $p
             'address' => $address !== '' ? $address : null,
             'appointment_category' => $f['appointment_category'],
             'appointment_category_label' => $f['appointment_category_label'],
-            'identifier_code' => $f['identifier_code'],
+            'identifier_code' => $identifier,
             'tracking_code' => $f['tracking_code'],
             'appointment_id' => $f['id'],
             'appointments_active_count' => $activeCount,
             'appointments_cancelled_count' => $cancelledCount,
-            'dossier_notes' => null,
+            'dossier_notes' => $dossierNotes,
         ];
     }
 
@@ -612,9 +629,9 @@ function buildDossier(PDO $pdo, string $prefix, array $auth, int $uid, string $p
         'appointments' => $dossierAppts,
         'in_person_appointments' => $inPerson,
         'online_appointments' => $online,
-        'dossier_notes' => null,
-        'dossier_notes_supported' => false,
-        'dossier_notes_note' => 'No patient-level dossier notes column/table in kamilo (only per-appointment confirmed_comment).',
+        'dossier_notes' => $dossierNotes,
+        'dossier_notes_supported' => true,
+        'dossier_notes_note' => 'Stored in user_metas.DOSSIER_NOTES (no dedicated column).',
         'field_gaps' => fieldGaps(),
         'doctor_id' => $auth['doctor_id'],
     ];
@@ -682,18 +699,10 @@ function formatCrmRow(array $a, ?array $rich = null): array
             'amount_paid' => $a['cost'] ?? null,
         ];
     }
+    $rich['jalali'] = $rich['date'];
+    $rich['place'] = $rich['part'];
 
-    return [
-        'id' => $rich['id'],
-        'date' => $rich['date'],
-        'jalali' => $rich['date'],
-        'time' => $rich['time'],
-        'service' => $rich['service'],
-        'place' => $rich['part'],
-        'status' => $rich['status'],
-        'status_label' => $rich['status_label'],
-        'amount_paid' => $rich['amount_paid'],
-    ];
+    return $rich;
 }
 
 function jalaliParts($s): ?array
